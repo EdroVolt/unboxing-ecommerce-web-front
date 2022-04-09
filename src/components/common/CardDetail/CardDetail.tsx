@@ -53,9 +53,9 @@ type CardProps = {
 };
 
 export default function Simple({
-  name = "Watch ",
+  name,
   description,
-  count = 5,
+  count = 0,
   sizeCount = {
     xs: 0,
     s: 0,
@@ -68,7 +68,7 @@ export default function Simple({
   images,
   price = 0,
   discount = 0,
-  offer = true,
+  offer = false,
   reviews,
   color,
   buttonName,
