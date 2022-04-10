@@ -135,7 +135,7 @@ export default function Home() {
         textTransform="uppercase"
         color="secondary.100"
         isTruncated
-        borderBottom="2px solid black"
+        borderBottom="2px solid #aaa"
         padding="25px 0"
       >
         Offers
@@ -165,7 +165,7 @@ export default function Home() {
         textTransform="uppercase"
         color="secondary.100"
         isTruncated
-        borderBottom="2px solid black"
+        borderBottom="2px solid #aaa"
         padding="25px 0"
       >
         Top Products
