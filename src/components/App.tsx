@@ -34,7 +34,15 @@ export const App = () => (
   <ChakraProvider theme={theme}>
     <Box textAlign="center" fontSize="xl">
       {/* <Grid minH="100vh" p={3}> */}
-      <ColorModeSwitcher justifySelf="flex-end" />
+      <Navbar
+        categoriesList={[
+          { name: "hana", id: "2" },
+          { name: "yasmen", id: "3" },
+        ]}
+        isAuth={false}
+        userDetails={{ userId: "fd", userName: "yasmena", userCity: "fdd" }}
+      ></Navbar>
+
       <Card
         title="hello world"
         imageUrl="https://via.placeholder.com/500/000/fff.png"
@@ -44,6 +52,7 @@ export const App = () => (
         rating={3}
       />
       {/* </Grid> */}
+      <Footer isAuth={false} userDetails={{}}></Footer>
     </Box>
   </ChakraProvider>
 );
