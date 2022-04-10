@@ -38,16 +38,33 @@ const UserProfile = () => {
     email: "nesmataha91@gmail.com",
     password: "123nesma",
     phoneNumber: "01060981970",
-    address: {
-      government: "Kafr Elsheikh",
-      city: "Balteem",
-      street: "Elwafaa",
-    },
+    government: "Kafr Elsheikh",
+    city: "Balteem",
+    street: "Elwafaa",
   });
 
-  const handleChange = (event: any) => {
+  const formateDate = () => {
+    return {
+      name: userInfo.name,
+      email: userInfo.email,
+      password: userInfo.password,
+      phoneNumber: userInfo.phoneNumber,
+      address: {
+        government: userInfo.government,
+        city: userInfo.city,
+        street: userInfo.street,
+      },
+    };
+  };
+
+  console.log(userInfo);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
-    setUserInfo(event.target.value);
+    setUserInfo((prevState) => ({
+      ...prevState,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   return (
@@ -76,6 +93,7 @@ const UserProfile = () => {
               <FormLabel htmlFor="first-name">Full Name:</FormLabel>
               <Input
                 id="first-name"
+                name="name"
                 variant="filled"
                 placeholder="First name"
                 value={userInfo.name}
@@ -102,6 +120,7 @@ const UserProfile = () => {
               <FormLabel htmlFor="email">Email address:</FormLabel>
               <Input
                 id="email"
+                name="email"
                 variant="filled"
                 type="email"
                 value={userInfo.email}
