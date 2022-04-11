@@ -17,7 +17,7 @@ const SignInSchema = Yup.object().shape({
 
   password: Yup.string()
     .required("Password is required")
-    .min(6, "Password is too short - should be 6 chars minimum"),
+    .min(8, "Password is too short - should be 8 chars minimum"),
 });
 const Login = () => {
   const initialValues = {
@@ -94,7 +94,7 @@ const Login = () => {
                 </Box>
                 <Button
                   type="submit"
-                  className={!(dirty && isValid) ? "disabled-btn form_button" : ""}
+                  className={!(dirty && isValid) ? "disabled-btn form_button" : "form_button"}
                   disabled={!(dirty && isValid)}
                 >
                   Sign In
