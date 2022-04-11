@@ -11,6 +11,7 @@ import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { extendTheme } from "@chakra-ui/react";
 import Card from "./common/Card/Card";
 import UserProfile from "../pages/UserProfile";
+import BackdropExample from "./common/Modal";
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
@@ -45,7 +46,6 @@ export const App = () => (
         rating={3}
       /> */}
       <UserProfile />
-
       {/* </Grid> */}
     </Box>
   </ChakraProvider>

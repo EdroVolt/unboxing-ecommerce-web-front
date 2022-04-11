@@ -1,0 +1,18 @@
+.boxStyle {
+  width: 100%;
+  margin: auto;
+  /* border: 2px solid teal; */
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1em;
+}
+.boxStyleResponsive {
+  width: 100%;
+  margin: auto;
+  padding: 1rem;
+  border-radius: 10px;
+  justify-content: space-evenly;
+  gap: 1em;
+}

@@ -1,38 +1,26 @@
 import { useState } from "react";
-// import { Image, Divider } from "@chakra-ui/react";
-// import Modal from "../components/common/Modal";
+import "./UserProfile.css";
 import {
-  Image,
   FormControl,
   FormLabel,
-  Heading,
   Input,
   InputGroup,
   Stack,
-  VStack,
-  Grid,
   Box,
-  GridItem,
-  HStack,
-  Center,
   ButtonGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import { PhoneIcon } from "@chakra-ui/icons";
-
-// type UserInfoProps = {
-//   name?: string;
-//   email?: string;
-//   password?: string;
-//   phoneNumber?: string;
-//   address?: {
-//     government?: string;
-//     city?: string;
-//     street?: string;
-//   };
-// };
+import { CalendarIcon, EditIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
+import BackdropExample from "../components/common/Modal";
+import { useMediaQuery } from "usehooks-ts";
 
 const UserProfile = () => {
+  const desktop = useMediaQuery("(min-width: 1280px)");
+  const tabletIpadsPortrait = useMediaQuery("(min-width: 1230px)");
+  const tabletIpadsLowResolution = useMediaQuery("(min-width: 850px)");
+  const phone = useMediaQuery("(min-width: 470px)");
+
   const [userInfo, setUserInfo] = useState({
     name: "Nesma",
     email: "nesmataha91@gmail.com",
@@ -57,8 +45,6 @@ const UserProfile = () => {
     };
   };
 
-  console.log(userInfo);
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
     setUserInfo((prevState) => ({
@@ -69,226 +55,772 @@ const UserProfile = () => {
 
   return (
     <>
-      <HStack spacing="2%" marginTop="5%">
-        <Box w="20%" h="100%">
-          <Image
-            borderRadius="50px"
-            src="https://bit.ly/dan-abramov"
-            alt="Dan Abramov"
-            width="150px"
-          />
-        </Box>
-        <Stack direction="row" spacing={4} align="center">
-          <Button colorScheme="teal" variant="outline">
-            Delete Account
-          </Button>
-        </Stack>
-        {/* <Divider />
-      <Modal /> */}
-
-        <Box w="35%" h="100%">
-          {/* full name */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="first-name">Full Name:</FormLabel>
-              <Input
-                id="first-name"
-                name="name"
-                variant="filled"
-                placeholder="First name"
-                value={userInfo.name}
-                onChange={handleChange}
-              />
-              <Button
-                size="md"
-                height="45px"
-                width="80px"
-                letterSpacing="1.5px"
-                border="2px"
-                borderRadius="15px"
-                borderColor="green.500"
-                marginLeft="30px"
+      {desktop ? (
+        <Box
+          width="70vw"
+          margin="auto"
+          padding="1em"
+          p={3}
+          borderWidth={1}
+          borderRadius={8}
+          boxShadow="dark-lg"
+        >
+          <Box className="boxStyle">
+            <Box width="30vw">
+              {/* full name */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
               >
-                Edit
-              </Button>
-            </FormControl>
-          </Stack>
+                <FormControl>
+                  <FormLabel htmlFor="full-name" marginBottom="1em">
+                    Full Name:
+                  </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={
+                        <CalendarIcon
+                          w={5}
+                          h={3}
+                          color="gray.300"
+                          boxShadow="lg"
+                          marginRight="1rem"
+                        />
+                      }
+                    />
+                    <Box display="flex">
+                      <Input
+                        id="full-name"
+                        name="name"
+                        variant="filled"
+                        placeholder="Full Name"
+                        value={userInfo.name}
+                        onChange={handleChange}
+                        width="26.5vw"
+                      />
+                      <Button>
+                        <EditIcon />
+                      </Button>
+                    </Box>
+                  </InputGroup>
+                </FormControl>
+              </Stack>
 
-          {/* email */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="email">Email address:</FormLabel>
-              <Input
-                id="email"
-                name="email"
-                variant="filled"
-                type="email"
-                value={userInfo.email}
-                onChange={handleChange}
-              />
-              <Button
-                size="md"
-                height="45px"
-                width="80px"
-                letterSpacing="1.5px"
-                border="2px"
-                borderRadius="15px"
-                borderColor="green.500"
-                marginLeft="30px"
+              {/* email */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
               >
-                Edit
-              </Button>
-            </FormControl>
-          </Stack>
+                <FormControl>
+                  <FormLabel htmlFor="email" marginBottom="1em">
+                    Email address:
+                  </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={
+                        <EmailIcon
+                          w={5}
+                          h={3}
+                          color="gray.300"
+                          boxShadow="lg"
+                          marginRight="1rem"
+                        />
+                      }
+                    />
+                    <Box display="flex">
+                      <Input
+                        id="email"
+                        name="email"
+                        variant="filled"
+                        type="email"
+                        placeholder="Email"
+                        value={userInfo.email}
+                        onChange={handleChange}
+                        width="26.5vw"
+                      />
+                      <Button>
+                        <EditIcon />
+                      </Button>
+                    </Box>
+                  </InputGroup>
+                </FormControl>
+              </Stack>
 
-          {/* password */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="passowrd">Password:</FormLabel>
-              <Input
-                id="password"
-                variant="filled"
-                type="password"
-                value={userInfo.password}
-                onChange={handleChange}
-              />
-              <Button
-                size="md"
-                height="45px"
-                width="80px"
-                letterSpacing="1.5px"
-                border="2px"
-                borderRadius="15px"
-                borderColor="green.500"
-                marginLeft="30px"
+              {/* password */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
               >
-                Edit
-              </Button>
-            </FormControl>
-          </Stack>
+                <FormControl>
+                  <FormLabel htmlFor="passowrd" marginBottom="1em">
+                    Password:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="password"
+                      name="password"
+                      variant="filled"
+                      type="password"
+                      placeholder="Password"
+                      value={userInfo.password}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
 
-          {/* phone number */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="tel">Phone Number:</FormLabel>
-              <InputGroup>
-                <Stack direction="row" spacing={6} align="center">
-                  <PhoneIcon color="gray.300" />
-                  <Input
-                    type="tel"
-                    variant="filled"
-                    placeholder="Phone number"
-                    value={userInfo.phoneNumber}
-                    onChange={handleChange}
-                  />
-                  <Button
-                    size="md"
-                    height="45px"
-                    width="80px"
-                    letterSpacing="1.5px"
-                    border="2px"
-                    borderRadius="15px"
-                    borderColor="green.500"
-                    marginLeft="30px"
-                  >
-                    Edit
+              {/* phone number */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="tel" marginBottom="1em">
+                    Phone Number:
+                  </FormLabel>
+                  <InputGroup>
+                    <Stack direction="row" spacing={6} align="center">
+                      <PhoneIcon color="gray.300" boxShadow="lg" />
+                      <Box display="flex">
+                        <Input
+                          type="tel"
+                          name="phoneNumber"
+                          variant="filled"
+                          placeholder="Phone Number"
+                          value={userInfo.phoneNumber}
+                          onChange={handleChange}
+                          width="20rem"
+                        />
+                        <Button>
+                          <EditIcon />
+                        </Button>
+                      </Box>
+                    </Stack>
+                  </InputGroup>{" "}
+                </FormControl>
+              </Stack>
+            </Box>
+            <Box width="30vw">
+              {/* address */}
+              {/* government */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="government" marginBottom="1em">
+                    Government:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="government"
+                      name="government"
+                      variant="filled"
+                      placeholder="Government"
+                      value={userInfo.government}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* city */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="city" marginBottom="1em">
+                    City:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="city"
+                      name="city"
+                      variant="filled"
+                      placeholder="City"
+                      value={userInfo.city}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* street */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="3.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="street" marginBottom="1em">
+                    Street:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="street"
+                      name="street"
+                      variant="filled"
+                      placeholder="Street"
+                      value={userInfo.street}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+              <Stack align="center">
+                <ButtonGroup variant="outline" spacing="6">
+                  <Button colorScheme="blue" width="10rem" boxShadow="xl">
+                    Save
                   </Button>
+                  <Button width="10rem" boxShadow="xl">
+                    Cancel
+                  </Button>
+                </ButtonGroup>
+              </Stack>
+            </Box>
+          </Box>
+          <Stack direction="row" spacing={4} align="center" marginTop="1.5rem">
+            <BackdropExample />
+          </Stack>
+        </Box>
+      ) : (
+        <Box
+          width="70vw"
+          margin="auto"
+          padding="1em"
+          p={3}
+          borderWidth={1}
+          borderRadius={8}
+          boxShadow="dark-lg"
+        >
+          {tabletIpadsLowResolution ? (
+            <Box className="boxStyle">
+              <Box width="30vw">
+                {/* full name */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="1.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="full-name" marginBottom="1em">
+                      Full Name:
+                    </FormLabel>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        children={
+                          <CalendarIcon
+                            w={5}
+                            h={3}
+                            color="gray.300"
+                            boxShadow="lg"
+                            marginRight="1rem"
+                          />
+                        }
+                      />
+                      <Box display="flex">
+                        <Input
+                          id="full-name"
+                          name="name"
+                          variant="filled"
+                          placeholder="Full Name"
+                          value={userInfo.name}
+                          onChange={handleChange}
+                          width="26.5vw"
+                        />
+                        <Button>
+                          <EditIcon />
+                        </Button>
+                      </Box>
+                    </InputGroup>
+                  </FormControl>
                 </Stack>
-              </InputGroup>{" "}
-            </FormControl>
+
+                {/* email */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="1.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="email" marginBottom="1em">
+                      Email address:
+                    </FormLabel>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        children={
+                          <EmailIcon
+                            w={5}
+                            h={3}
+                            color="gray.300"
+                            boxShadow="lg"
+                            marginRight="1rem"
+                          />
+                        }
+                      />
+                      <Box display="flex">
+                        <Input
+                          id="email"
+                          name="email"
+                          variant="filled"
+                          type="email"
+                          placeholder="Email"
+                          value={userInfo.email}
+                          onChange={handleChange}
+                          width="26.5vw"
+                        />
+                        <Button>
+                          <EditIcon />
+                        </Button>
+                      </Box>
+                    </InputGroup>
+                  </FormControl>
+                </Stack>
+
+                {/* password */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="1.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="passowrd" marginBottom="1em">
+                      Password:
+                    </FormLabel>
+                    <Box display="flex">
+                      <Input
+                        id="password"
+                        name="password"
+                        variant="filled"
+                        type="password"
+                        placeholder="Password"
+                        value={userInfo.password}
+                        onChange={handleChange}
+                      />
+                      <Button>
+                        <EditIcon />
+                      </Button>
+                    </Box>
+                  </FormControl>
+                </Stack>
+
+                {/* phone number */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="1.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="tel" marginBottom="1em">
+                      Phone Number:
+                    </FormLabel>
+                    <InputGroup>
+                      <Stack direction="row" spacing={6} align="center">
+                        <PhoneIcon color="gray.300" boxShadow="lg" />
+                        <Box display="flex">
+                          <Input
+                            type="tel"
+                            name="phoneNumber"
+                            variant="filled"
+                            placeholder="Phone Number"
+                            value={userInfo.phoneNumber}
+                            onChange={handleChange}
+                            width="20rem"
+                          />
+                          <Button>
+                            <EditIcon />
+                          </Button>
+                        </Box>
+                      </Stack>
+                    </InputGroup>{" "}
+                  </FormControl>
+                </Stack>
+              </Box>
+              <Box width="30vw">
+                {/* address */}
+                {/* government */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="1.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="government" marginBottom="1em">
+                      Government:
+                    </FormLabel>
+                    <Box display="flex">
+                      <Input
+                        id="government"
+                        name="government"
+                        variant="filled"
+                        placeholder="Government"
+                        value={userInfo.government}
+                        onChange={handleChange}
+                      />
+                      <Button>
+                        <EditIcon />
+                      </Button>
+                    </Box>
+                  </FormControl>
+                </Stack>
+
+                {/* city */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="1.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="city" marginBottom="1em">
+                      City:
+                    </FormLabel>
+                    <Box display="flex">
+                      <Input
+                        id="city"
+                        name="city"
+                        variant="filled"
+                        placeholder="City"
+                        value={userInfo.city}
+                        onChange={handleChange}
+                      />
+                      <Button>
+                        <EditIcon />
+                      </Button>
+                    </Box>
+                  </FormControl>
+                </Stack>
+
+                {/* street */}
+                <Stack
+                  direction="row"
+                  spacing={4}
+                  align="center"
+                  marginBottom="3.5em"
+                >
+                  <FormControl>
+                    <FormLabel htmlFor="street" marginBottom="1em">
+                      Street:
+                    </FormLabel>
+                    <Box display="flex">
+                      <Input
+                        id="street"
+                        name="street"
+                        variant="filled"
+                        placeholder="Street"
+                        value={userInfo.street}
+                        onChange={handleChange}
+                      />
+                      <Button>
+                        <EditIcon />
+                      </Button>
+                    </Box>
+                  </FormControl>
+                </Stack>
+                {tabletIpadsPortrait ? (
+                  <Stack align="center">
+                    <ButtonGroup variant="outline" spacing="6">
+                      <Button colorScheme="blue" width="10rem" boxShadow="xl">
+                        Save
+                      </Button>
+                      <Button width="10rem" boxShadow="xl">
+                        Cancel
+                      </Button>
+                    </ButtonGroup>
+                  </Stack>
+                ) : (
+                  <Stack align="center" marginTop="10rem" marginRight="5rem">
+                    <ButtonGroup variant="outline" spacing="6">
+                      <Button colorScheme="blue" width="10rem" boxShadow="xl">
+                        Save
+                      </Button>
+                      <Button width="10rem" boxShadow="xl">
+                        Cancel
+                      </Button>
+                    </ButtonGroup>
+                  </Stack>
+                )}
+              </Box>
+            </Box>
+          ) : (
+            <Box className="boxStyleResponsive">
+              {/* full name */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="full-name" marginBottom="1em">
+                    Full Name:
+                  </FormLabel>
+
+                  <Box display="flex">
+                    <Input
+                      id="full-name"
+                      name="name"
+                      variant="filled"
+                      placeholder="Full Name"
+                      value={userInfo.name}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* email */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="email" marginBottom="1em">
+                    Email address:
+                  </FormLabel>
+
+                  <Box display="flex">
+                    <Input
+                      id="email"
+                      name="email"
+                      variant="filled"
+                      type="email"
+                      placeholder="Email"
+                      value={userInfo.email}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* password */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="passowrd" marginBottom="1em">
+                    Password:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="password"
+                      name="password"
+                      variant="filled"
+                      type="password"
+                      placeholder="Password"
+                      value={userInfo.password}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* phone number */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="tel" marginBottom="1em">
+                    Phone Number:
+                  </FormLabel>
+
+                  <Box display="flex">
+                    <PhoneIcon
+                      color="gray.300"
+                      boxShadow="lg"
+                      marginTop="0.5rem"
+                    />
+                    <Input
+                      type="tel"
+                      name="phoneNumber"
+                      variant="filled"
+                      placeholder="Phone Number"
+                      value={userInfo.phoneNumber}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* address */}
+              {/* government */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="government" marginBottom="1em">
+                    Government:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="government"
+                      name="government"
+                      variant="filled"
+                      placeholder="Government"
+                      value={userInfo.government}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* city */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="1.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="city" marginBottom="1em">
+                    City:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="city"
+                      name="city"
+                      variant="filled"
+                      placeholder="City"
+                      value={userInfo.city}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+
+              {/* street */}
+              <Stack
+                direction="row"
+                spacing={4}
+                align="center"
+                marginBottom="3.5em"
+              >
+                <FormControl>
+                  <FormLabel htmlFor="street" marginBottom="1em">
+                    Street:
+                  </FormLabel>
+                  <Box display="flex">
+                    <Input
+                      id="street"
+                      name="street"
+                      variant="filled"
+                      placeholder="Street"
+                      value={userInfo.street}
+                      onChange={handleChange}
+                    />
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </Box>
+                </FormControl>
+              </Stack>
+              {tabletIpadsPortrait ? (
+                <Stack align="center">
+                  <ButtonGroup variant="outline" spacing="6">
+                    <Button colorScheme="blue" width="10rem" boxShadow="xl">
+                      Save
+                    </Button>
+                    <Button width="10rem" boxShadow="xl">
+                      Cancel
+                    </Button>
+                  </ButtonGroup>
+                </Stack>
+              ) : (
+                <Box>
+                  {phone ? (
+                    <Stack align="center">
+                      <ButtonGroup variant="outline" spacing="6">
+                        <Button colorScheme="blue" width="10rem" boxShadow="xl">
+                          Save
+                        </Button>
+                        <Button width="10rem" boxShadow="xl">
+                          Cancel
+                        </Button>
+                      </ButtonGroup>
+                    </Stack>
+                  ) : (
+                    <Stack align="center">
+                      <ButtonGroup variant="outline" spacing="6">
+                        <Button colorScheme="blue" boxShadow="xl">
+                          Save
+                        </Button>
+                        <Button boxShadow="xl">Cancel</Button>
+                      </ButtonGroup>
+                    </Stack>
+                  )}
+                </Box>
+              )}
+            </Box>
+          )}
+          <Stack direction="row" spacing={4} align="center" marginTop="1.5rem">
+            <BackdropExample />
           </Stack>
         </Box>
-
-        <Box w="35%" h="100%">
-          {/* address */}
-
-          <Heading as="h4" size="md">
-            Address:{" "}
-          </Heading>
-
-          {/* government */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="government">Government:</FormLabel>
-              <Input
-                id="government"
-                variant="filled"
-                placeholder="government"
-                value={userInfo.address?.government}
-                onChange={handleChange}
-              />
-              <Button
-                size="md"
-                height="45px"
-                width="80px"
-                letterSpacing="1.5px"
-                border="2px"
-                borderRadius="15px"
-                borderColor="green.500"
-                marginLeft="30px"
-              >
-                Edit
-              </Button>
-            </FormControl>
-          </Stack>
-
-          {/* city */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="city">City:</FormLabel>
-              <Input
-                id="city"
-                variant="filled"
-                placeholder="city"
-                value={userInfo.address?.city}
-                onChange={handleChange}
-              />
-              <Button
-                size="md"
-                height="45px"
-                width="80px"
-                letterSpacing="1.5px"
-                border="2px"
-                borderRadius="15px"
-                borderColor="green.500"
-                marginLeft="30px"
-              >
-                Edit
-              </Button>
-            </FormControl>
-          </Stack>
-
-          {/* street */}
-          <Stack direction="row" spacing={4} align="center">
-            <FormControl>
-              <FormLabel htmlFor="street">Street:</FormLabel>
-              <Input
-                id="street"
-                variant="filled"
-                placeholder="street"
-                value={userInfo.address?.street}
-                onChange={handleChange}
-              />
-              <Button
-                size="md"
-                height="45px"
-                width="80px"
-                letterSpacing="1.5px"
-                border="2px"
-                borderRadius="15px"
-                borderColor="green.500"
-                marginLeft="30px"
-              >
-                Edit
-              </Button>
-            </FormControl>
-          </Stack>
-        </Box>
-      </HStack>
-      <ButtonGroup variant="outline" spacing="6">
-        <Button colorScheme="blue">Save</Button>
-        <Button>Cancel</Button>
-      </ButtonGroup>
+      )}
     </>
   );
 };
