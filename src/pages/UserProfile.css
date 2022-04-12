@@ -16,3 +16,7 @@
   justify-content: space-evenly;
   gap: 1em;
 }
+
+.editIcon {
+  cursor: pointer;
+}
