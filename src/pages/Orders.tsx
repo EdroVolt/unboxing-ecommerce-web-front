@@ -45,48 +45,7 @@ export default function Orders() {
       paymentMethod: "cash",
       date: "20-1-2020",
     },
-    {
-      products: [
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-      ],
-      totalCount: 2,
-      paymentMethod: "cash",
-      date: "20-1-2020",
-    },
+    
   ]);
 
   return (
@@ -105,7 +64,6 @@ export default function Orders() {
           <Box
           // eslint-disable-next-line react-hooks/rules-of-hooks
           bg={useColorModeValue("gray.200", "gray.200")}
-        //   maxW="sm"
           borderWidth="1px"
           overflow="hidden"
           w={"90%"}
@@ -117,8 +75,9 @@ export default function Orders() {
           >
             <Text
               color="black"
-              mb={3}
-              ml={10}
+              mb={5}
+              ml={5}
+              mt={5}
               fontSize={"xl"}
               fontFamily={"body"}
             >
@@ -129,10 +88,11 @@ export default function Orders() {
               borderWidth="1px"
               borderRadius="lg"
               w={{ sm: "100%", md: "90%" }}
-              ml={{sm:"2",md:"20"}}
+              ml={{sm:"2",md:"10", lg:"10"}}
+              // mr={{sm:"2",md:"20"}}
               gap={6}
               mb={6}
-              templateColumns={{sm: "repeat(1, 1fr)" , md:"repeat(5, 1fr)"}}
+              templateColumns={{sm: "repeat(1, 1fr)" , md:"repeat(3, 1fr)", xl:"repeat(5, 1fr)"}}
             >
               {order.products.map((product) => {
                 return (
@@ -180,7 +140,7 @@ export default function Orders() {
               })}
             </Grid>
             <hr style={{width:"100%" , background:"#d0d8db" , height:"1px", marginBottom:"10px"}}/>
-            <Button ml={10} mb={3}>Review This Order</Button>
+            <Button ml={5} mb={5}>Review This Order</Button>
           </Box>
         );
       })}
