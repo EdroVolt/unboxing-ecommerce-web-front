@@ -1,70 +1,59 @@
-
-  form {
-    max-width: 400px;
-    width: 100%;
-    margin: 4rem auto 0;
-    box-shadow: 3px 3px 4px 4px #dadada;
-    padding: 2rem;
-    background-color: #ffffff;
-    color: black;
-  }
-  .text{
-    text-align: center;
-    margin: .8rem 0;
-  }
-  .title{
-    text-align: center;
-  }
-  .form-control {
-    border-top: none;
-    border-left: none;
-    border-right: none;
-  }
-  .form-control:focus {
-    border-color: #03ddff;
-    outline: none;
-  }
-  input::placeholder{
-    color: #b6b3b3;
-  }
-  input {
-    padding: 0.3rem !important;
-    border: 1px solid #777;
-    display: block;
-    width: 100%;
-  }
-  .social-icon{
-    color: #777;
-    cursor: pointer;
-    opacity: .4;
-  }
-  .form-group{
-    margin-bottom: 1rem !important;
-  }
-  .input-feedback {
-    color: rgb(235, 54, 54);
-    margin-top: -15px;
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
- .form_button {
-    padding: 10px 15px;
-    color: #ffffff !important;
-    background-color: #03ddff !important;
-    border: 1px solid rgb(70, 153, 179);
-    width: 100% !important;
-    margin-top: 2rem !important;
-  }
-  .rest{
+form {
+  max-width: 400px;
+  width: 100%;
+  margin: 4rem auto 0;
+  box-shadow: 1px 1px 2px 2px #dadada;
+  padding: 2rem;
+}
+.text{
+  text-align: center;
+  margin: .8rem 0;
+}
+.title{
+  text-align: center;
+}
+.form-control {
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  background-color: transparent !important;
+}
+.form-control:focus {
+  border-color: #03ddff;
+  outline: none;
+  background-color: transparent !important;
+}
+.social-icon{
+  color: #777;
+  cursor: pointer;
+  opacity: .4;
+}
+.form-group{
+  margin-bottom: 1rem !important;
+}
+.input-feedback {
+  color: rgb(235, 54, 54);
+  margin-top: -15px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.form_button {
+  padding: 10px 15px;
+  color: #ffffff !important;
+  background-color: #03ddff !important;
+  border: 1px solid rgb(70, 153, 179);
+  width: 100% !important;
+  margin-top: 2rem !important;
+}
+.rest{
     background-color: red !important;
     border: 1px solid rgb(70, 153, 179);
     width: 100% !important;
     margin-top: 2rem !important;
     padding: 10px 15px;
     color: #ffffff !important;
-  }
-  .error {
-    color: red;
-    font-size: .7rem;
-  }
-  
+}
+.error {
+  color: red;
+  font-size: .7rem;
+}

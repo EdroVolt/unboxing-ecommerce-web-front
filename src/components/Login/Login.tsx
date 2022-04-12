@@ -5,6 +5,7 @@ import {
   Text,
   InputGroup,
   InputRightElement,
+  Input,
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useState } from "react";
@@ -51,7 +52,7 @@ const Login = () => {
                 <Box className="form-group">
                   <Field
                     name="email"
-                    type="tex"
+                    type="text"
                     placeholder="Email"
                     className={
                       "form-control" +
