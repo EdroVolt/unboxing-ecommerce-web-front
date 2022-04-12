@@ -15,10 +15,10 @@ export default function ProductDetail(){
         },
         categoryName:"Electronics",
         ingredients:["steel", "steel", "steel", "km;"],
-        images:"",
+        images:[""],
         price: 550 ,
-        discount: 0,
-        offer: false,
+        discount: 20,
+        offer: true,
         reviews:[
            { userName:"menna",
             comment:"this product requires",

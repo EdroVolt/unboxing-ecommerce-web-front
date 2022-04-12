@@ -7,7 +7,6 @@ import {
   Select,
   Image,
   Flex,
-  VStack,
   Button,
   Heading,
   SimpleGrid,
@@ -19,7 +18,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
-import React from "react";
+import React, { useState } from "react";
 import "./CardDetail.css";
 import { StarIcon } from "@chakra-ui/icons";
 import { FiShoppingCart } from "react-icons/fi";
@@ -39,7 +38,7 @@ type CardProps = {
   };
   categoryName?: string;
   ingredients?: string[];
-  images?: string;
+  images?: string[];
   price?: number;
   discount?: number;
   offer?: boolean;
@@ -55,7 +54,7 @@ type CardProps = {
 export default function Simple({
   name = "Watch ",
   description,
-  count = 5,
+  count = 0,
   sizeCount = {
     xs: 0,
     s: 0,
@@ -65,7 +64,7 @@ export default function Simple({
   },
   categoryName,
   ingredients,
-  images,
+  images = ["mm"],
   price = 0,
   discount = 0,
   offer = true,
@@ -74,13 +73,16 @@ export default function Simple({
   buttonName,
 }: CardProps) {
   function countLimit(count: number) {
-    let countList=[]
+    let countList = [];
     for (let i = 0; i < count; i++) {
-      console.log(i)
-      countList.push(<option>{i+1}</option>);
+      console.log(i);
+      countList.push(<option>{i + 1}</option>);
+
     }
-    return countList
+    return countList;
   }
+  const [userCount, setUserCount] = useState(0);
+  const [userSize, setUserSize] = useState("");
 
   return (
     <Container maxW={"7xl"}>
@@ -94,6 +96,7 @@ export default function Simple({
             rounded={"md"}
             alt={"product image"}
             src={
+              // images[0]
               "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080"
             }
             fit={"cover"}
@@ -112,6 +115,21 @@ export default function Simple({
               {name}
             </Heading>
             <Text
+              color={useColorModeValue("gray.500", "gray.400")}
+              fontSize={"2xl"}
+              fontWeight={"300"}
+              textAlign={"left"}
+            >
+              {categoryName}
+            </Text>
+            <Box display="flex" alignItems="baseline" mt={0}>
+              {offer && (
+                <Badge borderRadius="full" colorScheme="teal" marginTop="0">
+                  offer
+                </Badge>
+              )}
+            </Box>
+            <Text
               color={useColorModeValue("gray.900", "gray.400")}
               fontWeight={300}
               fontSize={"2xl"}
@@ -120,13 +138,12 @@ export default function Simple({
               ${price} USD
             </Text>
             {discount > 0 && (
-              <Text color={"gray.900"} fontWeight={300} fontSize={"2xl"}>
+              <Text color={"gray.900"} fontWeight={300} fontSize={"xl"}>
                 {" "}
-                ${price - discount} USD
+                ${price - (price * discount) / 100} USD
               </Text>
             )}
           </Box>
-
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={"column"}
@@ -136,17 +153,8 @@ export default function Simple({
               />
             }
           >
-            <VStack spacing={{ base: 4, sm: 6 }}>
-              <Text
-                color={useColorModeValue("gray.500", "gray.400")}
-                fontSize={"2xl"}
-                fontWeight={"300"}
-                textAlign={"left"}
-              >
-                {categoryName}
-              </Text>
-              <Text fontSize={"lg"}>{description}</Text>
-            </VStack>
+            <Text fontSize={"lg"}>{description}</Text>
+
             <Box>
               <Text
                 fontSize={{ base: "16px", lg: "18px" }}
@@ -177,28 +185,81 @@ export default function Simple({
               >
                 Product Details
               </Text>
-              <Icon viewBox="0 0 200 200" color={color} margin={4}>
-                <path
-                  fill="currentColor"
-                  d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
-                />
-              </Icon>
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize={"l"}
+                fontWeight={"300"}
+                textAlign={"left"}
+                display="inline-block"
+                mr={4}
+              >
+                Color:
+              </Text>
+              <Text
+                color={useColorModeValue("gray.500", "gray.400")}
+                fontSize={"s"}
+                fontWeight={"300"}
+                textAlign={"left"}
+                display="inline-block"
+              >
+                {color}
+              </Text>
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize={"l"}
+                fontWeight={"300"}
+                textAlign={"left"}
+              >
+                Size
+              </Text>
               <List spacing={2}>
                 <ListItem>
-                  {sizeCount?.xl > 0 && <Button ml={1}>XL</Button>}
-                  {sizeCount?.l > 0 && <Button ml={1}>L</Button>}
-                  {sizeCount?.md > 0 && <Button ml={1}>md</Button>}
-                  {sizeCount?.s > 0 && <Button ml={1}>S</Button>}
-                  {sizeCount?.xs > 0 && <Button ml={1}>XS</Button>}
-                </ListItem>
-                <Select>{countLimit(count)}</Select>
-                <Box display="flex" alignItems="baseline">
-                  {offer && (
-                    <Badge borderRadius="full" px="2" colorScheme="teal">
-                      offer
-                    </Badge>
+                  {sizeCount?.xl > 0 && (
+                    // eslint-disable-next-line no-sequences
+                    <Button ml={1} onClick={() => [setUserCount(sizeCount.xl), setUserSize("XL")]}>
+                      XL
+                    </Button>
                   )}
-                </Box>
+                  {sizeCount?.l > 0 && (
+                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.l), setUserSize("L")]}>
+                      L
+                    </Button>
+                  )}
+                  {sizeCount?.md > 0 && (
+                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.md), setUserSize("md")]}>
+                      md
+                    </Button>
+                  )}
+                  {sizeCount?.s > 0 && (
+                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.s), setUserSize("s")]}>
+                      S
+                    </Button>
+                  )}
+                  {sizeCount?.xs > 0 && (
+                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.xs), setUserSize("xs")]}>
+                      XS
+                    </Button>
+                  )}
+                </ListItem>
+                <Text
+                  color={useColorModeValue("black", "white")}
+                  fontSize={"l"}
+                  fontWeight={"300"}
+                  textAlign={"left"}
+                  display="inline-block"
+                  mr={4}
+                >
+                  Count
+                </Text>
+                <Select
+                  onChange={(event) => {
+                    count = Number(event.target.value);
+                    price = count * price;
+                  }}
+                  width="20%"
+                >
+                  {countLimit(userCount)}
+                </Select>
               </List>
             </Box>
           </Stack>
@@ -221,6 +282,17 @@ export default function Simple({
               transform: "translateY(2px)",
               boxShadow: "lg",
             }}
+            onClick={() =>
+              console.log(
+                images[0],
+                name,
+                categoryName,
+                count,
+                price,
+                color,
+                userSize
+              )
+            }
           >
             <chakra.a href={"#"} display={"flex"}>
               <Icon as={FiShoppingCart} h={7} w={7} alignSelf={"center"} />
