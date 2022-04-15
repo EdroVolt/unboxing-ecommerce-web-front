@@ -12,6 +12,8 @@ import { extendTheme } from "@chakra-ui/react";
 import Home from "../pages/Home";
 import "./app.css";
 import Card from "./common/Card/Card";
+import UserProfile from "../pages/UserProfile";
+import BackdropExample from "./common/Modal";
 import Login from "./Login/Login";
 import SignUp from "./SignUp/SignUp";
 import { AboutUs } from "./AboutUs/AboutUs";
@@ -43,9 +45,5 @@ export const App = () => (
       <ColorModeSwitcher justifySelf="flex-end" />
       <Router />
     </Box>
-    <Login />
-    <SignUp />
-  
   </ChakraProvider>
-
 );
