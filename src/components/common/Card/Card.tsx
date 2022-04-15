@@ -21,7 +21,7 @@ const props = {
 };
 
 export default function Card({
-  imageUrl,
+  imageUrl="https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
   imageAlt,
   title,
   formattedPrice,
@@ -79,7 +79,7 @@ export default function Card({
           </Box>
         </Box>
 
-        {reviewCount && (
+        {reviewCount ? (
           <Box display="flex" mt="2" alignItems="center">
             {Array(5)
               .fill("")
@@ -92,6 +92,10 @@ export default function Card({
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
               {reviewCount} reviews
             </Box>
+          </Box>
+        ) : (
+          <Box as="span" ml="2" color="gray.600" fontSize="sm">
+            no reviews
           </Box>
         )}
       </Box>
