@@ -12,6 +12,7 @@ import { extendTheme } from "@chakra-ui/react";
 import Home from "../pages/Home";
 import "./app.css";
 import Card from "./common/Card/Card";
+import { AboutUs } from "./AboutUs/AboutUs";
 import Router from "../router/routes";
 
 // 2. Call `extendTheme` and pass your custom values
