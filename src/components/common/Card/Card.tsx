@@ -79,7 +79,7 @@ export default function Card({
           </Box>
         </Box>
 
-        {reviewCount && (
+        {reviewCount ? (
           <Box display="flex" mt="2" alignItems="center">
             {Array(5)
               .fill("")
@@ -92,6 +92,10 @@ export default function Card({
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
               {reviewCount} reviews
             </Box>
+          </Box>
+        ) : (
+          <Box as="span" ml="2" color="gray.600" fontSize="sm">
+            no reviews
           </Box>
         )}
       </Box>

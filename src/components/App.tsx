@@ -9,6 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { extendTheme } from "@chakra-ui/react";
+import Home from "../pages/Home";
+import "./app.css";
 import Card from "./common/Card/Card";
 import Router from "../router/routes";
 
