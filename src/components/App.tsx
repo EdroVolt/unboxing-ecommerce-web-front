@@ -9,7 +9,10 @@ import {
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { extendTheme } from "@chakra-ui/react";
+import Home from "../pages/Home";
+import "./app.css";
 import Card from "./common/Card/Card";
+import Router from "../router/routes";
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
@@ -34,25 +37,8 @@ export const App = () => (
   <ChakraProvider theme={theme}>
     <Box textAlign="center" fontSize="xl">
       {/* <Grid minH="100vh" p={3}> */}
-      <Navbar
-        categoriesList={[
-          { name: "hana", id: "2" },
-          { name: "yasmen", id: "3" },
-        ]}
-        isAuth={false}
-        userDetails={{ userId: "fd", userName: "yasmena", userCity: "fdd" }}
-      ></Navbar>
-
-      <Card
-        title="hello world"
-        imageUrl="https://via.placeholder.com/500/000/fff.png"
-        formattedPrice="50"
-        category="electronics"
-        reviewCount={5}
-        rating={3}
-      />
-      {/* </Grid> */}
-      <Footer isAuth={false} userDetails={{}}></Footer>
+      <ColorModeSwitcher justifySelf="flex-end" />
+      <Router />
     </Box>
   </ChakraProvider>
 );
