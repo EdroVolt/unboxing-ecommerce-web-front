@@ -111,7 +111,7 @@ export default function Navbar(props: NavbarProps) {
                   spacing={4}
                 >
                   <Box textAlign={"start"}>
-                    <Box>Delever To</Box>
+                    <Box>Deliver To</Box>
                     <HStack>
                       <svg
                         width="24"
@@ -357,7 +357,7 @@ export default function Navbar(props: NavbarProps) {
                   </Box>
                 </Box>
               ) : (
-                <Button>ok kolh ta7t elctrl</Button>
+                <Button>ok</Button>
               )}
             </ModalContent>
           </Modal>
