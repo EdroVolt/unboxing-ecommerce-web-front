@@ -1,5 +1,5 @@
 type ReviewType = {
-  userId: string | number;
+  userId: string;
   comment: string;
   rate: number;
 };

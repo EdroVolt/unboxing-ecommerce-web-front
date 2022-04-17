@@ -1,8 +1,8 @@
 type OrderType = {
-  products: { productId: string; count: number }[];
+  products: { product: string; count: number }[];
   totalCount: number;
   paymentMethod: "cash" | "visa";
-  creationDate?: Date;
+  createdAt?: Date;
 };
 
 export default OrderType;
