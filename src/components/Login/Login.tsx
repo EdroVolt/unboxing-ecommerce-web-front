@@ -95,7 +95,11 @@ const Login = () => {
                 </Box>
                 <Button
                   type="submit"
-                  className={!(dirty && isValid) ? "disabled-btn form_button" : "form_button"}
+                  className={
+                    !(dirty && isValid)
+                      ? "disabled-btn form_button"
+                      : "form_button"
+                  }
                   disabled={!(dirty && isValid)}
                 >
                   Sign In

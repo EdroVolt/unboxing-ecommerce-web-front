@@ -52,20 +52,16 @@ const SignUp = () => {
             </Heading>
             <Text className="text">Create Unboxing account</Text>
             <Box className="form-group">
-                <Field
-                  name="FullName"
-                  type="text"
-                  placeholder="Full Name"
-                  className={
-                    "form-control" +
-                    (errors.FullName && touched.FullName ? " is-invalid" : "")
-                  }
-                />
-                <ErrorMessage
-                  name="FullName"
-                  component="div"
-                  className="error"
-                />
+              <Field
+                name="FullName"
+                type="text"
+                placeholder="Full Name"
+                className={
+                  "form-control" +
+                  (errors.FullName && touched.FullName ? " is-invalid" : "")
+                }
+              />
+              <ErrorMessage name="FullName" component="div" className="error" />
             </Box>
             <Box className="form-group">
               <Field
@@ -154,10 +150,17 @@ const SignUp = () => {
               />
             </Box>
             <Box className="form-group">
-              <Button type="submit" className="btn btn-primary mr-2 form_button">
+              <Button
+                type="submit"
+                className="btn btn-primary mr-2 form_button"
+              >
                 Register
               </Button>
-              <Button type="reset" style={{backgroundColor: 'red'}} className='rest' >
+              <Button
+                type="reset"
+                style={{ backgroundColor: "red" }}
+                className="rest"
+              >
                 Reset
               </Button>
             </Box>

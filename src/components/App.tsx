@@ -1,23 +1,14 @@
 import {
   ChakraProvider,
   Box,
-  Text,
-  VStack,
-  Code,
-  Grid,
   //  theme,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { extendTheme } from "@chakra-ui/react";
-import Home from "../pages/Home";
 import "./app.css";
-import Card from "./common/Card/Card";
-import UserProfile from "../pages/UserProfile";
-import BackdropExample from "./common/Modal";
-import Login from "./Login/Login";
-import SignUp from "./SignUp/SignUp";
-import { AboutUs } from "./AboutUs/AboutUs";
+
 import Router from "../router/routes";
+import NotFound from "../pages/NotFound";
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
@@ -43,6 +34,7 @@ export const App = () => (
     <Box textAlign="center" fontSize="xl">
       {/* <Grid minH="100vh" p={3}> */}
       <ColorModeSwitcher justifySelf="flex-end" />
+      <NotFound />
       <Router />
     </Box>
   </ChakraProvider>
