@@ -20,7 +20,7 @@ export const getUserDetailsAPI =
 
 export const createUserAPI =
   (userData: UserType) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.post("/users", userData)
+    Unboxing.post("/register", userData)
       .then((res) => {
         console.log(res);
         dispatch(User.createUser(res.data));
@@ -121,7 +121,7 @@ export const getUserOrdersAPI =
 export const checkoutOrder =
   (_id: string | number, order: OrderType) =>
   (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.post(`/users/${_id}?fields=orders`)
+    Unboxing.post(`/users/${_id}/orders`, order)
       .then((res) => {
         console.log(res);
         dispatch(User.checkoutOrder(res.data.orders));

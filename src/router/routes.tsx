@@ -24,11 +24,10 @@ import Orders from "../pages/Orders";
 import Login from "../components/Login/Login";
 import SingUp from "../components/SignUp/SignUp";
 import React, { useState } from "react";
-import DashBoard from "../pages/DashBoard";
+// import DashBoard from "../pages/DashBoard";
 import PrivateRoute from "./PrivateRoute";
 import Navbar from "../components/Navbar/Navbar";
 // import NotFound from "../pages/NotFound";
-
 
 const Router = () => {
   const [isLogged, setIsLoggged] = useState(false);
@@ -36,17 +35,16 @@ const Router = () => {
 
   return (
     <>
-    <Navbar isLogged={isLogged}  />
+      <Navbar isLogged={isLogged} />
       {isLogged === false ? (
-    <button onClick={() => setIsLoggged(true)}>LogIn</button>
-  ) : (
-    <button onClick={() => setIsLoggged(false)}>LogOut</button>
-  )}
-     
-    
+        <button onClick={() => setIsLoggged(true)}>LogIn</button>
+      ) : (
+        <button onClick={() => setIsLoggged(false)}>LogOut</button>
+      )}
+
       <Routes>
         <Route path={home} element={<Home />} />
-        
+
         <Route element={<PrivateRoute isLogged={isLogged} />}>
           <Route path={profile} element={<UserProfile />} />
           <Route path={cart} element={<Cart />} />

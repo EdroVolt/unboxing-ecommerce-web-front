@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import {
+  authReducer,
   categoryReducer,
   productReducer,
   userReducer,
@@ -11,12 +12,14 @@ export type StoreType = {
   user: any;
   product: any;
   category: any;
+  auth: any;
 };
 
 const reducers = combineReducers({
   user: userReducer,
   product: productReducer,
   category: categoryReducer,
+  auth: authReducer,
 });
 
 const Store = createStore(reducers, applyMiddleware(thunk));

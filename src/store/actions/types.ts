@@ -49,3 +49,7 @@ export const DELETE_USER = "DELETE_USER";
 export const DELETE_CATEGORY = "DELETE_CATEGORY";
 
 // export const CANCEL_ORDER = "CANCEL_ORDER";
+
+//  ---------------- Auth ---------------------
+
+export const SIGNIN_USER = "SIGNIN_USER";

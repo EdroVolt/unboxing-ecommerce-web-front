@@ -9,6 +9,10 @@ import {
 } from "@chakra-ui/react";
 import Card from "../components/common/Card/Card";
 import Carousel from "../components/common/Carousel/Carousel";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../store/store";
+import { useEffect } from "react";
+import { singInUserAPI } from "../store/actionCreator/authActionCreator";
 
 export default function Home() {
   const offers = [
@@ -53,6 +57,13 @@ export default function Home() {
       numOfReviews: 6,
     },
   ];
+
+  const user = useSelector((store: StoreType) => store.auth.user);
+  const dispatch: any = useDispatch();
+
+  useEffect(() => {
+    dispatch(singInUserAPI("edro11@gamil.com", "12345678"));
+  }, []);
 
   const topProducts = [
     {
