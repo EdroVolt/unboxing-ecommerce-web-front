@@ -14,6 +14,7 @@ import "./app.css";
 
 import Router from "../router/routes";
 import NotFound from "../pages/NotFound";
+import Navbar from "./Navbar/Navbar";
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
@@ -41,7 +42,7 @@ export const App = () => (
         {/* <Grid minH="100vh" p={3}> */}
         <ColorModeSwitcher justifySelf="flex-end" />
         <NotFound />
-        <Router />
+        {/* <Router /> */}
       </Box>
     </ChakraProvider>
   </Provider>

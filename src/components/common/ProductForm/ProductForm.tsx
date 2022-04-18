@@ -21,9 +21,6 @@ import React, { useEffect, useState } from "react";
 
 import { onSubmit, ProductFormProps, ProductSchema } from "./vaidation";
 
-
-
-
 export default function ProductForm({
   image,
   name,
@@ -39,22 +36,20 @@ export default function ProductForm({
   discount,
   eventHandler,
 }: ProductFormProps) {
-
- const initialValues={
-        image:image,
-        name: name,
-        price: price,
-        discription: discription,
-        categoryName: categoryName,
-        xlCount: xlCount,
-        lCount: lCount,
-        mdCount: mdCount,
-        sCount: sCount,
-        xsCount: xsCount,
-        offer: offer,
-        discount: discount,
-}
-
+  const initialValues = {
+    image: image,
+    name: name,
+    price: price,
+    discription: discription,
+    categoryName: categoryName,
+    xlCount: xlCount,
+    lCount: lCount,
+    mdCount: mdCount,
+    sCount: sCount,
+    xsCount: xsCount,
+    offer: offer,
+    discount: discount,
+  };
 
   return (
     <Formik
