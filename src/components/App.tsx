@@ -5,6 +5,11 @@ import {
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { extendTheme } from "@chakra-ui/react";
+// import Card from "./common/Card/Card";
+import { Provider } from "react-redux";
+import Store from "../store/store";
+
+// import Router from "../router/routes";
 import "./app.css";
 
 import Router from "../router/routes";
@@ -30,12 +35,14 @@ const theme = extendTheme({
 });
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      {/* <Grid minH="100vh" p={3}> */}
-      <ColorModeSwitcher justifySelf="flex-end" />
-      <NotFound />
-      <Router />
-    </Box>
-  </ChakraProvider>
+  <Provider store={Store}>
+    <ChakraProvider theme={theme}>
+      <Box textAlign="center" fontSize="xl">
+        {/* <Grid minH="100vh" p={3}> */}
+        <ColorModeSwitcher justifySelf="flex-end" />
+        <NotFound />
+        <Router />
+      </Box>
+    </ChakraProvider>
+  </Provider>
 );
