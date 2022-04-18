@@ -1,49 +1,52 @@
+import CartType from "../../models/Cart.model";
 import OrderType from "../../models/Order.model";
 import UserType from "../../models/User.model";
+import WishListType from "../../models/WishList.model";
 import * as actions from "./types";
 
 // --------- Get ------------------------------
 
-export const getUserCartProducts = () => ({
-  type: actions.GET_USER_CART_PRODUCTS,
-  payload: {},
-});
-
-export const getUserWishListProducts = () => ({
-  type: actions.GET_USER_WISHLIST_PRODUCTS,
-  payload: {},
-});
-
-export const getUserOrders = () => ({
-  type: actions.GET_USER_ORDERS,
-  payload: {},
-});
-
-export const getUserOrdersByDate = (date: Date) => ({
-  type: actions.GET_USER_ORDERS_BY_DATE,
+export const getUserCart = (cart: CartType) => ({
+  type: actions.GET_USER_CART,
   payload: {
-    date,
+    cart,
   },
 });
 
-export const getUserDetails = () => ({
+export const getUserWishList = (wishList: WishListType) => ({
+  type: actions.GET_USER_WISHLIST,
+  payload: {
+    wishList,
+  },
+});
+
+export const getUserOrders = (orders: OrderType[]) => ({
+  type: actions.GET_USER_ORDERS,
+  payload: {
+    orders,
+  },
+});
+
+export const getUserDetails = (user: UserType) => ({
   type: actions.GET_USER_DETAILS,
-  payload: {},
+  payload: {
+    user,
+  },
 });
 
 // --------- Add ------------------------------
 
-export const addProductToCart = (productId: string | number) => ({
-  type: actions.ADD_PRODUCT_TO_CART,
+export const addProductToUserCart = (cart: CartType) => ({
+  type: actions.ADD_PRODUCT_TO_USER_CART,
   payload: {
-    productId,
+    cart,
   },
 });
 
-export const addProductToWishlist = (productId: string | number) => ({
-  type: actions.ADD_PRODUCT_TO_WISHLIST,
+export const addProductToUserWishList = (wishList: WishListType) => ({
+  type: actions.ADD_PRODUCT_TO_USER_WISHLIST,
   payload: {
-    productId,
+    wishList,
   },
 });
 
@@ -54,10 +57,10 @@ export const createUser = (user: UserType) => ({
   },
 });
 
-export const checkoutOrder = (order: OrderType) => ({
+export const checkoutOrder = (orders: OrderType[]) => ({
   type: actions.CHECKOUT_ORDER,
   payload: {
-    order,
+    orders,
   },
 });
 
@@ -72,28 +75,23 @@ export const editUser = (userData: UserType) => ({
 
 // --------- Delete ------------------------------
 
-export const deleteProductFromCart = (productId: string | number) => ({
-  type: actions.DELETE_PRODUCT_FROM_CART,
+export const deleteProductFromUserCart = (productId: string | number) => ({
+  type: actions.DELETE_PRODUCT_FROM_USER_CART,
   payload: {
     productId,
   },
 });
 
-export const deleteProductFromWishList = (productId: string | number) => ({
-  type: actions.DELETE_PRODUCT_FROM_WISHLIST,
+export const deleteProductFromUserWishList = (productId: string | number) => ({
+  type: actions.DELETE_PRODUCT_FROM_USER_WISHLIST,
   payload: {
     productId,
   },
 });
 
-export const deleteUser = () => ({
-  type: actions.DELETE_PRODUCT_FROM_WISHLIST,
-  payload: {},
+export const deleteUser = (_id: string | number) => ({
+  type: actions.DELETE_USER,
+  payload: {
+    _id,
+  },
 });
-
-// export const cancelOrder = (orderId) => ({
-//   type: actions.CANCEL_ORDER,
-//   payload: {
-//     orderId
-//   },
-// });

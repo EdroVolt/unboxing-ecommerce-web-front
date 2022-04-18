@@ -4,43 +4,56 @@ import * as actions from "./types";
 
 // ------------ Get -----------------------------------------
 
-export const getAllProducts = (page: number) => ({
+export const getAllProducts = (data: {
+  data: ProductType[];
+  numOfPages: number;
+}) => ({
   type: actions.GET_ALL_PRODUCTS,
   payload: {
-    page,
+    products: data.data,
+    numOfPages: data.numOfPages,
   },
 });
 
-export const getAllProductsByCategory = (page: number, category: string) => ({
+export const getAllProductsByCategory = (data: {
+  data: ProductType[];
+  numOfPages: number;
+}) => ({
   type: actions.GET_ALL_PRODUCTS_BY_CATEGORY,
   payload: {
-    page,
-    category,
+    products: data.data,
+    numOfPages: data.numOfPages,
   },
 });
 
-export const getAllProductsByName = (page: number, name: string) => ({
+export const getAllProductsByName = (data: {
+  data: ProductType[];
+  numOfPages: number;
+}) => ({
   type: actions.GET_ALL_PRODUCTS_BY_NAME,
   payload: {
-    page,
-    name,
+    products: data.data,
+    numOfPages: data.numOfPages,
   },
 });
 
-export const getAllProductsByPrice = (page: number, price: number) => ({
-  type: actions.GET_ALL_PRODUCTS_BY_PRICE,
+export const getAllOfferProducts = (data: {
+  data: ProductType[];
+  numOfPages: number;
+}) => ({
+  type: actions.GET_ALL_PRODUCTS_BY_NAME,
   payload: {
-    page,
-    price,
+    products: data.data,
+    numOfPages: data.numOfPages,
   },
 });
 
-export const getProductDetails = (id: string | number) => ({
-  type: actions.GET_ALL_PRODUCTS_BY_PRICE,
-  payload: {
-    id,
-  },
-});
+// export const getProductDetails = (_id: string | number) => ({
+//   type: actions.GET_PRODUCT_DETAILS,
+//   payload: {
+//     _id,
+//   },
+// });
 
 // ------------ Add -----------------------------------------
 
@@ -48,13 +61,6 @@ export const addProduct = (product: ProductType) => ({
   type: actions.ADD_PRODUCT,
   payload: {
     product,
-  },
-});
-
-export const addOffer = (offer: ProductType) => ({
-  type: actions.ADD_OFFER,
-  payload: {
-    offer,
   },
 });
 
