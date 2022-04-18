@@ -41,7 +41,7 @@ export const App = () => (
         {/* <Grid minH="100vh" p={3}> */}
         <ColorModeSwitcher justifySelf="flex-end" />
         <NotFound />
-      <Router />
+        <Router />
       </Box>
     </ChakraProvider>
   </Provider>
