@@ -73,7 +73,7 @@ interface government {
   governorate_name_ar: string;
   governorate_name_en: string;
 }
-export default function Navbar() {
+export default function Navbar({ isAuthenticated }: any) {
   const [page, setPage] = useState(1);
   const [userGovernment, setgovernment] = useState<government | undefined>({
     id: "3",
@@ -125,6 +125,7 @@ export default function Navbar() {
   useEffect(() => {
     dispatch(getAllCategoriesAPI(page));
     dispatch(getMeAPI());
+    console.log(isAuthenticated);
   }, []);
   console.log(user);
   return (
@@ -274,7 +275,10 @@ export default function Navbar() {
                     borderColor: "white",
                   }}
                 >
-                  <Text fontSize={11}> Helllo,{user?.name}</Text>{" "}
+                  <Text fontSize={11}>
+                    {" "}
+                    "Hello",{isAuthenticated ? user?.name : null}
+                  </Text>{" "}
                   <Text fontSize={13} fontWeight={"bold"}>
                     Account&Lists
                   </Text>
@@ -282,6 +286,7 @@ export default function Navbar() {
                 </MenuButton>
               </HStack>
               <MenuList
+                zIndex={30}
                 minH={"29%"}
                 bgColor={useColorModeValue("white", "dark")}
               >
@@ -290,7 +295,11 @@ export default function Navbar() {
                     <Text fontWeight={"bold"} fontSize={16}>
                       Your list
                     </Text>
-                    <MenuItem fontSize={11}>create new list </MenuItem>
+                    <MenuItem fontSize={11}>
+                      <Link to={isAuthenticated ? "/wishlist" : "/login"}>
+                        {isAuthenticated ? "visit your list" : "sign in"}
+                      </Link>
+                    </MenuItem>
                   </Box>
                   <MenuDivider color={"black"} bgColor={"black"}></MenuDivider>{" "}
                   <Box>
@@ -298,14 +307,18 @@ export default function Navbar() {
                       Your Accounts
                     </Text>
                     <MenuItem fontSize={11}>
-                      <Link to="/profile">Your Account</Link>
+                      <Link to={isAuthenticated ? "/profile" : "/login"}>
+                        {isAuthenticated ? "account" : "sign in"}
+                      </Link>
                     </MenuItem>
                   </Box>
                 </HStack>
               </MenuList>
             </Menu>
             <Box alignSelf={"center"} mx={4}>
-              <Link to="/wishList"> wishList</Link>
+              <Link to={isAuthenticated ? "/wishlist" : "/"}>
+                {isAuthenticated ? "wishlist" : null}
+              </Link>
             </Box>
             <Box alignSelf={"center"} mx={4}>
               <Link to={orders}> Orders</Link>
@@ -326,7 +339,7 @@ export default function Navbar() {
                 >
                   <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
                 </svg>
-                <Link to={`/cart`}>Cart</Link>
+                <Link to={isAuthenticated ? "/cart" : "/login"}>cart</Link>
               </HStack>
             </Box>
           </Flex>

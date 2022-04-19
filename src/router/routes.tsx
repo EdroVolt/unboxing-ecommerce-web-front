@@ -34,7 +34,7 @@ const Router = () => {
   // const [isLogged, setIsLoggged] = useState(false);
   // console.log(isLogged);
 
-  const auth = useSelector<any>((state) => state.user.user);
+  const user = useSelector<any>((state) => state.user.user);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   console.log("Auth", isAuthenticated);
@@ -47,11 +47,11 @@ const Router = () => {
     }
 
     // eslint-disable-next-line
-  }, [auth]);
+  }, [user]);
 
   return (
     <>
-      <Navbar />
+      <Navbar isAuth={isAuthenticated} />
       <Routes>
         <Route path={home} element={<Home />} />
 
@@ -74,7 +74,15 @@ const Router = () => {
 
         <Route path={products} element={<Products />} />
         <Route path={productDetails} element={<ProductDetail />} />
-        <Route path={login} element={<Login />} />
+        <Route
+          path={login}
+          element={
+            <Login
+              isAuthenticated={isAuthenticated}
+              setIsAuthenticated={setIsAuthenticated}
+            />
+          }
+        />
         <Route path={singUp} element={<SingUp />} />
         {/* <Route path={error} element={<NotFound />} /> */}
       </Routes>

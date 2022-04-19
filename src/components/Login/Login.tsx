@@ -25,7 +25,7 @@ const SignInSchema = Yup.object().shape({
     .required("Password is required")
     .min(8, "Password is too short - should be 8 chars minimum"),
 });
-const Login = () => {
+const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
   const initialValues = {
     email: "",
     password: "",
@@ -42,13 +42,14 @@ const Login = () => {
     <Formik
       initialValues={initialValues}
       validationSchema={SignInSchema}
-      onSubmit={(values, { setSubmitting }) => {
+      onSubmit={(values: any) => {
         console.log(values);
         dispatch(singInUserAPI(values.email, values.password));
 
+        setIsAuthenticated(true);
         navigate("/");
 
-        window.location.reload();
+        // window.location.reload();
       }}
     >
       {(formik: { errors: any; touched: any; isValid: any; dirty: any }) => {
