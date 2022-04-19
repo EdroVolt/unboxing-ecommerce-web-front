@@ -23,29 +23,45 @@ import WishList from "../pages/wishList";
 import Orders from "../pages/Orders";
 import Login from "../components/Login/Login";
 import SingUp from "../components/SignUp/SignUp";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import DashBoard from "../pages/DashBoard";
 import PrivateRoute from "./PrivateRoute";
 import Navbar from "../components/Navbar/Navbar";
+import { useSelector } from "react-redux";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
-  const [isLogged, setIsLoggged] = useState(false);
-  console.log(isLogged);
+  // const [isLogged, setIsLoggged] = useState(false);
+  // console.log(isLogged);
+
+  const auth = useSelector<any>((state) => state.user.user);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  console.log("Auth", isAuthenticated);
+  useEffect(() => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+
+    // eslint-disable-next-line
+  }, [auth]);
 
   return (
     <>
-      <Navbar isLogged={isLogged} />
-      {isLogged === false ? (
-        <button onClick={() => setIsLoggged(true)}>LogIn</button>
+      <Navbar isAuthenticated={isAuthenticated} />
+      {/* {isAuthenticated === true ? (
+        <button onClick={() => setIsAuthenticated(false)}>Logout</button>
       ) : (
-        <button onClick={() => setIsLoggged(false)}>LogOut</button>
-      )}
+        <button onClick={() => setIsAuthenticated(true)}>LogIn</button>
+      )} */}
 
       <Routes>
         <Route path={home} element={<Home />} />
 
-        <Route element={<PrivateRoute isLogged={isLogged} />}>
+        <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
           <Route path={profile} element={<UserProfile />} />
           <Route path={cart} element={<Cart />} />
           <Route path={wishList} element={<WishList />} />
