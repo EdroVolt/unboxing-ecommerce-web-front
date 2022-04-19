@@ -12,6 +12,11 @@ import React, { useState } from "react";
 import "./login.css";
 import * as Yup from "yup";
 import { BiShowAlt } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { singInUserAPI } from "../../store/actionCreator/authActionCreator";
+import { Navigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
+import { home } from "../../router/routePaths";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email().required("Email is required"),
@@ -29,12 +34,21 @@ const Login = () => {
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+
+  const dispatch: any = useDispatch();
+  // const history = useHistory();
+  const navigate: any = useNavigate();
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={SignInSchema}
-      onSubmit={(values) => {
+      onSubmit={(values, { setSubmitting }) => {
         console.log(values);
+        dispatch(singInUserAPI(values.email, values.password));
+
+        navigate("/");
+
+        window.location.reload();
       }}
     >
       {(formik: { errors: any; touched: any; isValid: any; dirty: any }) => {
@@ -93,6 +107,7 @@ const Login = () => {
                     className="error"
                   />
                 </Box>
+                {/* <Link to={home} > */}
                 <Button
                   type="submit"
                   className={
@@ -104,6 +119,7 @@ const Login = () => {
                 >
                   Sign In
                 </Button>
+                {/* </Link> */}
                 <Button className="form_button">Create an account</Button>
               </Form>
             </Box>

@@ -50,7 +50,15 @@ import {
   getMeAPI,
 } from "../../store/actionCreator/userActionCreator";
 import { getAllProductsByNameAndCategoryAPI } from "../../store/actionCreator/productActionCreator";
-import { orders, products, wishList, profile } from "../../router/routePaths";
+import {
+  orders,
+  products,
+  wishList,
+  profile,
+  home,
+  login,
+  cart,
+} from "../../router/routePaths";
 import { Navigate, useNavigate } from "react-router";
 import { any, object, string } from "prop-types";
 
@@ -430,6 +438,42 @@ export default function Navbar() {
           </Modal>
         </Box>
       </Box>
+    </>
+  );
+}
+
+export function Navbar2({ isAuthenticated }: any) {
+  console.log(isAuthenticated);
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    window.location.reload();
+  };
+  return (
+    <>
+      {/* <Link to="/landing">Landing</Link> */}
+      {/* <Link to={home}>Home</Link>
+    <Link to={profile}>Profile</Link>
+    <Link to={products}>products</Link> */}
+      {/* <Link to={orders}>Order</Link>
+    <Link to={wishList}>WishList</Link>
+    <Link to={cart}>Cart</Link> */}
+      {/* <Link to={dashboard}>Dashboard</Link> */}
+
+      {isAuthenticated === false ? (
+        <>
+          <Link to={profile}>Profile</Link>
+          <Link to={products}>products</Link>
+          <Link to={login}>Login</Link>
+        </>
+      ) : (
+        <>
+          <Link to={home}>home</Link>
+          <Link to={orders}>Order</Link>
+          <Link to={wishList}>WishList</Link>
+          <Link to={cart}>Cart</Link>{" "}
+          <button onClick={() => logoutHandler()}>Logout</button>
+        </>
+      )}
     </>
   );
 }
