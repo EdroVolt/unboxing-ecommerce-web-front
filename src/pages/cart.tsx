@@ -11,47 +11,40 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../store/store";
+import { checkoutOrder, getMeAPI, getUserCartAPI } from "../store/actionCreator/userActionCreator";
+import OrderType from "../models/Order.model";
+import ProductType from "../models/Product.model";
 
 export default function Cart() {
-  const [products, setProducts] = useState([
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images:
-        "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
-      price: 500,
-      color: "red",
-      size: "xl",
-    },
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images:
-        "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
-      price: 500,
-      color: "red",
-      size: "xl",
-    },
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images:
-        "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
-      price: 500,
-      color: "red",
-      size: "xl",
-    },
-  ]);
+  const dispatch: any = useDispatch();
+  const products = useSelector((store: StoreType) => store.user.cart.products);
+  let user = useSelector((store: StoreType) => store.user.user);
+
+
+  useEffect(() => {
+    if (!user) dispatch(getMeAPI());
+  }, []);
+
+  useEffect(()=>{
+    if(!products?.length && user?._id) dispatch(getUserCartAPI(user._id))
+  },[user])
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const order:OrderType ={
+    products:products.map((product:any)=>{
+      return {product : product.product._id, count:product.count}
+    }),
+    totalCount:totalCount,
+    paymentMethod:"cash"
+  }
+
   const setTotalCountF = () => {
     let productsCount = 0;
-    products.map((product) => {
+    products?.map((product:any) => {
       productsCount += product.count;
       return setTotalCount(productsCount);
     });
@@ -59,13 +52,23 @@ export default function Cart() {
 
   const setTotalPriceF = () => {
     let productsPrice = 0;
-    products.map((product) => {
-      console.log(product.price);
-      productsPrice += product.price;
+    products?.map((product:any) => {
+      console.log(product.product.price);
+      productsPrice=product.product.price*product.count
+      // productsPrice += product.product.price;
       console.log(productsPrice);
       return setTotalPrice(productsPrice);
     });
   };
+
+  const checkOut=()=>{
+    console.log(order)
+     dispatch(checkoutOrder(user._id,order))
+  }
+
+  useEffect(()=>{
+    setTotalPriceF()
+  },[products])
 
   return (
     <div>
@@ -80,15 +83,15 @@ export default function Cart() {
         Cart{" "}
       </Heading>
       <Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-        {products.map((product) => {
+        {products?.map((product:any) => {
           return (
             <SmallCard
-              name={product.name}
+              name={product.product.name}
               count={product.count}
               categoryName={product.categoryName}
-              images={product.images}
+              images={product.product.images}
               size={product.size}
-              price={product.price}
+              price={product.product.price}
               color={product.color}
               buttonName=" Add to WishList "
             />
@@ -118,7 +121,7 @@ export default function Cart() {
           mt={3}
           mb={3}
           fontSize={{ sm: "l", md: "xl" }}
-          onClick={setTotalPriceF}
+          onClick={checkOut}
         >
           <CheckIcon mr={1} /> Check Out
         </Button>

@@ -9,20 +9,27 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import OrderType from "../models/Order.model";
-import ProductType from "../models/Product.model";
-import { getUserOrdersAPI } from "../store/actionCreator/userActionCreator";
+import { getMeAPI, getUserOrdersAPI } from "../store/actionCreator/userActionCreator";
 import { StoreType } from "../store/store";
 
 export default function Orders() {
   const dispatch:any = useDispatch()
-  const orders = useSelector((store:StoreType)=>store.product.products)
-  const userId = useSelector((store:StoreType)=>store.user.user._id)
+  const orders = useSelector((store:StoreType)=>store.user.orders)
+  let user = useSelector((store:StoreType)=>store.user.user)
+// let  userId="625ed2eb0ee7817fe8fe2efb"
   useEffect(()=>{
-    if(!orders.length) dispatch(getUserOrdersAPI(userId))
+    if(!user) dispatch(getMeAPI())
   },[])
+
+  useEffect(()=>{
+    if(!orders.length && user?._id) dispatch(getUserOrdersAPI(user._id))
+  },[user])
+
+  console.log(user)
   
 
   return (
@@ -36,7 +43,7 @@ export default function Orders() {
       >
         Your Orders
       </Heading>
-      {orders.map((order:OrderType) => {
+      {orders?.map((order:OrderType) => {
         return (
           <Box
           // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -73,6 +80,8 @@ export default function Orders() {
             >
               {order.products.map((product:any) => {
                 return (
+                  <Link to={`/products/${product.product._id}`}>
+                  
                   <Stack
                     borderWidth="1px"
                     borderRadius="lg"
@@ -88,7 +97,8 @@ export default function Orders() {
                         objectFit="cover"
                         boxSize="100%"
                         src={
-                          "https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
+                        product.product.image
+                          // "https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
                         }
                       />
                     </Flex>
@@ -101,7 +111,7 @@ export default function Orders() {
                       pt={2}
                     >
                       <Heading fontSize={"2xl"} fontFamily={"body"}>
-                        {product.name}
+                        {product.product.name}
                       </Heading>
                       <Text
                         fontWeight={600}
@@ -113,11 +123,12 @@ export default function Orders() {
                       </Text>
                     </Stack>
                   </Stack>
+                  </Link>
                 );
               })}
             </Grid>
             <hr style={{width:"100%" , background:"#d0d8db" , height:"1px", marginBottom:"10px"}}/>
-            <Button ml={5} mb={5}>Review This Order</Button>
+            {/* <Button ml={5} mb={5}>Review This Order</Button> */}
           </Box>
         );
       })}

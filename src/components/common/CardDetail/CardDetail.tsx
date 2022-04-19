@@ -18,7 +18,7 @@ import {
   Badge,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CardDetail.css";
 import { StarIcon } from "@chakra-ui/icons";
 import { FiShoppingCart } from "react-icons/fi";
@@ -33,7 +33,12 @@ import {
 } from "../../../store/actions/user.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../../../store/store";
-import { getUserDetailsAPI } from "../../../store/actionCreator/userActionCreator";
+import {
+  addProductToUserCartAPI,
+  addProductToUserWishListAPI,
+  getMeAPI,
+  getUserDetailsAPI,
+} from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
   _id = "",
@@ -64,28 +69,33 @@ export default function Simple({
     return countList;
   }
   const dispatch: any = useDispatch();
+  let user = useSelector((store: StoreType) => store.user.user);
+  useEffect(() => {
+    if (!user) dispatch(getMeAPI());
+  }, []);
 
   const [userCount, setUserCount] = useState(0);
   const [userSize, setUserSize] = useState("");
+  const [selectedCount, setSelectedCount] = useState(count);
 
   const cart = {
     products: {
       product: { _id },
-      count: userCount,
+      count: count,
+      size:userSize
     },
   };
   const cartHandler = (cart: any) => {
-    // dispatch(addProductToUserCart(cart))
-    dispatch(addProductToUserCart(cart))
+
+    dispatch(addProductToUserCartAPI(user._id,cart))
     console.log(cart);
-    console.log(reviews)
+    console.log(reviews);
   };
 
-  const wishListHandler =(cart:any)=>{
-    dispatch(addProductToUserWishList(cart))
+  const wishListHandler = (cart: any) => {
+    dispatch(addProductToUserWishListAPI(user._id, cart))
     console.log(cart);
-
-  }
+  };
 
   return (
     <Container maxW={"7xl"}>
@@ -204,7 +214,7 @@ export default function Simple({
                       ml={1}
                       onClick={() => [
                         setUserCount(sizeCount.xl),
-                        setUserSize("XL"),
+                        setUserSize("xl"),
                       ]}
                     >
                       XL
@@ -215,7 +225,7 @@ export default function Simple({
                       ml={1}
                       onClick={() => [
                         setUserCount(sizeCount.l),
-                        setUserSize("L"),
+                        setUserSize("l"),
                       ]}
                     >
                       L
@@ -267,7 +277,7 @@ export default function Simple({
               </Text>
               <Select
                 onChange={(event) => {
-                  count = Number(event.target.value);
+                  setSelectedCount( Number(event.target.value)+1);
                   price = count * price;
                 }}
                 width="20%"
@@ -281,7 +291,9 @@ export default function Simple({
             top="4"
             right="4"
             aria-label={`Add ${name} to your favourites`}
-            onClick={()=>{wishListHandler(cart)}}
+            onClick={() => {
+              wishListHandler(cart);
+            }}
           />
           <Button
             rounded={"none"}
@@ -339,7 +351,7 @@ export default function Simple({
                     display="inline-block"
                   />
                   <Text fontWeight={"bold"} display="inline-block" ml="2">
-                   {review?.userId?.name}
+                    {review?.userId?.name}
                   </Text>
                   <List spacing={2}>
                     <ListItem ml="10">
