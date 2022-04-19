@@ -18,14 +18,13 @@ export const getUserDetailsAPI =
       })
       .catch((err) => console.log(err));
 
-export const getMeAPI =
-  () => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.get(`/users/me`)
-      .then((res) => {
-        console.log(res);
-        dispatch(User.getUserDetails(res.data));
-      })
-      .catch((err) => console.log(err));
+export const getMeAPI = () => (dispatch: Dispatch<actions.ActionType>) =>
+  Unboxing.get(`/users/me`)
+    .then((res) => {
+      console.log(res);
+      dispatch(User.getUserDetails(res.data));
+    })
+    .catch((err) => console.log(err));
 
 export const createUserAPI =
   (userData: UserType) => (dispatch: Dispatch<actions.ActionType>) =>
@@ -38,7 +37,7 @@ export const createUserAPI =
 
 export const editUserAPI =
   (userData: UserType) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users`, userData)
+    Unboxing.put(`/users/${userData._id}`, userData)
       .then((res) => {
         console.log(res);
         dispatch(User.editUser(res.data));

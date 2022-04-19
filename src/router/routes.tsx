@@ -51,13 +51,7 @@ const Router = () => {
 
   return (
     <>
-      <Navbar isAuthenticated={isAuthenticated} />
-      {/* {isAuthenticated === true ? (
-        <button onClick={() => setIsAuthenticated(false)}>Logout</button>
-      ) : (
-        <button onClick={() => setIsAuthenticated(true)}>LogIn</button>
-      )} */}
-
+      <Navbar />
       <Routes>
         <Route path={home} element={<Home />} />
 
