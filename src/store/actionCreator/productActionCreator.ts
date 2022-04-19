@@ -49,6 +49,17 @@ export const getAllProductsByNameAPI =
       })
       .catch((err) => console.log(err));
 
+// NOTE: change dispatch action to be descriptive
+export const getAllProductsByNameAndCategoryAPI =
+  (name: string, categoryId: string, page: number = 1) =>
+  (dispatch: Dispatch<ActionType>) =>
+    Unboxing.get(`/products?page=${page}&name=${name}&category=${categoryId}`)
+      .then((res) => {
+        console.log(res);
+        dispatch(Product.getAllProductsByName(res.data));
+      })
+      .catch((err) => console.log(err));
+
 export const getAllOfferProductsAPI =
   (page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
