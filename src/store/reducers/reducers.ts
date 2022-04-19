@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import CartType from "../../models/Cart.model";
 import CategoryType from "../../models/Category.model";
 import OrderType from "../../models/Order.model";
@@ -22,11 +23,11 @@ const initialState: stateType = {
   cart: { products: [], totalCount: 0 },
   wishList: { products: [], totalCount: 0 },
   orders: [
-    {
-      products: [{ product: "", count: 0 }],
-      paymentMethod: "cash",
-      totalCount: 0,
-    },
+    // {
+    //   products: [{ product: "", count: 0 }],
+    //   paymentMethod: "cash",
+    //   totalCount: 0,
+    // },
   ],
 };
 
@@ -89,6 +90,20 @@ export const categoryReducer = (
     // products
     case actions.GET_CATEGORIES:
       return { ...state, categories: payload.categories };
+
+    default:
+      return state;
+  }
+};
+
+export const authReducer = (
+  state: stateType = initialState,
+  { type, payload }: actions.ActionType
+) => {
+  switch (type) {
+    case actions.SIGNIN_USER:
+      localStorage.setItem("token", payload.token);
+      return { ...state, user: payload.user };
 
     default:
       return state;
