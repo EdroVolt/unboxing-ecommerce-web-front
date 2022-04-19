@@ -20,7 +20,7 @@ export const getUserDetailsAPI =
 
 export const createUserAPI =
   (userData: UserType) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.post("/users", userData)
+    Unboxing.post("/register", userData)
       .then((res) => {
         console.log(res);
         dispatch(User.createUser(res.data));

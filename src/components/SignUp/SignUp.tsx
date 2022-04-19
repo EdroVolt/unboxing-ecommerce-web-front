@@ -11,12 +11,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { BiShowAlt } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { createUserAPI } from "../../store/actionCreator/userActionCreator";
 
 const SignUp = () => {
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+
+  const dispatch: any = useDispatch();
   return (
     <Formik
       initialValues={{
@@ -43,6 +47,14 @@ const SignUp = () => {
       })}
       onSubmit={(fields) => {
         console.log(fields);
+        dispatch(
+          createUserAPI({
+            name: fields.FullName,
+            email: fields.email,
+            password: fields.password,
+            phoneNumber: fields.phoneNumber,
+          })
+        );
       }}
       render={({ errors, touched }) => (
         <>

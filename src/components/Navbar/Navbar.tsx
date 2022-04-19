@@ -368,29 +368,42 @@
 // }
 
 // import { profile } from 'console'
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { cart, dashboard, home, orders, products, profile, wishList } from '../../router/routePaths'
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  cart,
+  home,
+  orders,
+  products,
+  profile,
+  wishList,
+} from "../../router/routePaths";
 
-export default function Navbar({isLogged}:any) {
-console.log(isLogged)
+export default function Navbar({ isLogged }: any) {
+  console.log(isLogged);
   return (
-   <>
-     {/* <Link to="/landing">Landing</Link> */}
-    {/* <Link to={home}>Home</Link>
+    <>
+      {/* <Link to="/landing">Landing</Link> */}
+      {/* <Link to={home}>Home</Link>
     <Link to={profile}>Profile</Link>
     <Link to={products}>products</Link> */}
-    {/* <Link to={orders}>Order</Link>
+      {/* <Link to={orders}>Order</Link>
     <Link to={wishList}>WishList</Link>
     <Link to={cart}>Cart</Link> */}
-    {/* <Link to={dashboard}>Dashboard</Link> */}
-    {isLogged === true ? (
-    <><Link to={orders}>Order</Link><Link to={wishList}>WishList</Link><Link to={cart}>Cart</Link></>
-  ) : (
-    <><Link to={home}>Home</Link><Link to={profile}>Profile</Link><Link to={products}>products</Link></>
-  )
-}
-    
-   </>
-  )
+      {/* <Link to={dashboard}>Dashboard</Link> */}
+      {isLogged === true ? (
+        <>
+          <Link to={orders}>Order</Link>
+          <Link to={wishList}>WishList</Link>
+          <Link to={cart}>Cart</Link>
+        </>
+      ) : (
+        <>
+          <Link to={home}>Home</Link>
+          <Link to={profile}>Profile</Link>
+          <Link to={products}>products</Link>
+        </>
+      )}
+    </>
+  );
 }
