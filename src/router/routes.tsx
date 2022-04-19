@@ -35,7 +35,7 @@ const Router = () => {
 
   return (
     <>
-      <Navbar isLogged={isLogged} />
+      <Navbar />
       {isLogged === false ? (
         <button onClick={() => setIsLoggged(true)}>LogIn</button>
       ) : (
