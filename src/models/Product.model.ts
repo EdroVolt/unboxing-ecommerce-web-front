@@ -1,16 +1,19 @@
+import CategoryType from "./Category.model";
+import UserType from "./User.model";
+
 type ProductType = {
   _id?: string | number;
   name: string;
   description: string;
   count: number;
   sizeCount: {
-    xs?: number;
-    s?: number;
-    md?: number;
-    l?: number;
-    xl?: number;
+    xs: number;
+    s: number;
+    md: number;
+    l: number;
+    xl: number;
   };
-  category: string;
+  category: CategoryType;
   ingredients?: string[];
   images: string[];
   price: number;
@@ -18,7 +21,7 @@ type ProductType = {
   offer?: boolean;
   reviews?: [
     {
-      userId: string;
+      userId: UserType;
       comment: string;
       rate: number;
     }

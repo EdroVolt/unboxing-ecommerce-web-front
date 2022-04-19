@@ -9,44 +9,21 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import OrderType from "../models/Order.model";
+import ProductType from "../models/Product.model";
+import { getUserOrdersAPI } from "../store/actionCreator/userActionCreator";
+import { StoreType } from "../store/store";
 
 export default function Orders() {
-  const [orders, useOrsers] = useState([
-    {
-      products: [
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-        {
-          productName: "",
-          image: "mmmmm",
-          count: 2,
-        },
-      ],
-      totalCount: 2,
-      paymentMethod: "cash",
-      date: "20-1-2020",
-    },
-    
-  ]);
+  const dispatch:any = useDispatch()
+  const orders = useSelector((store:StoreType)=>store.product.products)
+  const userId = useSelector((store:StoreType)=>store.user.user._id)
+  useEffect(()=>{
+    if(!orders.length) dispatch(getUserOrdersAPI(userId))
+  },[])
+  
 
   return (
     <Box>
@@ -59,7 +36,7 @@ export default function Orders() {
       >
         Your Orders
       </Heading>
-      {orders.map((order) => {
+      {orders.map((order:OrderType) => {
         return (
           <Box
           // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -81,7 +58,7 @@ export default function Orders() {
               fontSize={"xl"}
               fontFamily={"body"}
             >
-              {order.date}
+              {order.createdAt}
             </Text>
             <hr style={{width:"100%" , background:"#d0d8db" , height:"1px", marginBottom:"10px"}}/>
             <Grid
@@ -94,7 +71,7 @@ export default function Orders() {
               mb={6}
               templateColumns={{sm: "repeat(1, 1fr)" , md:"repeat(3, 1fr)", xl:"repeat(5, 1fr)"}}
             >
-              {order.products.map((product) => {
+              {order.products.map((product:any) => {
                 return (
                   <Stack
                     borderWidth="1px"
@@ -124,7 +101,7 @@ export default function Orders() {
                       pt={2}
                     >
                       <Heading fontSize={"2xl"} fontFamily={"body"}>
-                        {product.productName}
+                        {product.name}
                       </Heading>
                       <Text
                         fontWeight={600}

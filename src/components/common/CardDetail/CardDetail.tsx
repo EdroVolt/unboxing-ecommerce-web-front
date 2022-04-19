@@ -24,34 +24,19 @@ import { StarIcon } from "@chakra-ui/icons";
 import { FiShoppingCart } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
 import { FavouriteButton } from "../Favourite";
-
-type CardProps = {
-  name?: string;
-  description?: string;
-  count?: number;
-  sizeCount?: {
-    xs: number;
-    s: number;
-    md: number;
-    l: number;
-    xl: number;
-  };
-  categoryName?: string;
-  ingredients?: string[];
-  images?: string[];
-  price?: number;
-  discount?: number;
-  offer?: boolean;
-  reviews?: {
-    userName: string;
-    comment: string;
-    rate: number;
-  }[];
-  color?: string;
-  buttonName: string;
-};
+import ProductType from "../../../models/Product.model";
+import CartType from "../../../models/Cart.model";
+import {
+  addProductToUserCart,
+  addProductToUserWishList,
+  getUserDetails,
+} from "../../../store/actions/user.actions";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../../../store/store";
+import { getUserDetailsAPI } from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
+  _id = "",
   name = "Watch ",
   description,
   count = 0,
@@ -62,27 +47,45 @@ export default function Simple({
     l: 0,
     xl: 0,
   },
-  categoryName,
+  category,
   ingredients,
   images = ["mm"],
   price = 0,
   discount = 0,
   offer = true,
   reviews,
-  color,
-  buttonName,
-}: CardProps) {
+}: ProductType) {
   function countLimit(count: number) {
     let countList = [];
     for (let i = 0; i < count; i++) {
       console.log(i);
       countList.push(<option>{i + 1}</option>);
-
     }
     return countList;
   }
+  const dispatch: any = useDispatch();
+
   const [userCount, setUserCount] = useState(0);
   const [userSize, setUserSize] = useState("");
+
+  const cart = {
+    products: {
+      product: { _id },
+      count: userCount,
+    },
+  };
+  const cartHandler = (cart: any) => {
+    // dispatch(addProductToUserCart(cart))
+    dispatch(addProductToUserCart(cart))
+    console.log(cart);
+    console.log(reviews)
+  };
+
+  const wishListHandler =(cart:any)=>{
+    dispatch(addProductToUserWishList(cart))
+    console.log(cart);
+
+  }
 
   return (
     <Container maxW={"7xl"}>
@@ -96,8 +99,8 @@ export default function Simple({
             rounded={"md"}
             alt={"product image"}
             src={
-              // images[0]
-              "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080"
+              images[0]
+              // "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080"
             }
             fit={"cover"}
             align={"center"}
@@ -120,7 +123,7 @@ export default function Simple({
               fontWeight={"300"}
               textAlign={"left"}
             >
-              {categoryName}
+              {category?.name}
             </Text>
             <Box display="flex" alignItems="baseline" mt={0}>
               {offer && (
@@ -190,25 +193,6 @@ export default function Simple({
                 fontSize={"l"}
                 fontWeight={"300"}
                 textAlign={"left"}
-                display="inline-block"
-                mr={4}
-              >
-                Color:
-              </Text>
-              <Text
-                color={useColorModeValue("gray.500", "gray.400")}
-                fontSize={"s"}
-                fontWeight={"300"}
-                textAlign={"left"}
-                display="inline-block"
-              >
-                {color}
-              </Text>
-              <Text
-                color={useColorModeValue("black", "white")}
-                fontSize={"l"}
-                fontWeight={"300"}
-                textAlign={"left"}
               >
                 Size
               </Text>
@@ -216,51 +200,80 @@ export default function Simple({
                 <ListItem>
                   {sizeCount?.xl > 0 && (
                     // eslint-disable-next-line no-sequences
-                    <Button ml={1} onClick={() => [setUserCount(sizeCount.xl), setUserSize("XL")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.xl),
+                        setUserSize("XL"),
+                      ]}
+                    >
                       XL
                     </Button>
                   )}
                   {sizeCount?.l > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.l), setUserSize("L")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.l),
+                        setUserSize("L"),
+                      ]}
+                    >
                       L
                     </Button>
                   )}
                   {sizeCount?.md > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.md), setUserSize("md")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.md),
+                        setUserSize("md"),
+                      ]}
+                    >
                       md
                     </Button>
                   )}
                   {sizeCount?.s > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.s), setUserSize("s")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.s),
+                        setUserSize("s"),
+                      ]}
+                    >
                       S
                     </Button>
                   )}
                   {sizeCount?.xs > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.xs), setUserSize("xs")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.xs),
+                        setUserSize("xs"),
+                      ]}
+                    >
                       XS
                     </Button>
                   )}
                 </ListItem>
-                <Text
-                  color={useColorModeValue("black", "white")}
-                  fontSize={"l"}
-                  fontWeight={"300"}
-                  textAlign={"left"}
-                  display="inline-block"
-                  mr={4}
-                >
-                  Count
-                </Text>
-                <Select
-                  onChange={(event) => {
-                    count = Number(event.target.value);
-                    price = count * price;
-                  }}
-                  width="20%"
-                >
-                  {countLimit(userCount)}
-                </Select>
               </List>
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize={"l"}
+                fontWeight={"300"}
+                textAlign={"left"}
+                mb={2}
+              >
+                Count
+              </Text>
+              <Select
+                onChange={(event) => {
+                  count = Number(event.target.value);
+                  price = count * price;
+                }}
+                width="20%"
+              >
+                {countLimit(userCount)}
+              </Select>
             </Box>
           </Stack>
           <FavouriteButton
@@ -268,6 +281,7 @@ export default function Simple({
             top="4"
             right="4"
             aria-label={`Add ${name} to your favourites`}
+            onClick={()=>{wishListHandler(cart)}}
           />
           <Button
             rounded={"none"}
@@ -282,22 +296,12 @@ export default function Simple({
               transform: "translateY(2px)",
               boxShadow: "lg",
             }}
-            onClick={() =>
-              console.log(
-                images[0],
-                name,
-                categoryName,
-                count,
-                price,
-                color,
-                userSize
-              )
-            }
+            onClick={() => cartHandler(cart)}
           >
             <chakra.a href={"#"} display={"flex"}>
               <Icon as={FiShoppingCart} h={7} w={7} alignSelf={"center"} />
             </chakra.a>{" "}
-            {buttonName}
+            Add To Cart
           </Button>
 
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
@@ -335,7 +339,7 @@ export default function Simple({
                     display="inline-block"
                   />
                   <Text fontWeight={"bold"} display="inline-block" ml="2">
-                    {review?.userName}
+                   {review?.userId?.name}
                   </Text>
                   <List spacing={2}>
                     <ListItem ml="10">

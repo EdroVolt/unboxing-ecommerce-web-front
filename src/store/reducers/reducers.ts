@@ -75,6 +75,7 @@ export const productReducer = (
     case actions.GET_ALL_PRODUCTS:
     case actions.GET_ALL_PRODUCTS_BY_CATEGORY:
     case actions.GET_ALL_PRODUCTS_BY_NAME:
+    case actions.GET_PRODUCT_DETAILS:
       return { ...state, products: payload.products };
 
     default:
