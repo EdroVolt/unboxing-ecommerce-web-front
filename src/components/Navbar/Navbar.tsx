@@ -52,7 +52,7 @@ import {
 import { getAllProductsByNameAndCategoryAPI } from "../../store/actionCreator/productActionCreator";
 import { orders, products, wishList, profile } from "../../router/routePaths";
 import { Navigate, useNavigate } from "react-router";
-import { object, string } from "prop-types";
+import { any, object, string } from "prop-types";
 
 interface city {
   id: string;
@@ -83,9 +83,10 @@ export default function Navbar() {
   } = useDisclosure();
 
   const dispatch: any = useDispatch();
-  const [searchValue, setSearchedCategory] = useState({
-    categoryId: "" | undefined | number,
-    categoryName: "",
+  const [searchValue, setSearchedCategory] = useState<CategoryType>({
+    _id: "1",
+    name: "shoes",
+    image: "ff",
   });
   const [searchFor, setSearchFor] = useState("");
   const svgColor = useColorModeValue("black", "white");
@@ -189,7 +190,7 @@ export default function Navbar() {
                     />
                   }
                 >
-                  {searchValue.categoryName}
+                  {searchValue.name}
                 </MenuButton>
 
                 <MenuList>
@@ -202,8 +203,9 @@ export default function Navbar() {
                           name={category.name}
                           onClick={(e) => {
                             setSearchedCategory({
-                              categoryId: category._id?.toString(),
-                              categoryName: category.name,
+                              _id: category._id?.toString(),
+                              name: category.name,
+                              image: "aa",
                             });
                           }}
                         >
@@ -232,7 +234,7 @@ export default function Navbar() {
                   dispatch(
                     getAllProductsByNameAndCategoryAPI(
                       searchFor,
-                      searchValue.categoryId
+                      searchValue._id!
                     )
                   );
                   navigate("/products");
