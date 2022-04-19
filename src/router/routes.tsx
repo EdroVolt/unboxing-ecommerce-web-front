@@ -73,7 +73,7 @@ const Router = () => {
         /> */}
 
         <Route path={products} element={<Products />} />
-        <Route path={productDetails} element={<ProductDetail />} />
+        <Route path={`/products/:id`} element={<ProductDetail />} />
         <Route path={login} element={<Login />} />
         <Route path={singUp} element={<SingUp />} />
         {/* <Route path={error} element={<NotFound />} /> */}
