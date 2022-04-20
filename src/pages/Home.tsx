@@ -26,24 +26,6 @@ export default function Home() {
 
   return (
     <Container maxW="9xl">
-      <Carousel>
-        <Image
-          objectFit="contain"
-          src="https://img.freepik.com/free-vector/realistic-christmas-sale-banner-with-red-page_1361-3133.jpg?w=2000"
-          alt="Dan Abramov"
-        />
-        <Image
-          objectFit="contain"
-          src="https://img.freepik.com/free-vector/realistic-christmas-sale-banner-with-red-page_1361-3133.jpg?w=2000"
-          alt="Dan Abramov"
-        />
-        <Image
-          objectFit="contain"
-          src="https://img.freepik.com/free-vector/realistic-christmas-sale-banner-with-red-page_1361-3133.jpg?w=2000"
-          alt="Dan Abramov"
-        />
-      </Carousel>
-
       <Heading
         as="h2"
         size="2xl"
@@ -56,7 +38,7 @@ export default function Home() {
         borderBottom="2px solid #aaa"
         padding="25px 0"
       >
-        REcently Arrived
+        Offers
       </Heading>
       <SimpleGrid minChildWidth="240px" columns={5} spacing={6} marginY={3}>
         {offers
