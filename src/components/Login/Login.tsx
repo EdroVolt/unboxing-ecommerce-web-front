@@ -8,7 +8,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import * as Yup from "yup";
 import { BiShowAlt } from "react-icons/bi";
@@ -41,6 +41,9 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
   const dispatch: any = useDispatch();
   // const history = useHistory();
   const navigate: any = useNavigate();
+  useEffect(() => {
+    dispatch(getMeAPI());
+  }, []);
   return (
     <Formik
       initialValues={initialValues}
@@ -53,8 +56,9 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
           setIsAuthenticated(true);
           navigate("/");
         } else {
-          setIsAuthenticated(false);
           alert("enter valid variables");
+
+          setIsAuthenticated(false);
         }
 
         // window.location.reload();

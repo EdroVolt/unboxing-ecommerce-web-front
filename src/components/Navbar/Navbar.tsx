@@ -93,7 +93,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
 
   const [searchValue, setSearchedCategory] = useState<CategoryType>({
     _id: "1",
-    name: "shoes",
+    name: "all",
     image: "ff",
   });
   const [governmentsCities, setGovernmentsCities] = useState<
@@ -315,6 +315,25 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                         {isAuth ? "account" : "sign in"}
                       </Link>
                     </MenuItem>
+                    {isAuth ? (
+                      <>
+                        <MenuItem
+                          backgroundColor={"red.700"}
+                          role={"button"}
+                          rounded={"2xl"}
+                        >
+                          <Link
+                            to="/"
+                            onClick={() => {
+                              localStorage.clear();
+                              window.location.reload();
+                            }}
+                          >
+                            logout
+                          </Link>
+                        </MenuItem>
+                      </>
+                    ) : null}
                     <MenuItem fontSize={11}>
                       <Link to={isAuth ? "/profile" : "/signUp"}>
                         {isAuth ? null : "signUp"}
@@ -360,7 +379,16 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
               </Link>
             </Box>
             <Box alignSelf={"center"}>
-              <Button onClick={handleInputChange}>
+              <Button
+                onClick={() => {
+                  if (isAuth) {
+                    localStorage.clear();
+                    window.location.reload();
+                  } else {
+                    navigate("/login");
+                  }
+                }}
+              >
                 {isAuth ? "Logout" : "Login"}
               </Button>
             </Box>
@@ -412,7 +440,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                             address: {
                               ...user?.address,
 
-                              government: userGovernment,
+                              government: userGovernment?.governorate_name_en,
                             },
                           })
                         );
@@ -448,7 +476,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                             ...user,
                             address: {
                               ...user?.address,
-                              city: userCity,
+                              city: userCity?.city_name_en,
                             },
                           })
                         );
