@@ -1,9 +1,10 @@
 import { ReactNode, useState, useEffect } from "react";
+
 import React from "react";
 import "./Navbar.css";
 import { Logo } from ".././../Logo";
 import cities from "./../common/cities.json";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import governments from "./../common/governments.json";
 import {
   Center,
@@ -37,6 +38,8 @@ import {
   InputGroup,
   InputRightElement,
   Divider,
+  border,
+  position,
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
@@ -75,7 +78,7 @@ interface government {
   governorate_name_ar: string;
   governorate_name_en: string;
 }
-export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
+export default function Navbar({ isAuth }: any) {
   const handleInputChange = () => {
     if (isAuth) {
       localStorage.clear();
@@ -90,7 +93,9 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
     governorate_name_en: "Alexandria",
   });
   const [searchFor, setSearchFor] = useState("");
-
+  let activeStyle = {
+    textDecoration: "underline",
+  };
   const [searchValue, setSearchedCategory] = useState<CategoryType>({
     _id: "1",
     name: "all",
@@ -141,9 +146,13 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
   console.log(user);
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} p={0} m={0}>
-        <Flex h={16} alignItems={"center"} width="100%" justifyContent={"left"}>
-          <ColorModeSwitcher justifySelf="flex-end" />
+      <Box
+        bg={useColorModeValue("gray.100", "gray.900")}
+        pb={"1"}
+        pt={"1"}
+        mb={"2"}
+      >
+        <Flex alignItems={"center"} width="100%" justifyContent={"left"}>
           <Box>
             <Flex>
               <Logo width={["20%", "20%", "20%", "10%"]} mr={"3"} />
@@ -160,9 +169,14 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                       <Box>
                         <VStack>
                           <Button variant="link" onClick={onModalOpen}>
-                            <Box>{userGovernment?.governorate_name_en},</Box>
+                            <Box>
+                              {isAuth
+                                ? userGovernment?.governorate_name_en
+                                : "sign in"}
+                              ,
+                            </Box>
 
-                            <Box>{userCity?.city_name_en}</Box>
+                            <Box>{isAuth ? userCity?.city_name_en : null}</Box>
                           </Button>
                         </VStack>
                       </Box>
@@ -176,7 +190,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
             </Flex>
           </Box>
           <Box
-            marginRight={["20%", "20%"]}
+            alignSelf={"center"}
             className="parent"
             bg="white"
             borderColor="black"
@@ -300,7 +314,14 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                           Your list
                         </Text>
                         <MenuItem fontSize={11}>
-                          <Link to="/wishlist">"visit your list"</Link>
+                          <NavLink
+                            className={({ isActive }) =>
+                              isActive ? "active" : "inactive"
+                            }
+                            to="/wishlist"
+                          >
+                            "visit your list"
+                          </NavLink>
                         </MenuItem>
                       </Box>
                     </>
@@ -311,9 +332,14 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                       Your Accounts
                     </Text>
                     <MenuItem fontSize={11}>
-                      <Link to={isAuth ? "/profile" : "/login"}>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "active" : "inactive"
+                        }
+                        to={isAuth ? "/profile" : "/login"}
+                      >
                         {isAuth ? "account" : "sign in"}
-                      </Link>
+                      </NavLink>
                     </MenuItem>
                     {isAuth ? (
                       <>
@@ -322,7 +348,10 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                           role={"button"}
                           rounded={"2xl"}
                         >
-                          <Link
+                          <NavLink
+                            className={({ isActive }) =>
+                              isActive ? "active" : "inactive"
+                            }
                             to="/"
                             onClick={() => {
                               localStorage.clear();
@@ -330,31 +359,47 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                             }}
                           >
                             logout
-                          </Link>
+                          </NavLink>
                         </MenuItem>
                       </>
                     ) : null}
                     <MenuItem fontSize={11}>
-                      <Link to={isAuth ? "/profile" : "/signUp"}>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "active" : "inactive"
+                        }
+                        to={isAuth ? "/profile" : "/signUp"}
+                      >
                         {isAuth ? null : "signUp"}
-                      </Link>
+                      </NavLink>
                     </MenuItem>
                   </Box>
                 </HStack>
               </MenuList>
             </Menu>
-            <Box alignSelf={"center"} mx={4}>
-              <Link to={isAuth ? "/wishlist" : "/"}>
+            <Box alignSelf={"center"} mx={4} role="button">
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "/wishlist" : "/"}
+              >
                 {isAuth ? "wishlist" : null}
-              </Link>
+              </NavLink>
             </Box>
             <Box alignSelf={"center"} mx={4}>
-              <Link to={"/products"}>products</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={"/products"}
+              >
+                products
+              </NavLink>
             </Box>
             <Box alignSelf={"center"} mx={4}>
-              <Link to={isAuth ? "orders" : "/"}>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "orders" : "/"}
+              >
                 {isAuth ? "orders" : null}
-              </Link>
+              </NavLink>
             </Box>
             <Box
               _hover={{ border: "black", borderWidth: "2" }}
@@ -363,7 +408,10 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
               mx={4}
             >
               {" "}
-              <Link to={isAuth ? "/cart" : "/login"}>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "/cart" : "/login"}
+              >
                 <HStack>
                   <svg
                     fill={svgColor}
@@ -376,7 +424,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                   </svg>
                   <Box> cart</Box>
                 </HStack>{" "}
-              </Link>
+              </NavLink>
             </Box>
             <Box alignSelf={"center"}>
               <Button
@@ -391,6 +439,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
               >
                 {isAuth ? "Logout" : "Login"}
               </Button>
+              <ColorModeSwitcher justifySelf="flex-end" />
             </Box>
           </Flex>
         </Flex>
@@ -413,7 +462,7 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
               </ModalBody>
               {localStorage.getItem("token") ? (
                 <Box>
-                  <Link to="#">Manage your address book</Link>
+                  <NavLink to="#">Manage your address book</NavLink>
                   <Flex>
                     <Divider />
                     <Text justifyContent={"center"} alignSelf={"center"}>
@@ -495,7 +544,14 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
                   </Box>
                 </Box>
               ) : (
-                <Button>ok</Button>
+                <Button
+                  onClick={() => {
+                    onModalClose();
+                    navigate("/login");
+                  }}
+                >
+                  signin
+                </Button>
               )}
             </ModalContent>
           </Modal>
@@ -503,43 +559,4 @@ export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
       </Box>
     </>
   );
-}
-
-export function Navbar2({ isAuthenticated }: any) {
-  console.log(isAuthenticated);
-  const logoutHandler = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
-  };
-  return (
-    <>
-      {/* <Link to="/landing">Landing</Link> */}
-      {/* <Link to={home}>Home</Link>
-    <Link to={profile}>Profile</Link>
-    <Link to={products}>products</Link> */}
-      {/* <Link to={orders}>Order</Link>
-    <Link to={wishList}>WishList</Link>
-    <Link to={cart}>Cart</Link> */}
-      {/* <Link to={dashboard}>Dashboard</Link> */}
-
-      {isAuthenticated === false ? (
-        <>
-          <Link to={profile}>Profile</Link>
-          <Link to={products}>products</Link>
-          <Link to={login}>Login</Link>
-        </>
-      ) : (
-        <>
-          <Link to={home}>home</Link>
-          <Link to={orders}>Order</Link>
-          <Link to={wishList}>WishList</Link>
-          <Link to={cart}>Cart</Link>{" "}
-          <button onClick={() => logoutHandler()}>Logout</button>
-        </>
-      )}
-    </>
-  );
-}
-function useCallback(arg0: (event: any) => void, arg1: any[]) {
-  throw new Error("Function not implemented.");
 }

@@ -49,13 +49,12 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
       initialValues={initialValues}
       validationSchema={SignInSchema}
       onSubmit={(values: any) => {
-        dispatch(singInUserAPI(values.email, values.password));
-        console.log(localStorage.getItem("token"));
-
-        if (localStorage.getItem("token")) {
+        try {
+          dispatch(singInUserAPI(values.email, values.password));
+          console.log(localStorage.getItem("token"));
           setIsAuthenticated(true);
           navigate("/");
-        } else {
+        } catch {
           alert("enter valid variables");
 
           setIsAuthenticated(false);
