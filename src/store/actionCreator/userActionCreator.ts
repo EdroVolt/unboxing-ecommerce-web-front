@@ -59,7 +59,7 @@ export const getMyCartAPI = () => (dispatch: Dispatch<actions.ActionType>) =>
   Unboxing.get(`/users/me/cart`)
     .then((res) => {
       console.log(res);
-      dispatch(User.getUserCart(res.data.cart));
+      dispatch(User.addProductToUserCart(res.data.cart));
     })
     .catch((err) => console.log(err));
 
@@ -75,7 +75,7 @@ export const addProductToMyCartAPI =
 
 export const deleteProductFromMyCartAPI =
   (productId: string) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/me/cart`, { product: productId })
+    Unboxing.delete(`/users/me/cart`, {data: {product: productId} })
       .then((res) => {
         console.log(res);
         dispatch(User.deleteProductFromUserCart(res.data.cart));
@@ -96,7 +96,7 @@ export const getMyWishListAPI =
 export const addProductToMyWishListAPI =
   (product: { porduct: string; count: number }) =>
   (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/me/wishList`, product)
+    Unboxing.post(`/users/me/wishList`, product)
       .then((res) => {
         console.log(res);
         dispatch(User.addProductToUserWishList(res.data.wishList));
@@ -105,7 +105,7 @@ export const addProductToMyWishListAPI =
 
 export const deleteProductFromMyWishListAPI =
   (productId: string) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/me/wishList`, { product: productId })
+    Unboxing.delete(`/users/me/wishList`, {data: {product: productId}})
       .then((res) => {
         console.log(res);
         dispatch(User.deleteProductFromUserWishList(res.data.wishList));

@@ -18,8 +18,8 @@ import { StoreType } from "../store/store";
 
 export default function Orders() {
   const dispatch:any = useDispatch()
-  const orders = useSelector((store:StoreType)=>store.user.orders)
-  let user = useSelector((store:StoreType)=>store.user.user)
+  const orders = useSelector((store:StoreType)=>store.user?.orders)
+  let user = useSelector((store:StoreType)=>store.user?.user)
 // let  userId="625ed2eb0ee7817fe8fe2efb"
   useEffect(()=>{
     if(!user) dispatch(getMeAPI())

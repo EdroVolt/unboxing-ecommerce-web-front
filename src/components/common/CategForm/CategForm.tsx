@@ -46,7 +46,7 @@ import {
                 Category name
               </FormLabel>
               <InputControl id="name" placeholder="Product name" name="name" />
-  
+
              
               <FormLabel htmlFor="product-image" mt={5}>
                 Product Image
