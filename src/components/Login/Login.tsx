@@ -12,11 +12,13 @@ import React, { useState } from "react";
 import "./login.css";
 import * as Yup from "yup";
 import { BiShowAlt } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { singInUserAPI } from "../../store/actionCreator/authActionCreator";
 import { Navigate } from "react-router";
 import { Link, useNavigate } from "react-router-dom";
 import { home } from "../../router/routePaths";
+import { getMeAPI } from "../../store/actionCreator/userActionCreator";
+import { StoreType } from "../../store/store";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email().required("Email is required"),
@@ -34,6 +36,7 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+  const user = useSelector((store: StoreType) => store.user.user);
 
   const dispatch: any = useDispatch();
   // const history = useHistory();
@@ -43,11 +46,16 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
       initialValues={initialValues}
       validationSchema={SignInSchema}
       onSubmit={(values: any) => {
-        console.log(values);
         dispatch(singInUserAPI(values.email, values.password));
+        console.log(localStorage.getItem("token"));
 
-        setIsAuthenticated(true);
-        navigate("/");
+        if (localStorage.getItem("token")) {
+          setIsAuthenticated(true);
+          navigate("/");
+        } else {
+          setIsAuthenticated(false);
+          alert("enter valid variables");
+        }
 
         // window.location.reload();
       }}
@@ -121,7 +129,9 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
                   Sign In
                 </Button>
                 {/* </Link> */}
-                <Button className="form_button">Create an account</Button>
+                <Button className="form_button">
+                  <Link to="/signUp">Create an account</Link>
+                </Button>
               </Form>
             </Box>
           </>

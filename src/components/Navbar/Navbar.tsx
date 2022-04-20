@@ -49,7 +49,10 @@ import {
   editUserAPI,
   getMeAPI,
 } from "../../store/actionCreator/userActionCreator";
-import { getAllProductsByNameAndCategoryAPI } from "../../store/actionCreator/productActionCreator";
+import {
+  getAllProductsAPI,
+  getAllProductsByNameAndCategoryAPI,
+} from "../../store/actionCreator/productActionCreator";
 import {
   orders,
   products,
@@ -59,9 +62,8 @@ import {
   login,
   cart,
 } from "../../router/routePaths";
-import { Navigate, useNavigate } from "react-router";
-import { any, object, string } from "prop-types";
-
+import { useNavigate } from "react-router";
+import { GoLocation } from "react-icons/all";
 interface city {
   id: string;
   governorate_id: string;
@@ -73,33 +75,27 @@ interface government {
   governorate_name_ar: string;
   governorate_name_en: string;
 }
-export default function Navbar({ isAuthenticated }: any) {
+export default function Navbar({ isAuth }: any, { setIsAuth }: any) {
+  const handleInputChange = () => {
+    if (isAuth) {
+      localStorage.clear();
+      navigate("/");
+    } else navigate("/login");
+  };
+
   const [page, setPage] = useState(1);
   const [userGovernment, setgovernment] = useState<government | undefined>({
     id: "3",
     governorate_name_ar: "الأسكندرية",
     governorate_name_en: "Alexandria",
   });
-  const categories = useSelector(
-    (store: StoreType) => store.category.categories
-  );
-  const user = useSelector((store: StoreType) => store.user.user);
-  const {
-    isOpen: isMenuOpen,
-    onOpen: onMenuOpen,
-    onClose: onMenuClose,
-  } = useDisclosure();
-
-  const dispatch: any = useDispatch();
+  const [searchFor, setSearchFor] = useState("");
 
   const [searchValue, setSearchedCategory] = useState<CategoryType>({
     _id: "1",
     name: "shoes",
     image: "ff",
   });
-  const [searchFor, setSearchFor] = useState("");
-  const svgColor = useColorModeValue("black", "white");
-
   const [governmentsCities, setGovernmentsCities] = useState<
     Array<city> | undefined
   >([
@@ -116,6 +112,20 @@ export default function Navbar({ isAuthenticated }: any) {
     city_name_ar: "15 مايو",
     city_name_en: "15 May",
   });
+  const categories = useSelector(
+    (store: StoreType) => store.category.categories
+  );
+  const user = useSelector((store: StoreType) => store.user.user);
+  const {
+    isOpen: isMenuOpen,
+    onOpen: onMenuOpen,
+    onClose: onMenuClose,
+  } = useDisclosure();
+
+  const dispatch: any = useDispatch();
+
+  const svgColor = useColorModeValue("black", "white");
+  const products = useSelector((store: StoreType) => store.product.products);
   const navigate = useNavigate();
   const {
     isOpen: isModalOpen,
@@ -125,8 +135,9 @@ export default function Navbar({ isAuthenticated }: any) {
   useEffect(() => {
     dispatch(getAllCategoriesAPI(page));
     dispatch(getMeAPI());
-    console.log(isAuthenticated);
-  }, []);
+    dispatch(getAllProductsAPI(1));
+    console.log(isAuth);
+  }, [isAuth]);
   console.log(user);
   return (
     <>
@@ -145,17 +156,7 @@ export default function Navbar({ isAuthenticated }: any) {
                   <Box textAlign={"start"}>
                     <Box>Deliver To</Box>
                     <HStack>
-                      <svg
-                        width="24"
-                        height="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        // fill-rule="evenodd"
-                        // clip-rule="evenodd"
-                        fill={svgColor}
-                      >
-                        <path d="M12 10c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2m0-5c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3m-7 2.602c0-3.517 3.271-6.602 7-6.602s7 3.085 7 6.602c0 3.455-2.563 7.543-7 14.527-4.489-7.073-7-11.072-7-14.527m7-7.602c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602" />
-                      </svg>
-                      {/* government choosing */}
+                      <GoLocation /> {/* government choosing */}
                       <Box>
                         <VStack>
                           <Button variant="link" onClick={onModalOpen}>
@@ -277,8 +278,8 @@ export default function Navbar({ isAuthenticated }: any) {
                 >
                   <Text fontSize={11}>
                     {" "}
-                    "Hello",{isAuthenticated ? user?.name : null}
-                  </Text>{" "}
+                    "Hello",{isAuth ? user?.name : null}
+                  </Text>
                   <Text fontSize={13} fontWeight={"bold"}>
                     Account&Lists
                   </Text>
@@ -291,24 +292,32 @@ export default function Navbar({ isAuthenticated }: any) {
                 bgColor={useColorModeValue("white", "dark")}
               >
                 <HStack justifyContent={"center"} textAlign={"center"}>
-                  <Box>
-                    <Text fontWeight={"bold"} fontSize={16}>
-                      Your list
-                    </Text>
-                    <MenuItem fontSize={11}>
-                      <Link to={isAuthenticated ? "/wishlist" : "/login"}>
-                        {isAuthenticated ? "visit your list" : "sign in"}
-                      </Link>
-                    </MenuItem>
-                  </Box>
+                  {isAuth ? (
+                    <>
+                      {" "}
+                      <Box>
+                        <Text fontWeight={"bold"} fontSize={16}>
+                          Your list
+                        </Text>
+                        <MenuItem fontSize={11}>
+                          <Link to="/wishlist">"visit your list"</Link>
+                        </MenuItem>
+                      </Box>
+                    </>
+                  ) : null}
                   <MenuDivider color={"black"} bgColor={"black"}></MenuDivider>{" "}
                   <Box>
                     <Text fontWeight={"bold"} fontSize={16}>
                       Your Accounts
                     </Text>
                     <MenuItem fontSize={11}>
-                      <Link to={isAuthenticated ? "/profile" : "/login"}>
-                        {isAuthenticated ? "account" : "sign in"}
+                      <Link to={isAuth ? "/profile" : "/login"}>
+                        {isAuth ? "account" : "sign in"}
+                      </Link>
+                    </MenuItem>
+                    <MenuItem fontSize={11}>
+                      <Link to={isAuth ? "/profile" : "/signUp"}>
+                        {isAuth ? null : "signUp"}
                       </Link>
                     </MenuItem>
                   </Box>
@@ -316,12 +325,17 @@ export default function Navbar({ isAuthenticated }: any) {
               </MenuList>
             </Menu>
             <Box alignSelf={"center"} mx={4}>
-              <Link to={isAuthenticated ? "/wishlist" : "/"}>
-                {isAuthenticated ? "wishlist" : null}
+              <Link to={isAuth ? "/wishlist" : "/"}>
+                {isAuth ? "wishlist" : null}
               </Link>
             </Box>
             <Box alignSelf={"center"} mx={4}>
-              <Link to={orders}> Orders</Link>
+              <Link to={"/products"}>products</Link>
+            </Box>
+            <Box alignSelf={"center"} mx={4}>
+              <Link to={isAuth ? "orders" : "/"}>
+                {isAuth ? "orders" : null}
+              </Link>
             </Box>
             <Box
               _hover={{ border: "black", borderWidth: "2" }}
@@ -329,18 +343,26 @@ export default function Navbar({ isAuthenticated }: any) {
               alignSelf={"center"}
               mx={4}
             >
-              <HStack>
-                <svg
-                  fill={svgColor}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 576 512"
-                  width={"70"}
-                  height={"40"}
-                >
-                  <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
-                </svg>
-                <Link to={isAuthenticated ? "/cart" : "/login"}>cart</Link>
-              </HStack>
+              {" "}
+              <Link to={isAuth ? "/cart" : "/login"}>
+                <HStack>
+                  <svg
+                    fill={svgColor}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 576 512"
+                    width={"70"}
+                    height={"40"}
+                  >
+                    <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
+                  </svg>
+                  <Box> cart</Box>
+                </HStack>{" "}
+              </Link>
+            </Box>
+            <Box alignSelf={"center"}>
+              <Button onClick={handleInputChange}>
+                {isAuth ? "Logout" : "Login"}
+              </Button>
             </Box>
           </Flex>
         </Flex>
@@ -489,4 +511,7 @@ export function Navbar2({ isAuthenticated }: any) {
       )}
     </>
   );
+}
+function useCallback(arg0: (event: any) => void, arg1: any[]) {
+  throw new Error("Function not implemented.");
 }

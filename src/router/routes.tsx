@@ -28,14 +28,18 @@ import React, { useEffect, useState } from "react";
 import PrivateRoute from "./PrivateRoute";
 import Navbar from "../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
+import { boolean } from "yup";
+import { StoreType } from "../store/store";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
   // const [isLogged, setIsLoggged] = useState(false);
   // console.log(isLogged);
-
-  const user = useSelector<any>((state) => state.user.user);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const handleAuthChanges = (isAuthenticated: any) => {
+    setIsAuthenticated(!isAuthenticated);
+  };
+  const user = useSelector<any>((store: StoreType) => store.user.user);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   console.log("Auth", isAuthenticated);
   useEffect(() => {
@@ -47,11 +51,11 @@ const Router = () => {
     }
 
     // eslint-disable-next-line
-  }, [user]);
+  }, []);
 
   return (
     <>
-      <Navbar isAuth={isAuthenticated} />
+      <Navbar isAuth={isAuthenticated} setIsAuth={setIsAuthenticated} />
       <Routes>
         <Route path={home} element={<Home />} />
 
