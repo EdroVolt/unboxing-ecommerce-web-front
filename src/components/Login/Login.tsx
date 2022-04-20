@@ -6,6 +6,7 @@ import {
   InputGroup,
   InputRightElement,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React, { useEffect, useState } from "react";
@@ -28,6 +29,7 @@ const SignInSchema = Yup.object().shape({
     .min(8, "Password is too short - should be 8 chars minimum"),
 });
 const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
+  const toast = useToast();
   const initialValues = {
     email: "",
     password: "",
@@ -49,17 +51,23 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
       initialValues={initialValues}
       validationSchema={SignInSchema}
       onSubmit={(values: any) => {
-        try {
-          dispatch(singInUserAPI(values.email, values.password));
-          console.log(localStorage.getItem("token"));
+        dispatch(singInUserAPI(values.email, values.password));
+
+        if (localStorage.getItem("token")) {
           setIsAuthenticated(true);
-          navigate("/");
-        } catch {
-          alert("enter valid variables");
-
+          window.location.assign("/");
+        } else {
+          toast({
+            title: " enter a valid email or password.",
+            description: " enter a valid email or password",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
           setIsAuthenticated(false);
-        }
 
+          navigate("/login");
+        }
         // window.location.reload();
       }}
     >

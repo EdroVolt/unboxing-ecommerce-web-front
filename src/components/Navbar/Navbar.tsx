@@ -487,8 +487,6 @@ export default function Navbar({ isAuth }: any) {
                           editUserAPI({
                             ...user,
                             address: {
-                              ...user?.address,
-
                               government: userGovernment?.governorate_name_en,
                             },
                           })
