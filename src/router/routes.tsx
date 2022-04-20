@@ -26,7 +26,6 @@ import SingUp from "../components/SignUp/SignUp";
 import React, { useEffect, useState } from "react";
 // import DashBoard from "../pages/DashBoard";
 import PrivateRoute from "./PrivateRoute";
-import Navbar from "../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 // import NotFound from "../pages/NotFound";
 
@@ -51,7 +50,6 @@ const Router = () => {
 
   return (
     <>
-      <Navbar />
       <Routes>
         <Route path={home} element={<Home />} />
 

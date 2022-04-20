@@ -20,8 +20,8 @@ const initialState: stateType = {
   user: null,
   products: [],
   categories: [],
-  cart: { products: [], totalCount: 0 },
-  wishList: { products: [], totalCount: 0 },
+  cart: { products: [], totalPrice: 0 },
+  wishList: { products: [], totalPrice: 0 },
   orders: [
     // {
     //   products: [{ product: "", count: 0 }],

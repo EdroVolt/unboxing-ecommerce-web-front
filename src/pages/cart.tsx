@@ -13,68 +13,59 @@ import {
 import { CheckIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../store/store";
-import { checkoutOrder, getMeAPI, getUserCartAPI } from "../store/actionCreator/userActionCreator";
+import {
+  checkoutOrder,
+  getMeAPI,
+  getMyCartAPI,
+} from "../store/actionCreator/userActionCreator";
 import OrderType from "../models/Order.model";
 import ProductType from "../models/Product.model";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
-  const products = useSelector((store: StoreType) => store.user.cart?.products);
+  const products = useSelector((store: StoreType) => store.user.user.cart);
+  const cart = useSelector((store: StoreType) => store.user.cart);
   let user = useSelector((store: StoreType) => store.user.user);
 
-
+ 
   useEffect(() => {
     if (!user) dispatch(getMeAPI());
   }, []);
 
-  useEffect(()=>{
-    if(!products?.length && user?._id) dispatch(getUserCartAPI(user._id))
-  },[user])
+  useEffect(() => {
+    if (!products?.length && user?._id) dispatch(getMyCartAPI());
+  }, [user, products]);
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const order:OrderType ={
-    products:products?.map((product:any)=>{
-      return {product : product.product._id, count:product.count}
+  const order: OrderType = {
+    products: products.products?.map((product: any) => {
+      return { product: product.product._id, count: product.count };
     }),
-    totalCount:totalCount,
-    paymentMethod:"cash"
-  }
+    totalCount:products.products.length,
+    paymentMethod: "cash",
+  };
 
   const setTotalCountF = () => {
     let productsCount = 0;
-    products?.map((product:any) => {
+    products?.products?.map((product: any) => {
       productsCount += product.count;
       return setTotalCount(productsCount);
     });
   };
 
-  const setTotalPriceF = () => {
-    let productsPrice = 0;
-    products?.map((product:any) => {
-      console.log(product.product.price);
-      productsPrice=product.product.price*product.count
-      // productsPrice += product.product.price;
-      console.log(productsPrice);
-      return setTotalPrice(productsPrice);
-    });
+  const checkOut = () => {
+    console.log(order);
+    dispatch(checkoutOrder(user._id, order));
   };
-
-  const checkOut=()=>{
-    console.log(order)
-     dispatch(checkoutOrder(user._id,order))
-  }
-
-  useEffect(()=>{
-    setTotalPriceF()
-  },[products])
 
   return (
     <div>
       <Heading
         fontSize={"3xl"}
         fontFamily={"body"}
+        fontWeight={"bold"}
         color={useColorModeValue("yellow.500", "white")}
         ml={{ sm: "10", md: "90" }}
         mb={10}
@@ -83,9 +74,10 @@ export default function Cart() {
         Cart{" "}
       </Heading>
       <Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-        {products?.map((product:any) => {
+        {products?.products?.map((product: any) => {
           return (
             <SmallCard
+              _id={product.product._id}
               name={product.product.name}
               count={product.count}
               categoryName={product.categoryName}
@@ -93,6 +85,7 @@ export default function Cart() {
               size={product.size}
               price={product.product.price}
               color={product.color}
+              discount={product.product.discount}
               buttonName=" Add to WishList "
             />
           );
@@ -101,18 +94,23 @@ export default function Cart() {
       <Stack
         borderWidth="1px"
         borderRadius="lg"
-        w={{ sm: "100%", md: "41%" }}
-        ml={{ sm: "1", md: "20" }}
+        w={{ sm: "100%", md: "50%" }}
+        // ml={{ sm: "1", md: "100" }}
         direction={{ base: "row", md: "row", lg: "row" }}
         justifyContent={"space-between"}
+       margin={"auto"}
       >
         <Text
-          ml={{ sm: "10", md: "15" }}
+          ml={{ sm: "15", md: "15" }}
           mt={3}
           mb={3}
           fontSize={{ sm: "xl", md: "xl" }}
         >
-          Total Price: {totalPrice}
+          <Text fontWeight={"black"} display={"inline-block"} mr={2}>
+            {" "}
+            Total Price
+          </Text>
+          : ${products.totalPrice} USD
         </Text>
         <Button
           colorScheme={useColorModeValue("gray.900", "gray.600")}
@@ -120,6 +118,8 @@ export default function Cart() {
           pr={15}
           mt={3}
           mb={3}
+          textDecoration={"underline"}
+          fontWeight={"bold"}
           fontSize={{ sm: "l", md: "xl" }}
           onClick={checkOut}
         >

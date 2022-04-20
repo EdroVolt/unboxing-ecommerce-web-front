@@ -38,15 +38,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../../../store/store";
 import {
-  addProductToUserCartAPI,
-  addProductToUserWishListAPI,
+  addProductToMyCartAPI,
+  addProductToMyWishListAPI,
   getMeAPI,
   getUserDetailsAPI,
 } from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
   _id = "",
-  name = "Watch ",
+  name = " ",
   description,
   count = 1,
   sizeCount = {
@@ -83,20 +83,16 @@ export default function Simple({
   const [selectedCount, setSelectedCount] = useState(count);
 
   const cart = {
-    products: {
-      product: { _id },
+      product: _id,
       count: selectedCount,
-      size: userSize,
-    },
   };
   const cartHandler = (cart: any) => {
-    dispatch(addProductToUserCartAPI(user._id, cart));
+    dispatch(addProductToMyCartAPI(cart));
     console.log(cart);
-    console.log(reviews);
   };
 
   const wishListHandler = (cart: any) => {
-    dispatch(addProductToUserWishListAPI(user._id, cart));
+    dispatch(addProductToMyWishListAPI(cart));
     console.log(cart);
   };
   const [apled, setApled] = useState(false);
@@ -105,20 +101,19 @@ export default function Simple({
   const increaseCount = () => {
     if (selectedCount <= userCount) {
       setSelectedCount(selectedCount + 1);
-      setApledd(false) 
-    }else{
-      setApled(true)
-     }
+      setApledd(false);
+    } else {
+      setApled(true);
+    }
   };
 
   const decreaseCount = () => {
     if (selectedCount > 1) {
       setSelectedCount(selectedCount - 1);
-      setApled(false)
+      setApled(false);
+    } else {
+      setApledd(true);
     }
-    else{
-      setApledd(true) 
-     }
   };
 
   return (
@@ -175,8 +170,12 @@ export default function Simple({
               ${price} USD
             </Text>
             {discount > 0 && (
+              <Text
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              <Text  color={useColorModeValue("gray.500", "gray.400")} fontWeight={300} fontSize={"xl"}>
+                color={useColorModeValue("gray.500", "gray.400")}
+                fontWeight={300}
+                fontSize={"xl"}
+              >
                 {" "}
                 ${price - (price * discount) / 100} USD
               </Text>
@@ -225,9 +224,11 @@ export default function Simple({
               </Text>
               <Text
                 color={useColorModeValue("black", "white")}
-                fontSize={"l"}
-                fontWeight={"300"}
+                fontSize={"s"}
+                fontWeight={"bond"}
                 textAlign={"left"}
+                mb={2}
+
               >
                 Size
               </Text>
@@ -242,7 +243,7 @@ export default function Simple({
                         setUserSize("xl"),
                         setSelectedCount(1),
                         setApled(false),
-                        setApledd(true)
+                        setApledd(true),
                       ]}
                     >
                       XL
@@ -256,7 +257,7 @@ export default function Simple({
                         setUserSize("l"),
                         setSelectedCount(1),
                         setApled(false),
-                        setApledd(true)
+                        setApledd(true),
                       ]}
                     >
                       L
@@ -270,7 +271,7 @@ export default function Simple({
                         setUserSize("md"),
                         setSelectedCount(1),
                         setApled(false),
-                        setApledd(true)
+                        setApledd(true),
                       ]}
                     >
                       md
@@ -284,7 +285,7 @@ export default function Simple({
                         setUserSize("s"),
                         setSelectedCount(1),
                         setApled(false),
-                        setApledd(true)
+                        setApledd(true),
                       ]}
                     >
                       S
@@ -298,7 +299,7 @@ export default function Simple({
                         setUserSize("xs"),
                         setSelectedCount(1),
                         setApled(false),
-                        setApledd(true)
+                        setApledd(true),
                       ]}
                     >
                       XS
@@ -308,23 +309,27 @@ export default function Simple({
               </List>
               <Text
                 color={useColorModeValue("black", "white")}
-                fontSize={"l"}
-                fontWeight={"300"}
+                fontSize={"s"}
+                fontWeight={"bond"}
                 textAlign={"left"}
                 mb={2}
-             
+                mt={2}
               >
                 Count
               </Text>
-          
-              <Box display={"flex"} flexDirection={"row-reverse"} alignItems={"stretch"} gap={"px"}>
+
+              <Box
+                display={"flex"}
+                flexDirection={"row-reverse"}
+                alignItems={"stretch"}
+                gap={"px"}
+              >
                 <Button
-                   color={useColorModeValue("gray.500", "gray.800")}
+                  color={useColorModeValue("black", "gray.800")}
                   mr={1}
                   bg={"gray.100"}
                   onClick={increaseCount}
                   disabled={apled}
-                      
                 >
                   +
                 </Button>
@@ -333,21 +338,19 @@ export default function Simple({
                   // width={"xs"}
                   width={"100%"}
                   display={"inline-block"}
-                  padding={"1.2%"}
+                  padding={"1%"}
                   borderRadius={"7px"}
                   textAlign="center"
-                  color={useColorModeValue("gray.500", "gray.800")}
+                  color={useColorModeValue("black", "gray.800")}
                 >
                   {selectedCount}
                 </Text>
                 <Button
-           
                   bg={"gray.100"}
                   ml={1}
                   onClick={decreaseCount}
                   disabled={apledd}
-                  color={useColorModeValue("gray.500", "gray.900")}
-
+                  color={useColorModeValue("black", "gray.900")}
                 >
                   -
                 </Button>

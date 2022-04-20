@@ -1,56 +1,40 @@
 import { useEffect, useState } from "react";
 import SmallCard from "../components/common/SmallCard/SmallCard";
 import {  Grid, Heading, useColorModeValue } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../store/store";
+import { getMeAPI, getMyCartAPI } from "../store/actionCreator/userActionCreator";
 
 export default function WishList() {
-  const [products, setProducts] = useState([
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images: "",
-      price: 500,
-      color: "red",
-    },
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images: "",
-      price: 500,
-      color: "red",
-    },
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images: "",
-      price: 500,
-      color: "red",
-    },
-  ]);
+  const dispatch: any = useDispatch();
+
+  const products = useSelector((store: StoreType) => store.user.user.wishList);
+  const cart = useSelector((store: StoreType) => store.user.cart);
+  let user = useSelector((store: StoreType) => store.user.user);
+
+
+  useEffect(() => {
+    if (!user) dispatch(getMeAPI());
+    
+  }, []);
+  useEffect(()=>{
+    if(!products?.length && user?._id) dispatch(getMyCartAPI())
+    // console.log(cart)
+  },[user])
+
+  
   const [totalCount, setTotalCount]=useState(0)
   const [totalPrice, setTotalPrice]=useState(0)
 
-  const setTotalCountF=() =>{
-   let  productsCount=0;
-   products.map((product)=>{
-     console.log(product.count)
-    productsCount+=product.count
-    console.log(productsCount)
-    return setTotalCount(productsCount)
-   })
-  }
+  const setTotalCountF = () => {
+    let productsCount = 0;
+    products?.products?.map((product:any) => {
+      productsCount += product.count;
+      return setTotalCount(productsCount);
+    });
+  };
 
-  const setTotalPriceF=() =>{
-    let  productsPrice=0;
-    products.map((product)=>{
-      console.log(product.price)
-     productsPrice+=product.price
-     console.log(productsPrice)
-     return setTotalCount(productsPrice)
-    })
-   }
+
 
   return (
     <div>
@@ -65,15 +49,17 @@ export default function WishList() {
         Wish List
       </Heading>
     <Grid templateColumns={{sm: "repeate(1, 1fr)" ,md:"repeat(2, 1fr)"}} >
-      {products.map((product) => {
+      {products?.products?.map((product:any) => {
         return (
           <SmallCard
+          _id={product.product._id}
             name={product.name}
             count={product.count}
             categoryName={product.categoryName}
             images={product.images}
             price={product.price}
             color={product.color}
+            discount={product.dicount}
             buttonName=" Add to Cart "
           />
         );
