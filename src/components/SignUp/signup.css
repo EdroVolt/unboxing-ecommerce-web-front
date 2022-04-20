@@ -1,16 +1,16 @@
 form {
-  max-width: 400px;
-  width: 100%;
-  margin: 4rem auto 0;
-  box-shadow: 1px 1px 2px 2px #dadada;
-  padding: 2rem;
+  margin: 1rem auto 0;
+  /* box-shadow: 1px 1px 2px 2px #6d6d6d; */
+  border: 1px solid rgb(119, 113, 113)
+
+
 }
 .text{
-  text-align: center;
+  text-align: left;
   margin: .8rem 0;
 }
 .title{
-  text-align: center;
+  text-align: left;
 }
 
 .form-control {
@@ -40,7 +40,7 @@ input::placeholder{
   opacity: .4;
 }
 .form-group{
-  margin-bottom: 1rem !important;
+  margin-bottom: .4rem !important;
 }
 .input-feedback {
   color: rgb(235, 54, 54);
@@ -50,14 +50,16 @@ input::placeholder{
 }
 .form_button {
   padding: 10px 15px;
-  color: #ffffff !important;
-  background-color: #03ddff !important;
+  color: #ffffff !important;;
   border: 1px solid rgb(70, 153, 179);
   width: 100% !important;
   margin-top: 2rem !important;
 }
+.form_button:hover{
+  background-color: #03ddff !important;
+}
 .rest{
-    background-color: red !important;
+    /* background-color: red !important; */
     border: 1px solid rgb(70, 153, 179);
     width: 100% !important;
     margin-top: 2rem !important;
@@ -67,4 +69,5 @@ input::placeholder{
 .error {
   color: red;
   font-size: .7rem;
+  text-align: left;
 }
