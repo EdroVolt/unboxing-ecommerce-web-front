@@ -37,7 +37,7 @@ const theme = extendTheme({
 export const App = () => (
   <Provider store={Store}>
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
+      <Box fontSize="xl">
         {/* <Grid minH="100vh" p={3}> */}
         {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
         {/* <NotFound /> */}

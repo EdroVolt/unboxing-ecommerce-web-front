@@ -19,7 +19,7 @@ import ProductType from "../models/Product.model";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
-  const products = useSelector((store: StoreType) => store.user.cart.products);
+  const products = useSelector((store: StoreType) => store.user.cart?.products);
   let user = useSelector((store: StoreType) => store.user.user);
 
 
@@ -35,7 +35,7 @@ export default function Cart() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const order:OrderType ={
-    products:products.map((product:any)=>{
+    products:products?.map((product:any)=>{
       return {product : product.product._id, count:product.count}
     }),
     totalCount:totalCount,
