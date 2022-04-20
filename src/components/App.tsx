@@ -39,6 +39,7 @@ const theme = extendTheme({
 export const App = () => (
   <Provider store={Store}>
     <ChakraProvider theme={theme}>
+
       <Navbar />
       <Box my="25" minHeight={"49vh"} fontSize="xl">
         {/* <Grid minH="100vh" p={3}> */}
