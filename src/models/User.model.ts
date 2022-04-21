@@ -5,9 +5,9 @@ type UserType = {
   password: string;
   phoneNumber?: string;
   address?: {
-    city: string;
-    street: string;
-    government: string;
+    city?: string;
+    street?: string;
+    government?: string;
   };
   orders?: [
     {
