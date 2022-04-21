@@ -1,5 +1,5 @@
 type CategoryType = {
-  _id?: string | number;
+  _id?: string | undefined;
   name: string;
   image: string;
   createdAt?: Date;

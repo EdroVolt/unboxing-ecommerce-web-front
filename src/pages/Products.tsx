@@ -1,82 +1,40 @@
-import { Grid, Link } from "@chakra-ui/react"
+import { Grid } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import Card from "../components/common/Card/Card"
+import ProductType from "../models/Product.model"
+import { getAllProductsAPI } from "../store/actionCreator/productActionCreator"
+import { StoreType } from "../store/store"
+import {Link } from "react-router-dom"
+import { productDetails } from "../router/routePaths"
+
 
 export default function Products(){
-    const [products, setProducts] = useState([
-        {
-          name: "Watch",
-          count: 6,
-          categoryName: "Electronics",
-          images: "",
-          price: 500,
-          color: "black",
-          isOffer: false,
-          reviewCount:5,
-          rating:5
-        },
-        {
-          name: "Watch",
-          count: 6,
-          categoryName: "Electronics",
-          images: "",
-          price: 500,
-          color: "blue",
-          isOffer: true,
-          reviewCount:4,
-          rating:3
+  const dispatch:any = useDispatch()
+  // const [products, setProducts]= useState(useSelector([])
+const products = useSelector((store:StoreType)=>store.product.products)
 
-        },
-        {
-          name: "Watch",
-          count: 6,
-          categoryName: "Electronics",
-          images: "",
-          price: 500,
-          color: "red",
-          isOffer: false,
-          reviewCount:3,
-          rating:2
+ useEffect(()=>{
+  if(!products.length) dispatch(getAllProductsAPI())
+},[])
 
-        },
-        {
-            name: "Watch",
-            count: 6,
-            categoryName: "Electronics",
-            images: "",
-            price: 500,
-            color: "red",
-            isOffer: false,
-            reviewCount:3,
-            rating:2
-  
-          },
-          {
-            name: "Watch",
-            count: 6,
-            categoryName: "Electronics",
-            images: "",
-            price: 500,
-            color: "red",
-            isOffer: false,
-            reviewCount:3,
-            rating:2
-  
-          },
-      ])
+console.log(products)
 
       return (
           <Grid templateColumns="repeat(5, 1fr)" gap={6} ml={6} mr={6}>
-              {products.map((product) => {
-                  return <><Card
-                      //   imageUrl={product.images} 
+              {products.map((product: ProductType) => {
+                  return <>
+                  <Link to={`/products/${product._id}`}>
+                  <Card
+                        imageUrl={product.images[0]} 
                       title={product.name}
-                      rating={product.rating}
-                      isOffer={product.isOffer}
-                      category={product.categoryName}
+                      // rating={product.rating}
+                      isOffer={product.offer}
                       formattedPrice={product.price + ""}
-                      reviewCount={product.reviewCount}
-                  ></Card></>
+                      reviewCount={product.numOfReviews}
+                  ></Card>
+                  </Link>
+                  </>
               })}
           </Grid>
       )

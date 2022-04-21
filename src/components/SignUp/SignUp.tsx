@@ -15,22 +15,25 @@ import {
   // Link,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { BiShowAlt } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { createUserAPI } from "../../store/actionCreator/userActionCreator";
 import { home, login } from "../../router/routePaths";
-import { Navigate } from "react-router";
 import Login from "../Login/Login";
+import { useNavigate } from "react-router";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
-
-  const dispatch: any = useDispatch();
   const navigate: any = useNavigate();
+  const toast = useToast();
+  const dispatch: any = useDispatch();
+
   return (
     <Formik
       initialValues={{
@@ -61,15 +64,32 @@ const SignUp = () => {
       })}
       onSubmit={(fields): any => {
         console.log(fields);
-        dispatch(
-          createUserAPI({
-            name: fields.FullName,
-            email: fields.email,
-            password: fields.password,
-            phoneNumber: fields.phoneNumber,
-          })
-        );
-        navigate(-1);
+        try {
+          dispatch(
+            createUserAPI({
+              name: fields.FullName,
+              email: fields.email,
+              password: fields.password,
+              phoneNumber: fields.phoneNumber,
+            })
+          );
+          toast({
+            title: "account created.",
+            description: `lets start with us a new journey ${fields.FullName}`,
+            status: "success",
+            duration: 20000,
+            isClosable: true,
+          });
+          navigate("/login");
+        } catch {
+          toast({
+            title: "email is already registered.",
+            description: "this email is already signed",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
       }}
       render={({ errors, touched }) => (
         <>

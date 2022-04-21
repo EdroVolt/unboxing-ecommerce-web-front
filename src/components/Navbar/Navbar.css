@@ -1,7 +1,3 @@
-@font-face {
-  font-family: "AmazonEmber_Rg";
-  font-style: normal;
-  font-weight: normal;
-  src: local("AmazonEmber_Rg "),
-    url("../common/AmazonEmber_Rg.ttf") format("tff");
+.active {
+  box-shadow: ;
 }

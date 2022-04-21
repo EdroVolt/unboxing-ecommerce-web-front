@@ -16,45 +16,39 @@ import {
   ListItem,
   Icon,
   Badge,
+  Input,
+  InputGroup,
+  InputRightElement,
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CardDetail.css";
 import { StarIcon } from "@chakra-ui/icons";
 import { FiShoppingCart } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
 import { FavouriteButton } from "../Favourite";
-
-type CardProps = {
-  name?: string;
-  description?: string;
-  count?: number;
-  sizeCount?: {
-    xs: number;
-    s: number;
-    md: number;
-    l: number;
-    xl: number;
-  };
-  categoryName?: string;
-  ingredients?: string[];
-  images?: string[];
-  price?: number;
-  discount?: number;
-  offer?: boolean;
-  reviews?: {
-    userName: string;
-    comment: string;
-    rate: number;
-  }[];
-  color?: string;
-  buttonName: string;
-};
+import ProductType from "../../../models/Product.model";
+import CartType from "../../../models/Cart.model";
+import {
+  addProductToUserCart,
+  addProductToUserWishList,
+  getUserDetails,
+} from "../../../store/actions/user.actions";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../../../store/store";
+import {
+  addProductToMyCartAPI,
+  addProductToMyWishListAPI,
+  getMeAPI,
+  getUserDetailsAPI,
+} from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
-  name = "Watch ",
+  _id = "",
+  name = " ",
   description,
-  count = 0,
+  count = 1,
   sizeCount = {
     xs: 0,
     s: 0,
@@ -62,27 +56,65 @@ export default function Simple({
     l: 0,
     xl: 0,
   },
-  categoryName,
+  category,
   ingredients,
   images = ["mm"],
   price = 0,
   discount = 0,
   offer = true,
   reviews,
-  color,
-  buttonName,
-}: CardProps) {
+}: ProductType) {
   function countLimit(count: number) {
     let countList = [];
     for (let i = 0; i < count; i++) {
       console.log(i);
       countList.push(<option>{i + 1}</option>);
-
     }
     return countList;
   }
+  const dispatch: any = useDispatch();
+  let user = useSelector((store: StoreType) => store.user.user);
+  useEffect(() => {
+    if (!user) dispatch(getMeAPI());
+  }, []);
+
   const [userCount, setUserCount] = useState(0);
   const [userSize, setUserSize] = useState("");
+  const [selectedCount, setSelectedCount] = useState(count);
+
+  const cart = {
+      product: _id,
+      count: selectedCount,
+  };
+  const cartHandler = (cart: any) => {
+    dispatch(addProductToMyCartAPI(cart));
+    console.log(cart);
+  };
+
+  const wishListHandler = (cart: any) => {
+    dispatch(addProductToMyWishListAPI(cart));
+    console.log(cart);
+  };
+  const [apled, setApled] = useState(false);
+  const [apledd, setApledd] = useState(true);
+
+  const increaseCount = () => {
+    if (selectedCount <= userCount) {
+      setSelectedCount(selectedCount + 1);
+      setApledd(false);
+    } else {
+      setApled(true);
+    }
+  };
+
+  const decreaseCount = () => {
+    if (selectedCount > 1) {
+      setSelectedCount(selectedCount - 1);
+      setApled(false);
+    } else {
+      setApledd(true);
+    }
+  };
 
   return (
     <Container maxW={"7xl"}>
@@ -96,7 +128,7 @@ export default function Simple({
             rounded={"md"}
             alt={"product image"}
             src={
-              // images[0]
+              //images[0]
               "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080"
             }
             fit={"cover"}
@@ -105,7 +137,7 @@ export default function Simple({
             h={{ base: "100%", sm: "400px", lg: "500px" }}
           />
         </Flex>
-        <Stack spacing={{ base: 6, md: 10 }}>
+        <Stack spacing={{ base: 6, md: 10 }} position={"relative"}>
           <Box as={"header"}>
             <Heading
               lineHeight={1.1}
@@ -120,7 +152,7 @@ export default function Simple({
               fontWeight={"300"}
               textAlign={"left"}
             >
-              {categoryName}
+              {category?.name}
             </Text>
             <Box display="flex" alignItems="baseline" mt={0}>
               {offer && (
@@ -138,7 +170,12 @@ export default function Simple({
               ${price} USD
             </Text>
             {discount > 0 && (
-              <Text color={"gray.900"} fontWeight={300} fontSize={"xl"}>
+              <Text
+              // eslint-disable-next-line react-hooks/rules-of-hooks
+                color={useColorModeValue("gray.500", "gray.400")}
+                fontWeight={300}
+                fontSize={"xl"}
+              >
                 {" "}
                 ${price - (price * discount) / 100} USD
               </Text>
@@ -187,28 +224,11 @@ export default function Simple({
               </Text>
               <Text
                 color={useColorModeValue("black", "white")}
-                fontSize={"l"}
-                fontWeight={"300"}
-                textAlign={"left"}
-                display="inline-block"
-                mr={4}
-              >
-                Color:
-              </Text>
-              <Text
-                color={useColorModeValue("gray.500", "gray.400")}
                 fontSize={"s"}
-                fontWeight={"300"}
+                fontWeight={"bond"}
                 textAlign={"left"}
-                display="inline-block"
-              >
-                {color}
-              </Text>
-              <Text
-                color={useColorModeValue("black", "white")}
-                fontSize={"l"}
-                fontWeight={"300"}
-                textAlign={"left"}
+                mb={2}
+
               >
                 Size
               </Text>
@@ -216,58 +236,138 @@ export default function Simple({
                 <ListItem>
                   {sizeCount?.xl > 0 && (
                     // eslint-disable-next-line no-sequences
-                    <Button ml={1} onClick={() => [setUserCount(sizeCount.xl), setUserSize("XL")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.xl),
+                        setUserSize("xl"),
+                        setSelectedCount(1),
+                        setApled(false),
+                        setApledd(true),
+                      ]}
+                    >
                       XL
                     </Button>
                   )}
                   {sizeCount?.l > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.l), setUserSize("L")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.l),
+                        setUserSize("l"),
+                        setSelectedCount(1),
+                        setApled(false),
+                        setApledd(true),
+                      ]}
+                    >
                       L
                     </Button>
                   )}
                   {sizeCount?.md > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.md), setUserSize("md")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.md),
+                        setUserSize("md"),
+                        setSelectedCount(1),
+                        setApled(false),
+                        setApledd(true),
+                      ]}
+                    >
                       md
                     </Button>
                   )}
                   {sizeCount?.s > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.s), setUserSize("s")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.s),
+                        setUserSize("s"),
+                        setSelectedCount(1),
+                        setApled(false),
+                        setApledd(true),
+                      ]}
+                    >
                       S
                     </Button>
                   )}
                   {sizeCount?.xs > 0 && (
-                    <Button ml={1} onClick={() =>[ setUserCount(sizeCount.xs), setUserSize("xs")]}>
+                    <Button
+                      ml={1}
+                      onClick={() => [
+                        setUserCount(sizeCount.xs),
+                        setUserSize("xs"),
+                        setSelectedCount(1),
+                        setApled(false),
+                        setApledd(true),
+                      ]}
+                    >
                       XS
                     </Button>
                   )}
                 </ListItem>
-                <Text
-                  color={useColorModeValue("black", "white")}
-                  fontSize={"l"}
-                  fontWeight={"300"}
-                  textAlign={"left"}
-                  display="inline-block"
-                  mr={4}
-                >
-                  Count
-                </Text>
-                <Select
-                  onChange={(event) => {
-                    count = Number(event.target.value);
-                    price = count * price;
-                  }}
-                  width="20%"
-                >
-                  {countLimit(userCount)}
-                </Select>
               </List>
+              <Text
+                color={useColorModeValue("black", "white")}
+                fontSize={"s"}
+                fontWeight={"bond"}
+                textAlign={"left"}
+                mb={2}
+                mt={2}
+              >
+                Count
+              </Text>
+
+              <Box
+                display={"flex"}
+                flexDirection={"row-reverse"}
+                alignItems={"stretch"}
+                gap={"px"}
+              >
+                <Button
+                  color={useColorModeValue("black", "gray.800")}
+                  mr={1}
+                  bg={"gray.100"}
+                  onClick={increaseCount}
+                  disabled={apled}
+                >
+                  +
+                </Button>
+                <Text
+                  bg={"gray.100"}
+                  // width={"xs"}
+                  width={"100%"}
+                  display={"inline-block"}
+                  padding={"1%"}
+                  borderRadius={"7px"}
+                  textAlign="center"
+                  color={useColorModeValue("black", "gray.800")}
+                >
+                  {selectedCount}
+                </Text>
+                <Button
+                  bg={"gray.100"}
+                  ml={1}
+                  onClick={decreaseCount}
+                  disabled={apledd}
+                  color={useColorModeValue("black", "gray.900")}
+                >
+                  -
+                </Button>
+              </Box>
             </Box>
           </Stack>
+
           <FavouriteButton
             position="absolute"
-            top="4"
+            top="-7"
             right="4"
+            w={"50px"}
+            children={"Add to wish list"}
             aria-label={`Add ${name} to your favourites`}
+            onClick={() => {
+              wishListHandler(cart);
+            }}
           />
           <Button
             rounded={"none"}
@@ -282,22 +382,12 @@ export default function Simple({
               transform: "translateY(2px)",
               boxShadow: "lg",
             }}
-            onClick={() =>
-              console.log(
-                images[0],
-                name,
-                categoryName,
-                count,
-                price,
-                color,
-                userSize
-              )
-            }
+            onClick={() => cartHandler(cart)}
           >
-            <chakra.a href={"#"} display={"flex"}>
+            Add To Cart
+            <chakra.a href={"#"} display={"flex"} marginStart={5}>
               <Icon as={FiShoppingCart} h={7} w={7} alignSelf={"center"} />
             </chakra.a>{" "}
-            {buttonName}
           </Button>
 
           <Stack direction="row" alignItems="center" justifyContent={"center"}>
@@ -335,7 +425,7 @@ export default function Simple({
                     display="inline-block"
                   />
                   <Text fontWeight={"bold"} display="inline-block" ml="2">
-                    {review?.userName}
+                    {review?.userId?.name}
                   </Text>
                   <List spacing={2}>
                     <ListItem ml="10">

@@ -20,8 +20,8 @@ const initialState: stateType = {
   user: null,
   products: [],
   categories: [],
-  cart: { products: [], totalCount: 0 },
-  wishList: { products: [], totalCount: 0 },
+  cart: { products: [], totalPrice: 0 },
+  wishList: { products: [], totalPrice: 0 },
   orders: [
     // {
     //   products: [{ product: "", count: 0 }],
@@ -75,6 +75,7 @@ export const productReducer = (
     case actions.GET_ALL_PRODUCTS:
     case actions.GET_ALL_PRODUCTS_BY_CATEGORY:
     case actions.GET_ALL_PRODUCTS_BY_NAME:
+    case actions.GET_PRODUCT_DETAILS:
       return { ...state, products: payload.products };
 
     default:

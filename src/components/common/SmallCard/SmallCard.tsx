@@ -9,8 +9,12 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import { deleteProductFromMyCartAPI } from "../../../store/actionCreator/userActionCreator";
+import { useDispatch } from "react-redux";
+import "../CardDetail/CardDetail";
 
 type CardProps = {
+  _id: string;
   name?: string;
   count?: number;
   categoryName?: string;
@@ -23,6 +27,7 @@ type CardProps = {
   buttonName?: string;
 };
 export default function SmallCard({
+  _id,
   name,
   count = 1,
   categoryName,
@@ -30,7 +35,15 @@ export default function SmallCard({
   price = 0,
   buttonName,
   size,
+  discount = 0,
 }: CardProps) {
+  const dispatch: any = useDispatch();
+
+  const deleteProduct = (_id: string) => {
+    console.log(_id);
+    dispatch(deleteProductFromMyCartAPI(_id));
+  };
+
   return (
     <Box ml={{ sm: "1", md: "20" }} mb={5}>
       <Stack
@@ -54,7 +67,8 @@ export default function SmallCard({
           <Heading
             fontSize={"2xl"}
             fontFamily={"body"}
-            color={useColorModeValue("yellow.500", "black")}
+            fontWeight={"bold"}
+            color={useColorModeValue("gray.800", "black")}
             px={3}
           >
             {name}
@@ -62,17 +76,42 @@ export default function SmallCard({
           <Text fontWeight={600} color={"gray.500"} size="sm" mb={4} px={3}>
             {categoryName}
           </Text>
-          <Text color={useColorModeValue("gray.700", "gray.600")} px={3}>
-            $ {price} USD
+          <Text
+            color={useColorModeValue("gray.600", "gray.500")}
+            fontWeight={300}
+            fontSize={"xl"}
+            className={discount > 0 ? "discout" : " "}
+            px={3}
+          >
+            ${price} USD
           </Text>
+          {discount > 0 && (
+            <Text
+              // eslint-disable-next-line react-hooks/rules-of-hooks
+              color={useColorModeValue("gray.700", "gray.800")}
+              fontWeight={300}
+              fontSize={"xl"}
+              px={3}
+            >
+              {" "}
+              ${price - (price * discount) / 100} USD
+            </Text>
+          )}
           <Stack direction={"row"} mt={6}>
             <Stack
               width={"100%"}
               direction={"column"}
               justifyContent={"space-between"}
             >
-           {size &&   <Text fontSize={"l"}  px={3}>Size: {size}</Text>}
-              <Text fontSize={"l"}  px={3}>Count: {count}</Text>
+              {size && (
+                <Text fontSize={"l"} px={3}>
+                  Size: {size}
+                  
+                </Text>
+              )}
+              <Text fontSize={"l"} px={3} color={useColorModeValue("gray.600", "black")}>
+                Count: {count}
+              </Text>
             </Stack>
           </Stack>
 
@@ -86,27 +125,34 @@ export default function SmallCard({
           >
             <Button
               fontSize={"sm"}
-              rounded={"full"}
-              bg={"blue.500"}
-              color={"white"}
+              rounded={"xl"}
+              bg="gray.300"
+              color={"black"}
               _hover={{
-                bg: "blue.600",
+                bg: "gray.400",
               }}
               _focus={{
-                bg: "blue.500",
+                bg: "gray.400",
               }}
             >
-              <AddIcon mr={1} /> {buttonName}
+              {/* <AddIcon mr={1} /> */}
+              {buttonName}
             </Button>
             <Button
-              bg={useColorModeValue("gray.100", "gray.400")}
+              bg={useColorModeValue("red.400", "red.400")}
               fontSize={"sm"}
-              rounded={"full"}
+              // rounded={"full"}
               _focus={{
-                bg: "gray.200",
+                bg: "red.200",
+              }}
+              _hover={{
+                bg: "red.300",
+              }}
+              onClick={() => {
+                deleteProduct(_id);
               }}
             >
-              <DeleteIcon mr={1} /> Remove
+              <DeleteIcon />
             </Button>
           </Stack>
         </Stack>

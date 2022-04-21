@@ -18,6 +18,14 @@ export const getUserDetailsAPI =
       })
       .catch((err) => console.log(err));
 
+export const getMeAPI = () => (dispatch: Dispatch<actions.ActionType>) =>
+  Unboxing.get(`/users/me`)
+    .then((res) => {
+      console.log(res);
+      dispatch(User.getUserDetails(res.data));
+    })
+    .catch((err) => console.log(err));
+
 export const createUserAPI =
   (userData: UserType) => (dispatch: Dispatch<actions.ActionType>) =>
     Unboxing.post("/register", userData)
@@ -29,7 +37,7 @@ export const createUserAPI =
 
 export const editUserAPI =
   (userData: UserType) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users`, userData)
+    Unboxing.put(`/users/${userData._id}`, userData)
       .then((res) => {
         console.log(res);
         dispatch(User.editUser(res.data));
@@ -47,29 +55,27 @@ export const deleteUserAPI =
 
 // ----------------  User Cart --------------------------
 
-export const getUserCartAPI =
-  (_id: string | number) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.get(`/users/${_id}?fields=cart`)
-      .then((res) => {
-        console.log(res);
-        dispatch(User.getUserCart(res.data.cart));
-      })
-      .catch((err) => console.log(err));
+export const getMyCartAPI = () => (dispatch: Dispatch<actions.ActionType>) =>
+  Unboxing.get(`/users/me/cart`)
+    .then((res) => {
+      console.log(res);
+      dispatch(User.addProductToUserCart(res.data.cart));
+    })
+    .catch((err) => console.log(err));
 
-export const addProductToUserCartAPI =
-  (_id: string | number, cart: CartType) =>
+export const addProductToMyCartAPI =
+  (product: { porduct: string; count: number }) =>
   (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/${_id}/cart`, cart)
+    Unboxing.post(`/users/me/cart`, product)
       .then((res) => {
         console.log(res);
         dispatch(User.addProductToUserCart(res.data.cart));
       })
       .catch((err) => console.log(err));
 
-export const deleteProductFromUserCartAPI =
-  (_id: string | number, cart: CartType) =>
-  (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/${_id}/cart`, cart)
+export const deleteProductFromMyCartAPI =
+  (productId: string) => (dispatch: Dispatch<actions.ActionType>) =>
+    Unboxing.delete(`/users/me/cart`, {data: {product: productId} })
       .then((res) => {
         console.log(res);
         dispatch(User.deleteProductFromUserCart(res.data.cart));
@@ -78,29 +84,28 @@ export const deleteProductFromUserCartAPI =
 
 // ----------------  User WishList --------------------------
 
-export const getUserWishListAPI =
-  (_id: string | number) => (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.get(`/users/${_id}?fields=wishList`)
+export const getMyWishListAPI =
+  () => (dispatch: Dispatch<actions.ActionType>) =>
+    Unboxing.get(`/users/me/wishList`)
       .then((res) => {
         console.log(res);
         dispatch(User.getUserWishList(res.data.wishList));
       })
       .catch((err) => console.log(err));
 
-export const addProductToUserWishListAPI =
-  (_id: string | number, wishList: WishListType) =>
+export const addProductToMyWishListAPI =
+  (product: { porduct: string; count: number }) =>
   (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/${_id}/wishList`, wishList)
+    Unboxing.post(`/users/me/wishList`, product)
       .then((res) => {
         console.log(res);
         dispatch(User.addProductToUserWishList(res.data.wishList));
       })
       .catch((err) => console.log(err));
 
-export const deleteProductFromUserWishListAPI =
-  (_id: string | number, wishList: WishListType) =>
-  (dispatch: Dispatch<actions.ActionType>) =>
-    Unboxing.put(`/users/${_id}/wishList`, wishList)
+export const deleteProductFromMyWishListAPI =
+  (productId: string) => (dispatch: Dispatch<actions.ActionType>) =>
+    Unboxing.delete(`/users/me/wishList`, {data: {product: productId}})
       .then((res) => {
         console.log(res);
         dispatch(User.deleteProductFromUserWishList(res.data.wishList));

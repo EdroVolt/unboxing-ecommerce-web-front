@@ -1,6 +1,6 @@
 type CartType = {
   products: { product: string; count: number }[];
-  totalCount: number;
+  totalPrice: number;
 };
 
 export default CartType;

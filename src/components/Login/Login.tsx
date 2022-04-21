@@ -5,15 +5,21 @@ import {
   Text,
   InputGroup,
   InputRightElement,
+  Input,
+  useToast,
 } from "@chakra-ui/react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./login.css";
 import * as Yup from "yup";
 import { BiShowAlt } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { singInUserAPI } from "../../store/actionCreator/authActionCreator";
+import { Navigate } from "react-router";
 import { Link, useNavigate } from "react-router-dom";
+import { home } from "../../router/routePaths";
+import { getMeAPI } from "../../store/actionCreator/userActionCreator";
+import { StoreType } from "../../store/store";
 
 const SignInSchema = Yup.object().shape({
   email: Yup.string().email().required("Email is required"),
@@ -22,7 +28,8 @@ const SignInSchema = Yup.object().shape({
     .required("Password is required")
     .min(8, "Password is too short - should be 8 chars minimum"),
 });
-const Login = () => {
+const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
+  const toast = useToast();
   const initialValues = {
     email: "",
     password: "",
@@ -31,17 +38,38 @@ const Login = () => {
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+  const user = useSelector((store: StoreType) => store.user.user);
 
   const dispatch: any = useDispatch();
+  // const history = useHistory();
   const navigate: any = useNavigate();
+  useEffect(() => {
+    dispatch(getMeAPI());
+  }, []);
+  
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={SignInSchema}
-      onSubmit={(values) => {
-        console.log(values);
+      onSubmit={(values: any) => {
         dispatch(singInUserAPI(values.email, values.password));
-        navigate(-1);
+
+        if (localStorage.getItem("token")) {
+          setIsAuthenticated(true);
+         // window.location.assign("/");
+         navigate(-1);
+        } else {
+          toast({
+            title: " enter a valid email or password.",
+            description: " enter a valid email or password",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+          setIsAuthenticated(false);
+          
+          navigate("/login");
+        }
       }}
     >
       {(formik: { errors: any; touched: any; isValid: any; dirty: any }) => {
@@ -119,7 +147,7 @@ const Login = () => {
                 </Button>
                 {/* </Link> */}
                 <Button className="form_button" bg="blue.600">
-                  <Link to="/signup">Create an account</Link>{" "}
+                  <Link to="/signup">Create an account</Link>
                 </Button>
               </Form>
             </Box>
