@@ -8,6 +8,7 @@ import {
   getMyCartAPI,
   getMyWishListAPI,
 } from "../store/actionCreator/userActionCreator";
+import { Spinner } from "@chakra-ui/spinner";
 
 export default function WishList() {
   const dispatch: any = useDispatch();
@@ -16,21 +17,23 @@ export default function WishList() {
 
   useEffect(() => {
     dispatch(getMeAPI());
- }, []);
- 
+  }, []);
+
   useEffect(() => {
     if (!user) dispatch(getMeAPI());
-     else if(!user?.wishList?.products.length){
-      setEmpty(true)
-      setnotEmpty(false)
-       console.log(user?.wishList?.products)
-     }
+    else if (user?.wishList?.products.length) {
+      setEmpty(false);
+      setnotEmpty(true);
+      console.log(user?.wishList?.products);
+    } else {
+      setEmpty(true);
+      setnotEmpty(false);
+    }
   }, [user]);
 
-
   useEffect(() => {
-    if (!user?.wishList?.products?.length && user?._id) dispatch(getMyWishListAPI());
-
+    if (!user?.wishList?.products?.length && user?._id)
+      dispatch(getMyWishListAPI());
   }, [user]);
 
   const [totalCount, setTotalCount] = useState(0);
@@ -44,43 +47,64 @@ export default function WishList() {
     });
   };
 
-  const[empty, setEmpty]=useState(false)
-  const[notEmpty, setnotEmpty]=useState(true)
- 
-
+  const [empty, setEmpty] = useState(false);
+  const [notEmpty, setnotEmpty] = useState(true);
 
   return (
     <div>
-      {notEmpty && 
-      <><Heading
-          fontSize={"3xl"}
-          fontFamily={"body"}
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          color={useColorModeValue("yellow.500", "white")}
-          ml={{ sm: "10", md: "90" }}
-        >
-          Wish List
-        </Heading><Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-            {user?.wishList?.products?.map((product: any) => {
-              return (
-                <SmallCard
-                  _id={product.product._id}
-                  name={product.name}
-                  count={product.count}
-                  categoryName={product.categoryName}
-                  images={product.images}
-                  price={product.product.price}
-                  color={product.color}
-                  discount={product.product.discount}
-                  buttonName=" Add to Cart "/>
-              );
-            })}
-          </Grid></>}
-        {empty && (
-          <Heading textAlign={"center"} color={"gray.300"} mt={30}>
-            Your wishList is Empty
-          </Heading>
+      <>
+        {!user ? (
+          <Spinner
+            position={"absolute"}
+            right={"50vw"}
+            top={"25vh"}
+            size="xl"
+          />
+        ) : (
+          <>
+            {notEmpty && (
+              <>
+                <Heading
+                  fontSize={"3xl"}
+                  fontFamily={"body"}
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  color={useColorModeValue("yellow.500", "white")}
+                  ml={{ sm: "10", md: "90" }}
+                >
+                  Wish List
+                </Heading>
+                <Grid
+                  templateColumns={{
+                    sm: "repeate(1, 1fr)",
+                    md: "repeat(2, 1fr)",
+                  }}
+                >
+                  {user?.wishList?.products?.map((product: any) => {
+                    return (
+                      <SmallCard
+                        _id={product.product._id}
+                        name={product.product.name}
+                        count={product.count}
+                        categoryName={product.categoryName}
+                        images={product.images}
+                        price={product.product.price}
+                        color={product.color}
+                        discount={product.product.discount}
+                        buttonName=" Add to Cart "
+                      />
+                    );
+                  })}
+                </Grid>
+              </>
+            )}
+            {empty && (
+              <Heading textAlign={"center"} color={"gray.300"} mt={30}>
+                Your wishList is Empty
+              </Heading>
+            )}
+          </>
         )}
+      </>
     </div>
   );
 }

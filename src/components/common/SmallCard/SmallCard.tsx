@@ -47,12 +47,14 @@ export default function SmallCard({
 
   const deleteProduct = (_id: string) => {
     if (buttonName === " Add to Cart ") {
-      dispatch(deleteProductFromMyWishListAPI(_id));
-      dispatch(getMeAPI());
+      dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
+        dispatch(getMeAPI());
+      });
       console.log(_id, buttonName);
     } else if (buttonName === " Add to WishList ") {
-      dispatch(deleteProductFromMyCartAPI(_id));
-      dispatch(getMeAPI());
+      dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
+        dispatch(getMeAPI());
+      });
       console.log("no");
     }
   };
@@ -60,13 +62,21 @@ export default function SmallCard({
     product: _id,
     count: count,
   };
-  const cartHandler = (cart: any, _id:string) => {
+  const cartHandler = (cart: any, _id: string) => {
     if (buttonName === " Add to Cart ") {
-      dispatch(addProductToMyCartAPI(cart));
-      
+      dispatch(addProductToMyCartAPI(cart)).then(() => {
+        dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
+          dispatch(getMeAPI());
+        });
+      });
+
       console.log(_id, buttonName);
     } else if (buttonName === " Add to WishList ") {
-      dispatch(addProductToMyWishListAPI(cart));
+      dispatch(addProductToMyWishListAPI(cart)).then(() => {
+        dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
+          dispatch(getMeAPI());
+        });
+      });
     }
   };
 
