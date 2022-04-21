@@ -29,6 +29,11 @@ export default function Cart() {
   console.log("my user: ", user);
 
   useEffect(() => {
+     dispatch(getMeAPI());
+  }, []);
+
+  
+  useEffect(() => {
     if (!user) dispatch(getMeAPI());
     else if(!user?.cart?.products.length){
       setEmpty(true)

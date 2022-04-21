@@ -15,8 +15,12 @@ export default function WishList() {
   let user = useSelector((store: StoreType) => store.user.user);
 
   useEffect(() => {
+    dispatch(getMeAPI());
+ }, []);
+ 
+  useEffect(() => {
     if (!user) dispatch(getMeAPI());
-    else if(!user?.wishList?.products){
+     else if(!user?.wishList?.products.length){
       setEmpty(true)
       setnotEmpty(false)
        console.log(user?.wishList?.products)

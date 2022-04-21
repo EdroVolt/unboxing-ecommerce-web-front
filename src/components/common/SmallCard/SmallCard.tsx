@@ -14,6 +14,7 @@ import {
   addProductToMyWishListAPI,
   deleteProductFromMyCartAPI,
   deleteProductFromMyWishListAPI,
+  getMeAPI,
 } from "../../../store/actionCreator/userActionCreator";
 import { useDispatch } from "react-redux";
 import "../CardDetail/CardDetail";
@@ -45,30 +46,29 @@ export default function SmallCard({
   const dispatch: any = useDispatch();
 
   const deleteProduct = (_id: string) => {
-    if (buttonName ===" Add to Cart ") {
+    if (buttonName === " Add to Cart ") {
       dispatch(deleteProductFromMyWishListAPI(_id));
+      dispatch(getMeAPI());
       console.log(_id, buttonName);
-    } else if (buttonName ===" Add to WishList ") {
+    } else if (buttonName === " Add to WishList ") {
       dispatch(deleteProductFromMyCartAPI(_id));
-      console.log("no")
+      dispatch(getMeAPI());
+      console.log("no");
     }
   };
-  const cart ={
+  const cart = {
     product: _id,
-    count:count
-  }
-  const cartHandler = (cart: any) => {
-    if (buttonName ===" Add to Cart ") {
-      dispatch(addProductToMyCartAPI(cart));
-      console.log(_id, buttonName);
-    } else if (buttonName ===" Add to WishList ") {
-      dispatch(addProductToMyWishListAPI(cart));
-      console.log("no")
-    }
-
-
+    count: count,
   };
-  
+  const cartHandler = (cart: any, _id:string) => {
+    if (buttonName === " Add to Cart ") {
+      dispatch(addProductToMyCartAPI(cart));
+      
+      console.log(_id, buttonName);
+    } else if (buttonName === " Add to WishList ") {
+      dispatch(addProductToMyWishListAPI(cart));
+    }
+  };
 
   return (
     <Box ml={{ sm: "1", md: "20" }} mb={5}>
@@ -163,7 +163,7 @@ export default function SmallCard({
               _focus={{
                 bg: "gray.400",
               }}
-              onClick={() => cartHandler(cart)}
+              onClick={() => cartHandler(cart, _id)}
             >
               {/* <AddIcon mr={1} /> */}
               {buttonName}
