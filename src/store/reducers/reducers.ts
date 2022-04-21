@@ -78,6 +78,13 @@ export const productReducer = (
     case actions.GET_PRODUCT_DETAILS:
       return { ...state, products: payload.products };
 
+    case actions.ADD_REVIEW_ON_PRODUCT:
+      return {
+        ...state,
+        products: state.products.filter((product) =>
+          product._id !== payload.product._id ? product : payload.product
+        ),
+      };
     default:
       return state;
   }

@@ -4,6 +4,7 @@ import Unboxing from "../../apis/unboxing";
 import ProductType from "../../models/Product.model";
 import * as Product from "../actions/Product.actions";
 import { ActionType } from "../actions/types";
+import ReviewType from "../../models/Review.model";
 
 // const getAllProductsBy = (
 //   filter: any,
@@ -79,6 +80,13 @@ export const addProduct =
     Unboxing.post(`/products`, productData).then((res) => {
       console.log(res);
       dispatch(Product.getAllOfferProducts(res.data));
+    });
+
+export const addReviewToProduct =
+  (productId: string, review: ReviewType) => (dispatch: Dispatch<ActionType>) =>
+    Unboxing.post(`/products/:id/reviews`, review).then((res) => {
+      console.log(res);
+      dispatch(Product.addReviewOnProduct(res.data));
     });
 
 // (product: ProductType) => ({
