@@ -63,32 +63,33 @@ const SignUp = () => {
       })}
       onSubmit={(fields): any => {
         console.log(fields);
-        try {
-          dispatch(
-            createUserAPI({
-              name: fields.FullName,
-              email: fields.email,
-              password: fields.password,
-              phoneNumber: fields.phoneNumber,
-            })
-          );
-          toast({
-            title: "account created.",
-            description: `lets start with us a new journey ${fields.FullName}`,
-            status: "success",
-            duration: 20000,
-            isClosable: true,
+        dispatch(
+          createUserAPI({
+            name: fields.FullName,
+            email: fields.email,
+            password: fields.password,
+            phoneNumber: fields.phoneNumber,
+          })
+        )
+          .then(() => {
+            toast({
+              title: "account created.",
+              description: `lets start with us a new journey ${fields.FullName}`,
+              status: "success",
+              duration: 20000,
+              isClosable: true,
+            });
+            navigate("/login");
+          })
+          .catch(() => {
+            toast({
+              title: "email is already registered.",
+              description: "please signin",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
           });
-          navigate("/login");
-        } catch {
-          toast({
-            title: "email is already registered.",
-            description: "this email is already signed",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
-          });
-        }
       }}
       render={({ errors, touched }) => (
         <>
