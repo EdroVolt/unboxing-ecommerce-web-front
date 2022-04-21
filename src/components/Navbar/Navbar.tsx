@@ -85,10 +85,9 @@ export default function Navbar({ isAuth }: any) {
     governorate_name_ar: "الأسكندرية",
     governorate_name_en: "Alexandria",
   });
+  let user = useSelector((state: any) => state.user.user);
+
   const [searchFor, setSearchFor] = useState("");
-  let activeStyle = {
-    textDecoration: "underline",
-  };
   const [searchValue, setSearchedCategory] = useState<CategoryType>({
     _id: "1",
     name: "all",
@@ -113,7 +112,6 @@ export default function Navbar({ isAuth }: any) {
   const categories = useSelector(
     (store: StoreType) => store.category.categories
   );
-  let user = useSelector((state: any) => state.user.user);
   const {
     isOpen: isMenuOpen,
     onOpen: onMenuOpen,
@@ -125,7 +123,7 @@ export default function Navbar({ isAuth }: any) {
   const svgColor = useColorModeValue("black", "white");
   const products = useSelector((store: StoreType) => store.product.products);
   const navigate = useNavigate();
-  
+
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
@@ -167,13 +165,10 @@ export default function Navbar({ isAuth }: any) {
                         <VStack>
                           <Button variant="link" onClick={onModalOpen}>
                             <Box>
-                              {isAuth
-                                ? userGovernment?.governorate_name_en
-                                : "sign in"}
-                              ,
+                              {isAuth ? user?.address?.government : "sign in"},
                             </Box>
 
-                            <Box>{isAuth ? userCity?.city_name_en : null}</Box>
+                            <Box>{isAuth ? user?.address?.city : null}</Box>
                           </Button>
                         </VStack>
                       </Box>

@@ -10,6 +10,21 @@ import {
   ButtonGroup,
   InputRightElement,
   useToast,
+  useDisclosure,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  AlertDialogCloseButton,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
@@ -24,6 +39,7 @@ import {
 } from "../store/actionCreator/userActionCreator";
 import UserType from "../models/User.model";
 import { singInUserAPI } from "../store/actionCreator/authActionCreator";
+import React from "react";
 
 const breakpoints = {
   sm: "300px",
@@ -36,7 +52,7 @@ const theme = extendTheme({ breakpoints });
 
 const UserProfile = () => {
   const toast = useToast();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useSelector((store: StoreType) => store.user.user);
   const [oldPassword, setOldPassword] = useState("");
   const [newassword, setnewPassword] = useState("");
@@ -449,10 +465,42 @@ const UserProfile = () => {
                     xl: "10rem",
                     "2xl": "10rem",
                   }}
+                  onClick={onOpen}
                 >
                   Cancel
                 </Button>
-              </ButtonGroup>
+              </ButtonGroup>{" "}
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Modal Title</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    if you click ok all changes will dicresed
+                  </ModalBody>
+
+                  <ModalFooter>
+                    <Button
+                      colorScheme="blue"
+                      mr={3}
+                      onClick={() => {
+                        dispatch(editUserAPI(user));
+                        onClose();
+                      }}
+                    >
+                      ok
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      onClick={() => {
+                        onClose();
+                      }}
+                    >
+                      close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Stack>
           </Box>
         </Box>
