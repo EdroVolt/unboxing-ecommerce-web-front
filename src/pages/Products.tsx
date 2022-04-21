@@ -22,16 +22,18 @@ console.log(products)
 
       return (
           <Grid templateColumns="repeat(5, 1fr)" gap={6} ml={6} mr={6}>
-              {products.map((product: ProductType) => {
+              {products?.map((product: ProductType) => {
                   return <>
                   <Link to={`/products/${product._id}`}>
                   <Card
-                        imageUrl={product.images[0]} 
-                      title={product.name}
+                    key={product._id}
+                      imageUrl={product?.images[0]} 
+                      title={product?.name}
                       // rating={product.rating}
-                      isOffer={product.offer}
-                      formattedPrice={product.price + ""}
-                      reviewCount={product.numOfReviews}
+                      isOffer={product?.offer}
+                      formattedPrice={product?.price + ""}
+                      reviewCount={product?.numOfReviews}
+                      category= {product?.category?.name}
                   ></Card>
                   </Link>
                   </>
