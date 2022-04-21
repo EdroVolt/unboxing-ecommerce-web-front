@@ -46,6 +46,7 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
   useEffect(() => {
     dispatch(getMeAPI());
   }, []);
+  
   return (
     <Formik
       initialValues={initialValues}
@@ -55,7 +56,8 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
 
         if (localStorage.getItem("token")) {
           setIsAuthenticated(true);
-          window.location.assign("/");
+         // window.location.assign("/");
+         navigate(-1);
         } else {
           toast({
             title: " enter a valid email or password.",
@@ -65,10 +67,9 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
             isClosable: true,
           });
           setIsAuthenticated(false);
-
+          
           navigate("/login");
         }
-        // window.location.reload();
       }}
     >
       {(formik: { errors: any; touched: any; isValid: any; dirty: any }) => {
@@ -77,10 +78,14 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
           <>
             <Box className="container">
               <Form className="form__login" style={{ width: "350px" }}>
-                <Heading className="title" as="h1" size="md">
+                <Heading className="title" as="h1" size="md" textAlign="center">
                   Sign in
                 </Heading>
-                <Text className="text" style={{ marginBottom: "60px" }}>
+                <Text
+                  className="text"
+                  style={{ marginBottom: "60px" }}
+                  textAlign="center"
+                >
                   Sign in using your Unboxing account
                 </Text>
                 <Box className="form-group">
@@ -136,12 +141,13 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
                       : "form_button"
                   }
                   disabled={!(dirty && isValid)}
+                  bg="blue.600"
                 >
                   Sign In
                 </Button>
                 {/* </Link> */}
-                <Button className="form_button">
-                  <Link to="/signUp">Create an account</Link>
+                <Button className="form_button" bg="blue.600">
+                  <Link to="/signup">Create an account</Link>
                 </Button>
               </Form>
             </Box>
