@@ -6,7 +6,7 @@ import {
   productReducer,
   userReducer,
 } from "./reducers/reducers";
-// import { composeWithDevTools } from "@redux-devtools/extension";
+import { composeWithDevTools } from "@redux-devtools/extension";
 
 export type StoreType = {
   user: any;
@@ -22,6 +22,9 @@ const reducers = combineReducers({
   auth: authReducer,
 });
 
-const Store = createStore(reducers, applyMiddleware(thunk));
+const Store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 export default Store;

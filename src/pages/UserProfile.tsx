@@ -42,6 +42,7 @@ const UserProfile = () => {
   const [newassword, setnewPassword] = useState("");
 
   const dispatch: any = useDispatch();
+
   const [userInfo, setUserInfo] = useState<UserType>({
     name: user?.name,
     email: user?.email,
@@ -49,9 +50,6 @@ const UserProfile = () => {
     phoneNumber: user?.phoneNumper,
     address: { ...user?.address },
   });
-  useEffect(() => {
-    dispatch(getMeAPI());
-  }, []);
 
   const formateDate = (): UserType => {
     return {
@@ -67,6 +65,20 @@ const UserProfile = () => {
       },
     };
   };
+
+  useEffect(() => {
+    dispatch(getMeAPI());
+  }, []);
+
+  useEffect(() => {
+    setUserInfo({
+      name: user?.name,
+      email: user?.email,
+      password: user?.password,
+      phoneNumber: user?.phoneNumper,
+      address: { ...user?.address },
+    });
+  }, [user]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log(event.target.value);
