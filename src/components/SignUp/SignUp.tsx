@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import { Navigate } from 'react-router-dom';
 // import  Redirect  from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import "./signup.css";
 import {
@@ -30,7 +30,6 @@ const SignUp = () => {
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
-  const navigate: any = useNavigate();
   const toast = useToast();
   const dispatch: any = useDispatch();
 
@@ -94,11 +93,10 @@ const SignUp = () => {
       render={({ errors, touched }) => (
         <>
           <Container maxW="450px">
-           
             <Form
               className="signup_form"
               style={{ padding: "2rem" }}
-               // eslint-disable-next-line react-hooks/rules-of-hooks
+              // eslint-disable-next-line react-hooks/rules-of-hooks
               // borderColor={useColorModeValue("gray.200", "gray.600")}
             >
               <Heading className="title" as="h1" size="md" textAlign="center">

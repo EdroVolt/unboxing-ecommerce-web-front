@@ -11,7 +11,6 @@ import {
   InputRightElement,
   useToast,
 } from "@chakra-ui/react";
-import bcrypt from "bcrypt";
 import { Button } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import BackdropExample from "../components/common/Modal";

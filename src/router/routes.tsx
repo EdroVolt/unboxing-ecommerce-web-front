@@ -29,6 +29,7 @@ import PrivateRoute from "./PrivateRoute";
 import { useSelector } from "react-redux";
 import { boolean } from "yup";
 import { StoreType } from "../store/store";
+import Navbar from "../components/Navbar/Navbar";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
@@ -54,6 +55,8 @@ const Router = () => {
 
   return (
     <>
+      <Navbar isAuth={isAuthenticated} setIsAuth={setIsAuthenticated} />
+
       <Routes>
         <Route path={home} element={<Home />} />
 
