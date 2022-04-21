@@ -66,10 +66,10 @@ export const checkoutOrder = (orders: OrderType[]) => ({
 
 // --------- Edit ------------------------------
 
-export const editUser = (userData: UserType) => ({
+export const editUser = (user: UserType) => ({
   type: actions.EDIT_USER,
   payload: {
-    userData,
+    user,
   },
 });
 

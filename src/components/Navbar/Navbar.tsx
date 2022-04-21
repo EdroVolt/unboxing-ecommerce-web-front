@@ -125,6 +125,7 @@ export default function Navbar({ isAuth }: any) {
   const svgColor = useColorModeValue("black", "white");
   const products = useSelector((store: StoreType) => store.product.products);
   const navigate = useNavigate();
+  
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,

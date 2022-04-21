@@ -30,6 +30,7 @@ import { useSelector } from "react-redux";
 import { boolean } from "yup";
 import { StoreType } from "../store/store";
 import Navbar from "../components/Navbar/Navbar";
+import { Box } from "@chakra-ui/react";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
@@ -59,16 +60,17 @@ const Router = () => {
     <>
       <Navbar isAuth={isAuthenticated} setIsAuth={setIsAuthenticated} />
 
-      <Routes>
-        <Route path={home} element={<Home />} />
+      <Box my="25" minHeight={"49vh"} fontSize="xl">
+        <Routes>
+          <Route path={home} element={<Home />} />
 
-        <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
-          <Route path={profile} element={<UserProfile />} />
-          <Route path={cart} element={<Cart />} />
-          <Route path={wishList} element={<WishList />} />
-          <Route path={orders} element={<Orders />} />
-        </Route>
-        {/* <Route
+          <Route element={<PrivateRoute isAuthenticated={isAuthenticated} />}>
+            <Route path={profile} element={<UserProfile />} />
+            <Route path={cart} element={<Cart />} />
+            <Route path={wishList} element={<WishList />} />
+            <Route path={orders} element={<Orders />} />
+          </Route>
+          {/* <Route
           path={dashboard}
           element={
             <PrivateRoute
@@ -79,20 +81,21 @@ const Router = () => {
           }
         /> */}
 
-        <Route path={products} element={<Products />} />
-        <Route path={productDetails} element={<ProductDetail />} />
-        <Route
-          path={login}
-          element={
-            <Login
-              isAuthenticated={isAuthenticated}
-              setIsAuthenticated={setIsAuthenticated}
-            />
-          }
-        />
-        <Route path={singUp} element={<SingUp />} />
-        {/* <Route path={error} element={<NotFound />} /> */}
-      </Routes>
+          <Route path={products} element={<Products />} />
+          <Route path={productDetails} element={<ProductDetail />} />
+          <Route
+            path={login}
+            element={
+              <Login
+                isAuthenticated={isAuthenticated}
+                setIsAuthenticated={setIsAuthenticated}
+              />
+            }
+          />
+          <Route path={singUp} element={<SingUp />} />
+          {/* <Route path={error} element={<NotFound />} /> */}
+        </Routes>
+      </Box>
     </>
   );
 };
