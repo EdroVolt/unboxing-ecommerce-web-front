@@ -9,16 +9,20 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import { BiShowAlt } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { createUserAPI } from "../../store/actionCreator/userActionCreator";
+import { useNavigate } from "react-router";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePassword = () => {
     setPasswordShown(!passwordShown);
   };
+  const toast = useToast();
 
   const dispatch: any = useDispatch();
   return (
@@ -47,14 +51,32 @@ const SignUp = () => {
       })}
       onSubmit={(fields) => {
         console.log(fields);
-        dispatch(
-          createUserAPI({
-            name: fields.FullName,
-            email: fields.email,
-            password: fields.password,
-            phoneNumber: fields.phoneNumber,
-          })
-        );
+        try {
+          dispatch(
+            createUserAPI({
+              name: fields.FullName,
+              email: fields.email,
+              password: fields.password,
+              phoneNumber: fields.phoneNumber,
+            })
+          );
+          toast({
+            title: "account created.",
+            description: `lets start with us a new journey ${fields.FullName}`,
+            status: "success",
+            duration: 20000,
+            isClosable: true,
+          });
+          navigate("/login");
+        } catch {
+          toast({
+            title: "email is already registered.",
+            description: "this email is already signed",
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        }
       }}
       render={({ errors, touched }) => (
         <>
