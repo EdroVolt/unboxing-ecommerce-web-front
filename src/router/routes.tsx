@@ -27,14 +27,18 @@ import React, { useEffect, useState } from "react";
 // import DashBoard from "../pages/DashBoard";
 import PrivateRoute from "./PrivateRoute";
 import { useSelector } from "react-redux";
+import { boolean } from "yup";
+import { StoreType } from "../store/store";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
   // const [isLogged, setIsLoggged] = useState(false);
   // console.log(isLogged);
-
-  const auth = useSelector<any>((state) => state.user.user);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const handleAuthChanges = (isAuthenticated: any) => {
+    setIsAuthenticated(!isAuthenticated);
+  };
+  const user = useSelector<any>((store: StoreType) => store.user.user);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   console.log("Auth", isAuthenticated);
   useEffect(() => {
@@ -46,7 +50,7 @@ const Router = () => {
     }
 
     // eslint-disable-next-line
-  }, [auth]);
+  }, []);
 
   return (
     <>
@@ -71,8 +75,16 @@ const Router = () => {
         /> */}
 
         <Route path={products} element={<Products />} />
-        <Route path={`/products/:id`} element={<ProductDetail />} />
-        <Route path={login} element={<Login />} />
+        <Route path={productDetails} element={<ProductDetail />} />
+        <Route
+          path={login}
+          element={
+            <Login
+              isAuthenticated={isAuthenticated}
+              setIsAuthenticated={setIsAuthenticated}
+            />
+          }
+        />
         <Route path={singUp} element={<SingUp />} />
         {/* <Route path={error} element={<NotFound />} /> */}
       </Routes>

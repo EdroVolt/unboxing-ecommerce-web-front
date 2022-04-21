@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./UserProfile.css";
 import {
   FormControl,
@@ -9,11 +9,22 @@ import {
   Box,
   ButtonGroup,
   InputRightElement,
+  useToast,
 } from "@chakra-ui/react";
+import bcrypt from "bcrypt";
 import { Button } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import BackdropExample from "../components/common/Modal";
 import { extendTheme } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../store/store";
+
+import {
+  editUserAPI,
+  getMeAPI,
+} from "../store/actionCreator/userActionCreator";
+import UserType from "../models/User.model";
+import { singInUserAPI } from "../store/actionCreator/authActionCreator";
 
 const breakpoints = {
   sm: "300px",
@@ -25,15 +36,23 @@ const breakpoints = {
 const theme = extendTheme({ breakpoints });
 
 const UserProfile = () => {
-  const [userInfo, setUserInfo] = useState({
-    name: "Nesma",
-    email: "nesmataha91@gmail.com",
-    password: "123nesma",
-    phoneNumber: "01060981970",
-    government: "Kafr Elsheikh",
-    city: "Balteem",
-    street: "Elwafaa",
+  const toast = useToast();
+
+  const user = useSelector((store: StoreType) => store.user.user);
+  const [oldPassword, setOldPassword] = useState("");
+  const [newassword, setnewPassword] = useState("");
+
+  const dispatch: any = useDispatch();
+  const [userInfo, setUserInfo] = useState<UserType>({
+    name: user.name,
+    email: user.email,
+    password: user.password,
+    phoneNumber: user.phoneNumper,
+    address: { ...user.address },
   });
+  useEffect(() => {
+    dispatch(getMeAPI());
+  }, []);
 
   const formateDate = () => {
     return {
@@ -42,9 +61,9 @@ const UserProfile = () => {
       password: userInfo.password,
       phoneNumber: userInfo.phoneNumber,
       address: {
-        government: userInfo.government,
-        city: userInfo.city,
-        street: userInfo.street,
+        government: userInfo.address?.government,
+        city: userInfo.address?.city,
+        street: userInfo.address?.street,
       },
     };
   };
@@ -156,10 +175,10 @@ const UserProfile = () => {
               align="center"
               marginBottom="1.5em"
             >
+              change Password:
               <FormControl>
-                <FormLabel htmlFor="passowrd" marginBottom="1em">
-                  Password:
-                </FormLabel>
+                <FormLabel htmlFor="passowrd" marginBottom="1em"></FormLabel>
+                old password
                 <Box display="flex">
                   <InputGroup size="md">
                     <Input
@@ -168,8 +187,33 @@ const UserProfile = () => {
                       variant="filled"
                       type="password"
                       placeholder="Password"
-                      value={userInfo.password}
-                      onChange={handleChange}
+                      value={oldPassword}
+                      onChange={(e) => {
+                        setOldPassword(e.target.value);
+                      }}
+                    />
+
+                    <InputRightElement width="4.5rem">
+                      <EditIcon className="editIcon" />
+                    </InputRightElement>
+                  </InputGroup>
+                </Box>
+              </FormControl>{" "}
+              <FormControl>
+                <FormLabel htmlFor="passowrd" marginBottom="1em"></FormLabel>
+                new password
+                <Box display="flex">
+                  <InputGroup size="md">
+                    <Input
+                      id="password"
+                      name="password"
+                      variant="filled"
+                      type="password"
+                      placeholder="Password"
+                      value={newassword}
+                      onChange={(e) => {
+                        setnewPassword(e.target.value);
+                      }}
                     />
 
                     <InputRightElement width="4.5rem">
@@ -178,6 +222,30 @@ const UserProfile = () => {
                   </InputGroup>
                 </Box>
               </FormControl>
+              <Button
+                bgColor={"green.800"}
+                onClick={() => {
+                  try {
+                    dispatch(singInUserAPI(userInfo.email, oldPassword));
+                    dispatch(
+                      editUserAPI({
+                        ...userInfo,
+                        password: newassword,
+                      })
+                    );
+                  } catch (error) {
+                    toast({
+                      title: " enter a valid password.",
+                      description: " you didn't write the right password",
+                      status: "error",
+                      duration: 9000,
+                      isClosable: true,
+                    });
+                  }
+                }}
+              >
+                confirm
+              </Button>
             </Stack>
 
             {/* phone number */}
@@ -240,7 +308,7 @@ const UserProfile = () => {
                       name="government"
                       variant="filled"
                       placeholder="Government"
-                      value={userInfo.government}
+                      value={userInfo.address?.government}
                       onChange={handleChange}
                     />
                     <InputRightElement width="4.5rem">
@@ -269,7 +337,7 @@ const UserProfile = () => {
                       name="city"
                       variant="filled"
                       placeholder="City"
-                      value={userInfo.city}
+                      value={userInfo.address?.city}
                       onChange={handleChange}
                     />
                     <InputRightElement width="4.5rem">
@@ -298,7 +366,7 @@ const UserProfile = () => {
                       name="street"
                       variant="filled"
                       placeholder="Street"
-                      value={userInfo.street}
+                      value={userInfo.address?.street}
                       onChange={handleChange}
                     />
                     <InputRightElement width="4.5rem">
@@ -311,6 +379,16 @@ const UserProfile = () => {
             <Stack align="center">
               <ButtonGroup variant="outline" spacing="6">
                 <Button
+                  onClick={() => {
+                    dispatch(
+                      editUserAPI({
+                        ...formateDate,
+                        name: "",
+                        email: "",
+                        password: "",
+                      })
+                    );
+                  }}
                   colorScheme="blue"
                   width="10rem"
                   boxShadow="xl"

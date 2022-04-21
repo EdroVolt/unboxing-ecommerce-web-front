@@ -2,7 +2,7 @@ form {
   max-width: 400px;
   width: 100%;
   margin: 4rem auto 0;
-  box-shadow: 1px 1px 2px 2px #dadada;
+  /* box-shadow: 1px 1px 2px 2px #dadada; */
   padding: 2rem;
 }
 .text{
@@ -38,13 +38,14 @@ form {
   margin-bottom: 20px;
 }
 .form_button {
-  padding: 10px 15px;
+
   color: #ffffff !important;
-  background-color: #03ddff !important;
   border: 1px solid rgb(70, 153, 179);
   width: 100% !important;
   margin-top: 2rem !important;
 }
+.form_button
+
 .rest{
     background-color: red !important;
     border: 1px solid rgb(70, 153, 179);

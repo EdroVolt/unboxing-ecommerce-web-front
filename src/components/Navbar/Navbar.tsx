@@ -1,9 +1,10 @@
 import { ReactNode, useState, useEffect } from "react";
+
 import React from "react";
 import "./Navbar.css";
 import { Logo } from ".././../Logo";
 import cities from "./../common/cities.json";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import governments from "./../common/governments.json";
 import {
   Center,
@@ -37,6 +38,8 @@ import {
   InputGroup,
   InputRightElement,
   Divider,
+  border,
+  position,
 } from "@chakra-ui/react";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
@@ -49,7 +52,10 @@ import {
   editUserAPI,
   getMeAPI,
 } from "../../store/actionCreator/userActionCreator";
-import { getAllProductsByNameAndCategoryAPI } from "../../store/actionCreator/productActionCreator";
+import {
+  getAllProductsAPI,
+  getAllProductsByNameAndCategoryAPI,
+} from "../../store/actionCreator/productActionCreator";
 import {
   orders,
   products,
@@ -59,9 +65,8 @@ import {
   login,
   cart,
 } from "../../router/routePaths";
-import { Navigate, useNavigate } from "react-router";
-import { any, object, string } from "prop-types";
-
+import { useNavigate } from "react-router";
+import { GoLocation } from "react-icons/all";
 interface city {
   id: string;
   governorate_id: string;
@@ -73,33 +78,29 @@ interface government {
   governorate_name_ar: string;
   governorate_name_en: string;
 }
-export default function Navbar() {
+export default function Navbar({ isAuth }: any) {
+  const handleInputChange = () => {
+    if (isAuth) {
+      localStorage.clear();
+      navigate("/");
+    } else navigate("/login");
+  };
+
   const [page, setPage] = useState(1);
   const [userGovernment, setgovernment] = useState<government | undefined>({
     id: "3",
     governorate_name_ar: "الأسكندرية",
     governorate_name_en: "Alexandria",
   });
-  const categories = useSelector(
-    (store: StoreType) => store.category.categories
-  );
-  const user = useSelector((store: StoreType) => store.user.user);
-  const {
-    isOpen: isMenuOpen,
-    onOpen: onMenuOpen,
-    onClose: onMenuClose,
-  } = useDisclosure();
-
-  const dispatch: any = useDispatch();
-
+  const [searchFor, setSearchFor] = useState("");
+  let activeStyle = {
+    textDecoration: "underline",
+  };
   const [searchValue, setSearchedCategory] = useState<CategoryType>({
     _id: "1",
-    name: "shoes",
+    name: "all",
     image: "ff",
   });
-  const [searchFor, setSearchFor] = useState("");
-  const svgColor = useColorModeValue("black", "white");
-
   const [governmentsCities, setGovernmentsCities] = useState<
     Array<city> | undefined
   >([
@@ -116,6 +117,20 @@ export default function Navbar() {
     city_name_ar: "15 مايو",
     city_name_en: "15 May",
   });
+  const categories = useSelector(
+    (store: StoreType) => store.category.categories
+  );
+  const user = useSelector((store: StoreType) => store.user.user);
+  const {
+    isOpen: isMenuOpen,
+    onOpen: onMenuOpen,
+    onClose: onMenuClose,
+  } = useDisclosure();
+
+  const dispatch: any = useDispatch();
+
+  const svgColor = useColorModeValue("black", "white");
+  const products = useSelector((store: StoreType) => store.product.products);
   const navigate = useNavigate();
   const {
     isOpen: isModalOpen,
@@ -125,13 +140,19 @@ export default function Navbar() {
   useEffect(() => {
     dispatch(getAllCategoriesAPI(page));
     dispatch(getMeAPI());
-  }, []);
+    dispatch(getAllProductsAPI(1));
+    console.log(isAuth);
+  }, [isAuth]);
   console.log(user);
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} p={0} m={0}>
-        <Flex h={16} alignItems={"center"} width="100%" justifyContent={"left"}>
-          <ColorModeSwitcher justifySelf="flex-end" />
+      <Box
+        bg={useColorModeValue("gray.100", "gray.900")}
+        pb={"1"}
+        pt={"1"}
+        mb={"2"}
+      >
+        <Flex alignItems={"center"} width="100%" justifyContent={"left"}>
           <Box>
             <Flex>
               <Logo width={["20%", "20%", "20%", "10%"]} mr={"3"} />
@@ -144,23 +165,18 @@ export default function Navbar() {
                   <Box textAlign={"start"}>
                     <Box>Deliver To</Box>
                     <HStack>
-                      <svg
-                        width="24"
-                        height="24"
-                        xmlns="http://www.w3.org/2000/svg"
-                        // fill-rule="evenodd"
-                        // clip-rule="evenodd"
-                        fill={svgColor}
-                      >
-                        <path d="M12 10c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2m0-5c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3m-7 2.602c0-3.517 3.271-6.602 7-6.602s7 3.085 7 6.602c0 3.455-2.563 7.543-7 14.527-4.489-7.073-7-11.072-7-14.527m7-7.602c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602" />
-                      </svg>
-                      {/* government choosing */}
+                      <GoLocation /> {/* government choosing */}
                       <Box>
                         <VStack>
                           <Button variant="link" onClick={onModalOpen}>
-                            <Box>{userGovernment?.governorate_name_en},</Box>
+                            <Box>
+                              {isAuth
+                                ? userGovernment?.governorate_name_en
+                                : "sign in"}
+                              ,
+                            </Box>
 
-                            <Box>{userCity?.city_name_en}</Box>
+                            <Box>{isAuth ? userCity?.city_name_en : null}</Box>
                           </Button>
                         </VStack>
                       </Box>
@@ -174,7 +190,7 @@ export default function Navbar() {
             </Flex>
           </Box>
           <Box
-            marginRight={["20%", "20%"]}
+            alignSelf={"center"}
             className="parent"
             bg="white"
             borderColor="black"
@@ -274,7 +290,10 @@ export default function Navbar() {
                     borderColor: "white",
                   }}
                 >
-                  <Text fontSize={11}> Helllo,{user?.name}</Text>{" "}
+                  <Text fontSize={11}>
+                    {" "}
+                    "Hello",{isAuth ? user?.name : null}
+                  </Text>
                   <Text fontSize={13} fontWeight={"bold"}>
                     Account&Lists
                   </Text>
@@ -282,33 +301,105 @@ export default function Navbar() {
                 </MenuButton>
               </HStack>
               <MenuList
+                zIndex={30}
                 minH={"29%"}
                 bgColor={useColorModeValue("white", "dark")}
               >
                 <HStack justifyContent={"center"} textAlign={"center"}>
-                  <Box>
-                    <Text fontWeight={"bold"} fontSize={16}>
-                      Your list
-                    </Text>
-                    <MenuItem fontSize={11}>create new list </MenuItem>
-                  </Box>
+                  {isAuth ? (
+                    <>
+                      {" "}
+                      <Box>
+                        <Text fontWeight={"bold"} fontSize={16}>
+                          Your list
+                        </Text>
+                        <MenuItem fontSize={11}>
+                          <NavLink
+                            className={({ isActive }) =>
+                              isActive ? "active" : "inactive"
+                            }
+                            to="/wishlist"
+                          >
+                            "visit your list"
+                          </NavLink>
+                        </MenuItem>
+                      </Box>
+                    </>
+                  ) : null}
                   <MenuDivider color={"black"} bgColor={"black"}></MenuDivider>{" "}
                   <Box>
                     <Text fontWeight={"bold"} fontSize={16}>
                       Your Accounts
                     </Text>
                     <MenuItem fontSize={11}>
-                      <Link to="/profile">Your Account</Link>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "active" : "inactive"
+                        }
+                        to={isAuth ? "/profile" : "/login"}
+                      >
+                        {isAuth ? "account" : "sign in"}
+                      </NavLink>
+                    </MenuItem>
+                    {isAuth ? (
+                      <>
+                        <MenuItem
+                          backgroundColor={"red.700"}
+                          role={"button"}
+                          rounded={"2xl"}
+                        >
+                          <NavLink
+                            className={({ isActive }) =>
+                              isActive ? "active" : "inactive"
+                            }
+                            to="/"
+                            onClick={() => {
+                              localStorage.clear();
+                              window.location.reload();
+                            }}
+                          >
+                            logout
+                          </NavLink>
+                        </MenuItem>
+                      </>
+                    ) : null}
+                    <MenuItem fontSize={11}>
+                      <NavLink
+                        className={({ isActive }) =>
+                          isActive ? "active" : "inactive"
+                        }
+                        to={isAuth ? "/profile" : "/signUp"}
+                      >
+                        {isAuth ? null : "signUp"}
+                      </NavLink>
                     </MenuItem>
                   </Box>
                 </HStack>
               </MenuList>
             </Menu>
-            <Box alignSelf={"center"} mx={4}>
-              <Link to="/wishList"> wishList</Link>
+            <Box alignSelf={"center"} mx={4} role="button">
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "/wishlist" : "/"}
+              >
+                {isAuth ? "wishlist" : null}
+              </NavLink>
             </Box>
             <Box alignSelf={"center"} mx={4}>
-              <Link to={orders}> Orders</Link>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={"/products"}
+              >
+                products
+              </NavLink>
+            </Box>
+            <Box alignSelf={"center"} mx={4}>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "orders" : "/"}
+              >
+                {isAuth ? "orders" : null}
+              </NavLink>
             </Box>
             <Box
               _hover={{ border: "black", borderWidth: "2" }}
@@ -316,18 +407,39 @@ export default function Navbar() {
               alignSelf={"center"}
               mx={4}
             >
-              <HStack>
-                <svg
-                  fill={svgColor}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 576 512"
-                  width={"70"}
-                  height={"40"}
-                >
-                  <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
-                </svg>
-                <Link to={`/cart`}>Cart</Link>
-              </HStack>
+              {" "}
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "/cart" : "/login"}
+              >
+                <HStack>
+                  <svg
+                    fill={svgColor}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 576 512"
+                    width={"70"}
+                    height={"40"}
+                  >
+                    <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
+                  </svg>
+                  <Box> cart</Box>
+                </HStack>{" "}
+              </NavLink>
+            </Box>
+            <Box alignSelf={"center"}>
+              <Button
+                onClick={() => {
+                  if (isAuth) {
+                    localStorage.clear();
+                    window.location.reload();
+                  } else {
+                    navigate("/login");
+                  }
+                }}
+              >
+                {isAuth ? "Logout" : "Login"}
+              </Button>
+              <ColorModeSwitcher justifySelf="flex-end" />
             </Box>
           </Flex>
         </Flex>
@@ -350,7 +462,7 @@ export default function Navbar() {
               </ModalBody>
               {localStorage.getItem("token") ? (
                 <Box>
-                  <Link to="#">Manage your address book</Link>
+                  <NavLink to="#">Manage your address book</NavLink>
                   <Flex>
                     <Divider />
                     <Text justifyContent={"center"} alignSelf={"center"}>
@@ -375,9 +487,7 @@ export default function Navbar() {
                           editUserAPI({
                             ...user,
                             address: {
-                              ...user?.address,
-
-                              government: userGovernment,
+                              government: userGovernment?.governorate_name_en,
                             },
                           })
                         );
@@ -413,7 +523,7 @@ export default function Navbar() {
                             ...user,
                             address: {
                               ...user?.address,
-                              city: userCity,
+                              city: userCity?.city_name_en,
                             },
                           })
                         );
@@ -432,48 +542,19 @@ export default function Navbar() {
                   </Box>
                 </Box>
               ) : (
-                <Button>ok</Button>
+                <Button
+                  onClick={() => {
+                    onModalClose();
+                    navigate("/login");
+                  }}
+                >
+                  signin
+                </Button>
               )}
             </ModalContent>
           </Modal>
         </Box>
       </Box>
-    </>
-  );
-}
-
-export function Navbar2({ isAuthenticated }: any) {
-  console.log(isAuthenticated);
-  const logoutHandler = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
-  };
-  return (
-    <>
-      {/* <Link to="/landing">Landing</Link> */}
-      {/* <Link to={home}>Home</Link>
-    <Link to={profile}>Profile</Link>
-    <Link to={products}>products</Link> */}
-      {/* <Link to={orders}>Order</Link>
-    <Link to={wishList}>WishList</Link>
-    <Link to={cart}>Cart</Link> */}
-      {/* <Link to={dashboard}>Dashboard</Link> */}
-
-      {isAuthenticated === false ? (
-        <>
-          <Link to={profile}>Profile</Link>
-          <Link to={products}>products</Link>
-          <Link to={login}>Login</Link>
-        </>
-      ) : (
-        <>
-          <Link to={home}>home</Link>
-          <Link to={orders}>Order</Link>
-          <Link to={wishList}>WishList</Link>
-          <Link to={cart}>Cart</Link>{" "}
-          <button onClick={() => logoutHandler()}>Logout</button>
-        </>
-      )}
     </>
   );
 }
