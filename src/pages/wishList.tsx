@@ -6,21 +6,27 @@ import { StoreType } from "../store/store";
 import {
   getMeAPI,
   getMyCartAPI,
+  getMyWishListAPI,
 } from "../store/actionCreator/userActionCreator";
 
 export default function WishList() {
   const dispatch: any = useDispatch();
 
-  const products = useSelector((store: StoreType) => store.user.user.wishList);
-  const cart = useSelector((store: StoreType) => store.user.cart);
   let user = useSelector((store: StoreType) => store.user.user);
 
   useEffect(() => {
     if (!user) dispatch(getMeAPI());
-  }, []);
+    else if(!user?.wishList?.products){
+      setEmpty(true)
+      setnotEmpty(false)
+       console.log(user?.wishList?.products)
+     }
+  }, [user]);
+
+
   useEffect(() => {
-    if (!products?.length && user?._id) dispatch(getMyCartAPI());
-    // console.log(cart)
+    if (!user?.wishList?.products?.length && user?._id) dispatch(getMyWishListAPI());
+
   }, [user]);
 
   const [totalCount, setTotalCount] = useState(0);
@@ -28,7 +34,7 @@ export default function WishList() {
 
   const setTotalCountF = () => {
     let productsCount = 0;
-    products?.products?.map((product: any) => {
+    user?.wishList?.products?.map((product: any) => {
       productsCount += product.count;
       return setTotalCount(productsCount);
     });
@@ -37,13 +43,7 @@ export default function WishList() {
   const[empty, setEmpty]=useState(false)
   const[notEmpty, setnotEmpty]=useState(true)
  
-  useEffect(()=>{
-    if(!products.products?.length){
-     setEmpty(true)
-     setnotEmpty(false)
-      console.log(products.products.length)
-    }
-  },[products])
+
 
   return (
     <div>
@@ -57,7 +57,7 @@ export default function WishList() {
         >
           Wish List
         </Heading><Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-            {products?.products?.map((product: any) => {
+            {user?.wishList?.products?.map((product: any) => {
               return (
                 <SmallCard
                   _id={product.product._id}
@@ -68,13 +68,13 @@ export default function WishList() {
                   price={product.product.price}
                   color={product.color}
                   discount={product.product.discount}
-                  buttonName=" Add to Cart " />
+                  buttonName=" Add to Cart "/>
               );
             })}
           </Grid></>}
         {empty && (
           <Heading textAlign={"center"} color={"gray.300"} mt={30}>
-            Your Cart is Empty
+            Your wishList is Empty
           </Heading>
         )}
     </div>

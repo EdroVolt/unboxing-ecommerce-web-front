@@ -23,19 +23,23 @@ import ProductType from "../models/Product.model";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
-  // const products = useSelector((state: any) => state.user.cart);
-  // const cart = useSelector((state: any) => state.user.cart);
+
   let user = useSelector((state: any) => state.user.user);
 
   console.log("my user: ", user);
 
   useEffect(() => {
-    dispatch(getMeAPI());
-  }, []);
+    if (!user) dispatch(getMeAPI());
+    else if(!user?.cart?.products.length){
+      setEmpty(true)
+      setnotEmpty(false)
+       console.log(user?.cart?.products)
+     }
+  }, [user]);
 
   useEffect(() => {
     if (!user?.cart?.products?.length && user?._id) dispatch(getMyCartAPI());
-  }, []);
+  }, [user]);
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -61,12 +65,19 @@ export default function Cart() {
     dispatch(checkoutOrder(user._id, order));
   };
 
+  const[empty, setEmpty]=useState(false)
+  const[notEmpty, setnotEmpty]=useState(true)
+ 
+
   return (
     <div>
+        {notEmpty && 
+      <>
       <Heading
         fontSize={"3xl"}
         fontFamily={"body"}
         fontWeight={"bold"}
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         color={useColorModeValue("yellow.500", "white")}
         ml={{ sm: "10", md: "90" }}
         mb={10}
@@ -135,6 +146,12 @@ export default function Cart() {
           </Stack>
         </>
       )}
+      </>}
+        {empty && (
+          <Heading textAlign={"center"} color={"gray.300"} mt={30}>
+            Your Cart is Empty
+          </Heading>
+              )}
     </div>
   );
 }
