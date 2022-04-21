@@ -1,5 +1,7 @@
+import ProductType from "./Product.model";
+
 type OrderType = {
-  products: { product: string; count: number }[];
+  products: { product: ProductType|string; count: number }[];
   totalCount: number;
   paymentMethod: "cash" | "visa";
   createdAt?: Date;

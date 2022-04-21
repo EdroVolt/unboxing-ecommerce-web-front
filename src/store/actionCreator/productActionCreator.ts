@@ -1,3 +1,4 @@
+import { getProductDetails } from './../actions/Product.actions';
 import { Dispatch } from "react";
 import Unboxing from "../../apis/unboxing";
 import ProductType from "../../models/Product.model";
@@ -67,6 +68,16 @@ export const getAllOfferProductsAPI =
       .then((res) => {
         console.log(res);
         dispatch(Product.getAllOfferProducts(res.data));
+      })
+      .catch((err) => console.log(err));
+
+      export const getProductDetailsAPI =
+  (_id: string| number ) =>
+  (dispatch: Dispatch<ActionType>) =>
+    Unboxing.get(`/products/:${_id}`)
+      .then((res) => {
+        console.log(res);
+        dispatch(Product.getProductDetails(res.data));
       })
       .catch((err) => console.log(err));
 

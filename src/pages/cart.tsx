@@ -11,60 +11,53 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { StoreType } from "../store/store";
+import {
+  checkoutOrder,
+  getMeAPI,
+  getMyCartAPI,
+} from "../store/actionCreator/userActionCreator";
+import OrderType from "../models/Order.model";
+import ProductType from "../models/Product.model";
 
 export default function Cart() {
-  const [products, setProducts] = useState([
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images:
-        "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
-      price: 500,
-      color: "red",
-      size: "xl",
-    },
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images:
-        "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
-      price: 500,
-      color: "red",
-      size: "xl",
-    },
-    {
-      name: "Watch",
-      count: 6,
-      categoryName: "Electronics",
-      images:
-        "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080",
-      price: 500,
-      color: "red",
-      size: "xl",
-    },
-  ]);
+  const dispatch: any = useDispatch();
+  const products = useSelector((store: StoreType) => store.user.user.cart);
+  const cart = useSelector((store: StoreType) => store.user.cart);
+  let user = useSelector((store: StoreType) => store.user.user);
+
+ 
+  useEffect(() => {
+    if (!user) dispatch(getMeAPI());
+  }, []);
+
+  useEffect(() => {
+    if (!products?.length && user?._id) dispatch(getMyCartAPI());
+  }, [user, products]);
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const order: OrderType = {
+    products: products.products?.map((product: any) => {
+      return { product: product.product._id, count: product.count };
+    }),
+    totalCount:products.products.length,
+    paymentMethod: "cash",
+  };
+
   const setTotalCountF = () => {
     let productsCount = 0;
-    products.map((product) => {
+    products?.products?.map((product: any) => {
       productsCount += product.count;
       return setTotalCount(productsCount);
     });
   };
 
-  const setTotalPriceF = () => {
-    let productsPrice = 0;
-    products.map((product) => {
-      console.log(product.price);
-      productsPrice += product.price;
-      console.log(productsPrice);
-      return setTotalPrice(productsPrice);
-    });
+  const checkOut = () => {
+    console.log(order);
+    dispatch(checkoutOrder(user._id, order));
   };
 
   return (
@@ -72,6 +65,7 @@ export default function Cart() {
       <Heading
         fontSize={"3xl"}
         fontFamily={"body"}
+        fontWeight={"bold"}
         color={useColorModeValue("yellow.500", "white")}
         ml={{ sm: "10", md: "90" }}
         mb={10}
@@ -80,16 +74,18 @@ export default function Cart() {
         Cart{" "}
       </Heading>
       <Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-        {products.map((product) => {
+        {products?.products?.map((product: any) => {
           return (
             <SmallCard
-              name={product.name}
+              _id={product.product._id}
+              name={product.product.name}
               count={product.count}
               categoryName={product.categoryName}
-              images={product.images}
+              images={product.product.images}
               size={product.size}
-              price={product.price}
+              price={product.product.price}
               color={product.color}
+              discount={product.product.discount}
               buttonName=" Add to WishList "
             />
           );
@@ -98,18 +94,23 @@ export default function Cart() {
       <Stack
         borderWidth="1px"
         borderRadius="lg"
-        w={{ sm: "100%", md: "41%" }}
-        ml={{ sm: "1", md: "20" }}
+        w={{ sm: "100%", md: "50%" }}
+        // ml={{ sm: "1", md: "100" }}
         direction={{ base: "row", md: "row", lg: "row" }}
         justifyContent={"space-between"}
+       margin={"auto"}
       >
         <Text
-          ml={{ sm: "10", md: "15" }}
+          ml={{ sm: "15", md: "15" }}
           mt={3}
           mb={3}
           fontSize={{ sm: "xl", md: "xl" }}
         >
-          Total Price: {totalPrice}
+          <Text fontWeight={"black"} display={"inline-block"} mr={2}>
+            {" "}
+            Total Price
+          </Text>
+          : ${products.totalPrice} USD
         </Text>
         <Button
           colorScheme={useColorModeValue("gray.900", "gray.600")}
@@ -117,8 +118,10 @@ export default function Cart() {
           pr={15}
           mt={3}
           mb={3}
+          textDecoration={"underline"}
+          fontWeight={"bold"}
           fontSize={{ sm: "l", md: "xl" }}
-          onClick={setTotalPriceF}
+          onClick={checkOut}
         >
           <CheckIcon mr={1} /> Check Out
         </Button>

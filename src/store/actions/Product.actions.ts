@@ -48,12 +48,12 @@ export const getAllOfferProducts = (data: {
   },
 });
 
-// export const getProductDetails = (_id: string | number) => ({
-//   type: actions.GET_PRODUCT_DETAILS,
-//   payload: {
-//     _id,
-//   },
-// });
+export const getProductDetails = (product:ProductType) => ({
+  type: actions.GET_PRODUCT_DETAILS,
+  payload: {
+   product
+  },
+});
 
 // ------------ Add -----------------------------------------
 

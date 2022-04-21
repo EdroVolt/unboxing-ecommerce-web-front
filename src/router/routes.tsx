@@ -26,7 +26,6 @@ import SingUp from "../components/SignUp/SignUp";
 import React, { useEffect, useState } from "react";
 // import DashBoard from "../pages/DashBoard";
 import PrivateRoute from "./PrivateRoute";
-import Navbar from "../components/Navbar/Navbar";
 import { useSelector } from "react-redux";
 import { boolean } from "yup";
 import { StoreType } from "../store/store";
@@ -55,7 +54,6 @@ const Router = () => {
 
   return (
     <>
-      <Navbar isAuth={isAuthenticated} setIsAuth={setIsAuthenticated} />
       <Routes>
         <Route path={home} element={<Home />} />
 

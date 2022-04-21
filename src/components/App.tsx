@@ -14,6 +14,8 @@ import "./app.css";
 
 import Router from "../router/routes";
 import NotFound from "../pages/NotFound";
+import Navbar from "./Navbar/Navbar";
+import Footer from "./Footer/Footer";
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
@@ -37,12 +39,16 @@ const theme = extendTheme({
 export const App = () => (
   <Provider store={Store}>
     <ChakraProvider theme={theme}>
-      <Box textAlign="center" fontSize="xl">
+
+      <Navbar />
+      <Box my="25" minHeight={"49vh"} fontSize="xl">
         {/* <Grid minH="100vh" p={3}> */}
         {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
         {/* <NotFound /> */}
+
         <Router />
       </Box>
+      <Footer isAuth={true} userDetails />
     </ChakraProvider>
   </Provider>
 );
