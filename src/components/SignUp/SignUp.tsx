@@ -146,6 +146,7 @@ const SignUp = () => {
                   name="phoneNumber"
                   type="number"
                   style={{ width: "85%" }}
+                  length="5"
                   placeholder="PhoneNumber"
                   className={
                     "form-control" +
