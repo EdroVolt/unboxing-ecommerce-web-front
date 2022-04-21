@@ -67,6 +67,7 @@ import {
 } from "../../router/routePaths";
 import { useNavigate } from "react-router";
 import { GoLocation } from "react-icons/all";
+
 interface city {
   id: string;
   governorate_id: string;
@@ -79,14 +80,6 @@ interface government {
   governorate_name_en: string;
 }
 export default function Navbar({ isAuth }: any) {
-  const handleInputChange = () => {
-    if (isAuth) {
-      localStorage.clear();
-      navigate("/");
-    } else navigate("/login");
-  };
-
-  const [page, setPage] = useState(1);
   const [userGovernment, setgovernment] = useState<government | undefined>({
     id: "3",
     governorate_name_ar: "الأسكندرية",
@@ -120,7 +113,7 @@ export default function Navbar({ isAuth }: any) {
   const categories = useSelector(
     (store: StoreType) => store.category.categories
   );
-  const user = useSelector((store: StoreType) => store.user.user);
+  let user = useSelector((state: any) => state.user.user);
   const {
     isOpen: isMenuOpen,
     onOpen: onMenuOpen,
@@ -137,13 +130,16 @@ export default function Navbar({ isAuth }: any) {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
+
   useEffect(() => {
-    dispatch(getAllCategoriesAPI(page));
+    dispatch(getAllCategoriesAPI());
     dispatch(getMeAPI());
     dispatch(getAllProductsAPI(1));
     console.log(isAuth);
   }, [isAuth]);
+
   console.log(user);
+
   return (
     <>
       <Box

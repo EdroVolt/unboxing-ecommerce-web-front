@@ -1,4 +1,4 @@
-import { getProductDetails } from './../actions/Product.actions';
+import { getProductDetails } from "./../actions/Product.actions";
 import { Dispatch } from "react";
 import Unboxing from "../../apis/unboxing";
 import ProductType from "../../models/Product.model";
@@ -17,80 +17,69 @@ import { ActionType } from "../actions/types";
 //       console.log(res);
 //       dispatch(Product.getAllProductsByCategory(res.data));
 //     })
-//     .catch((err) => console.log(err));
+//
 // };
 
 export const getAllProductsAPI =
   (page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
-    Unboxing.get(`/products?page=${page}`)
-      .then((res) => {
-        console.log(res);
-        dispatch(Product.getAllProducts(res.data));
-      })
-      .catch((err) => console.log(err));
+    Unboxing.get(`/products?page=${page}`).then((res) => {
+      console.log(res);
+      dispatch(Product.getAllProducts(res.data));
+    });
 
 export const getAllProductsByCategoryAPI =
   (categoryId: string, page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
-    Unboxing.get(`/products?page=${page}&category=${categoryId}`)
-      .then((res) => {
+    Unboxing.get(`/products?page=${page}&category=${categoryId}`).then(
+      (res) => {
         console.log(res);
         dispatch(Product.getAllProductsByCategory(res.data));
-      })
-      .catch((err) => console.log(err));
+      }
+    );
 
 export const getAllProductsByNameAPI =
   (name: string, page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
-    Unboxing.get(`/products?page=${page}&name=${name}`)
-      .then((res) => {
-        console.log(res);
-        dispatch(Product.getAllProductsByName(res.data));
-      })
-      .catch((err) => console.log(err));
+    Unboxing.get(`/products?page=${page}&name=${name}`).then((res) => {
+      console.log(res);
+      dispatch(Product.getAllProductsByName(res.data));
+    });
 
 // NOTE: change dispatch action to be descriptive
 export const getAllProductsByNameAndCategoryAPI =
   (name: string, categoryId: string, page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
-    Unboxing.get(`/products?page=${page}&name=${name}&category=${categoryId}`)
-      .then((res) => {
-        console.log(res);
-        dispatch(Product.getAllProductsByName(res.data));
-      })
-      .catch((err) => console.log(err));
+    Unboxing.get(
+      `/products?page=${page}&name=${name}&category=${categoryId}`
+    ).then((res) => {
+      console.log(res);
+      dispatch(Product.getAllProductsByName(res.data));
+    });
 
 export const getAllOfferProductsAPI =
   (page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
-    Unboxing.get(`/products?page=${page}&offer=true`)
-      .then((res) => {
-        console.log(res);
-        dispatch(Product.getAllOfferProducts(res.data));
-      })
-      .catch((err) => console.log(err));
+    Unboxing.get(`/products?page=${page}&offer=true`).then((res) => {
+      console.log(res);
+      dispatch(Product.getAllOfferProducts(res.data));
+    });
 
-      export const getProductDetailsAPI =
-  (_id: string| number ) =>
-  (dispatch: Dispatch<ActionType>) =>
-    Unboxing.get(`/products/:${_id}`)
-      .then((res) => {
-        console.log(res);
-        dispatch(Product.getProductDetails(res.data));
-      })
-      .catch((err) => console.log(err));
+export const getProductDetailsAPI =
+  (_id: string | number) => (dispatch: Dispatch<ActionType>) =>
+    Unboxing.get(`/products/:${_id}`).then((res) => {
+      console.log(res);
+      dispatch(Product.getProductDetails(res.data));
+    });
 
 // ------------------ Add ----------------------
 
 export const addProduct =
   (productData: ProductType) => (dispatch: Dispatch<ActionType>) =>
-    Unboxing.post(`/products`, productData)
-      .then((res) => {
-        console.log(res);
-        dispatch(Product.getAllOfferProducts(res.data));
-      })
-      .catch((err) => console.log(err));
+    Unboxing.post(`/products`, productData).then((res) => {
+      console.log(res);
+      dispatch(Product.getAllOfferProducts(res.data));
+    });
 
 // (product: ProductType) => ({
 //   type: actions.ADD_PRODUCT,

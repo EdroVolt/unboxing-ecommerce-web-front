@@ -43,26 +43,27 @@ const UserProfile = () => {
 
   const dispatch: any = useDispatch();
   const [userInfo, setUserInfo] = useState<UserType>({
-    name: user.name,
-    email: user.email,
-    password: user.password,
-    phoneNumber: user.phoneNumper,
-    address: { ...user.address },
+    name: user?.name,
+    email: user?.email,
+    password: user?.password,
+    phoneNumber: user?.phoneNumper,
+    address: { ...user?.address },
   });
   useEffect(() => {
     dispatch(getMeAPI());
   }, []);
 
-  const formateDate = () => {
+  const formateDate = (): UserType => {
     return {
+      _id: user._id,
       name: userInfo.name,
       email: userInfo.email,
       password: userInfo.password,
       phoneNumber: userInfo.phoneNumber,
       address: {
-        government: userInfo.address?.government,
-        city: userInfo.address?.city,
-        street: userInfo.address?.street,
+        government: userInfo.address?.government || "none",
+        city: userInfo.address?.city || "none",
+        street: userInfo.address?.street || "none",
       },
     };
   };
@@ -308,7 +309,16 @@ const UserProfile = () => {
                       variant="filled"
                       placeholder="Government"
                       value={userInfo.address?.government}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setUserInfo({
+                          ...userInfo,
+                          address: {
+                            city: userInfo?.address?.city,
+                            street: userInfo?.address?.street,
+                            government: e?.target?.value,
+                          },
+                        })
+                      }
                     />
                     <InputRightElement width="4.5rem">
                       <EditIcon className="editIcon" />
@@ -337,7 +347,16 @@ const UserProfile = () => {
                       variant="filled"
                       placeholder="City"
                       value={userInfo.address?.city}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setUserInfo({
+                          ...userInfo,
+                          address: {
+                            city: e?.target?.value,
+                            street: userInfo?.address?.street,
+                            government: userInfo?.address?.government,
+                          },
+                        })
+                      }
                     />
                     <InputRightElement width="4.5rem">
                       <EditIcon className="editIcon" />
@@ -366,7 +385,16 @@ const UserProfile = () => {
                       variant="filled"
                       placeholder="Street"
                       value={userInfo.address?.street}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setUserInfo({
+                          ...userInfo,
+                          address: {
+                            city: userInfo?.address?.city,
+                            street: e?.target?.value,
+                            government: userInfo?.address?.government,
+                          },
+                        })
+                      }
                     />
                     <InputRightElement width="4.5rem">
                       <EditIcon className="editIcon" />
@@ -379,12 +407,10 @@ const UserProfile = () => {
               <ButtonGroup variant="outline" spacing="6">
                 <Button
                   onClick={() => {
+                    console.log(formateDate());
                     dispatch(
                       editUserAPI({
-                        ...formateDate,
-                        name: "",
-                        email: "",
-                        password: "",
+                        ...formateDate(),
                       })
                     );
                   }}

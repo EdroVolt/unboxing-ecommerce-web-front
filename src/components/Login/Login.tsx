@@ -46,30 +46,49 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
   useEffect(() => {
     dispatch(getMeAPI());
   }, []);
-  
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={SignInSchema}
       onSubmit={(values: any) => {
-        dispatch(singInUserAPI(values.email, values.password));
+        dispatch(singInUserAPI(values.email, values.password))
+          .then(() => {
+            setIsAuthenticated(true);
+            window.location.assign("/");
+            // navigate(-1);
+          })
+          .catch((e: any) => {
+            console.log("error from catch:", e);
 
-        if (localStorage.getItem("token")) {
-          setIsAuthenticated(true);
-         // window.location.assign("/");
-         navigate(-1);
-        } else {
-          toast({
-            title: " enter a valid email or password.",
-            description: " enter a valid email or password",
-            status: "error",
-            duration: 9000,
-            isClosable: true,
+            toast({
+              title: " enter a valid email or password.",
+              description: " enter a valid email or password",
+              status: "error",
+              duration: 9000,
+              isClosable: true,
+            });
+            setIsAuthenticated(false);
+
+            navigate("/login");
           });
-          setIsAuthenticated(false);
-          
-          navigate("/login");
-        }
+
+        // if (localStorage.getItem("token")) {
+        //   setIsAuthenticated(true);
+        //   // window.location.assign("/");
+        //   navigate(-1);
+        // } else {
+        //   toast({
+        //     title: " enter a valid email or password.",
+        //     description: " enter a valid email or password",
+        //     status: "error",
+        //     duration: 9000,
+        //     isClosable: true,
+        //   });
+        //   setIsAuthenticated(false);
+
+        //   navigate("/login");
+        // }
       }}
     >
       {(formik: { errors: any; touched: any; isValid: any; dirty: any }) => {
