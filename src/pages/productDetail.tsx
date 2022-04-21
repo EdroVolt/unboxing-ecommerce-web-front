@@ -3,7 +3,6 @@ import { useParams } from "react-router";
 import Unboxing from "../apis/unboxing";
 import CardDetail from "../components/common/CardDetail/CardDetail";
 
-
 export default function ProductDetail() {
   const params = useParams();
   const id = params.id;
@@ -20,12 +19,9 @@ export default function ProductDetail() {
       });
   }, []);
 
-
-
-
   return (
     <CardDetail
-    _id={product?._id}
+      _id={product?._id}
       name={product?.name}
       description={product?.description}
       count={product?.count}
@@ -38,6 +34,5 @@ export default function ProductDetail() {
       offer={product?.offer}
       reviews={product?.reviews}
     />
-
   );
 }
