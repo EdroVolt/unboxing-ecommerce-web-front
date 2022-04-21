@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
 import {
+  addProductToMyCartAPI,
+  addProductToMyWishListAPI,
   deleteProductFromMyCartAPI,
   deleteProductFromMyWishListAPI,
 } from "../../../store/actionCreator/userActionCreator";
@@ -51,7 +53,21 @@ export default function SmallCard({
       console.log("no")
     }
   };
+  const cart ={
+    product: _id,
+    count:count
+  }
+  const cartHandler = (cart: any) => {
+    if (buttonName ===" Add to Cart ") {
+      dispatch(addProductToMyCartAPI(cart));
+      console.log(_id, buttonName);
+    } else if (buttonName ===" Add to WishList ") {
+      dispatch(addProductToMyWishListAPI(cart));
+      console.log("no")
+    }
 
+
+  };
   
 
   return (
@@ -147,6 +163,7 @@ export default function SmallCard({
               _focus={{
                 bg: "gray.400",
               }}
+              onClick={() => cartHandler(cart)}
             >
               {/* <AddIcon mr={1} /> */}
               {buttonName}

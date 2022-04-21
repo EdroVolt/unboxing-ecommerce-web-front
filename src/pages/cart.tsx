@@ -23,44 +23,34 @@ import ProductType from "../models/Product.model";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
-  const products = useSelector((store: StoreType) => store.user.user.cart);
-  const cart = useSelector((store: StoreType) => store.user.cart);
-  let user = useSelector((store: StoreType) => store.user.user);
+  // const products = useSelector((state: any) => state.user.cart);
+  // const cart = useSelector((state: any) => state.user.cart);
+  let user = useSelector((state: any) => state.user.user);
 
- 
+  console.log("my user: ", user);
+
   useEffect(() => {
-    if (!user) dispatch(getMeAPI());
+    dispatch(getMeAPI());
   }, []);
 
   useEffect(() => {
-    if (!products?.products?.length) dispatch(getMyCartAPI());
-  }, [user, products]);
+    if (!user?.cart?.products?.length && user?._id) dispatch(getMyCartAPI());
+  }, []);
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const order: OrderType = {
-    products: products.products?.map((product: any) => {
+    products: user?.cart?.products?.map((product: any) => {
       return { product: product.product._id, count: product.count };
     }),
-    totalCount:products.products.length,
+    totalCount: user?.cart?.products.length,
     paymentMethod: "cash",
   };
 
- const[empty, setEmpty]=useState(false)
- const[notEmpty, setnotEmpty]=useState(true)
-
- useEffect(()=>{
-   if(!products.products?.length){
-    setEmpty(true)
-    setnotEmpty(false)
-     console.log(products.products.length)
-   }
- },[products])
-
   const setTotalCountF = () => {
     let productsCount = 0;
-    products?.products?.map((product: any) => {
+    user?.cart?.products?.map((product: any) => {
       productsCount += product.count;
       return setTotalCount(productsCount);
     });
@@ -73,21 +63,25 @@ export default function Cart() {
 
   return (
     <div>
-
-    {notEmpty &&  
-     <><Heading
-          fontSize={"3xl"}
-          fontFamily={"body"}
-          fontWeight={"bold"}
-          // eslint-disable-next-line react-hooks/rules-of-hooks
-          color={useColorModeValue("yellow.500", "white")}
-          ml={{ sm: "10", md: "90" }}
-          mb={10}
-        >
-          {" "}
-          Cart{" "}
-        </Heading><Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-            {products?.products?.map((product: any) => {
+      <Heading
+        fontSize={"3xl"}
+        fontFamily={"body"}
+        fontWeight={"bold"}
+        color={useColorModeValue("yellow.500", "white")}
+        ml={{ sm: "10", md: "90" }}
+        mb={10}
+      >
+        {" "}
+        Cart{" "}
+      </Heading>
+      {!user ? (
+        <div>looding</div>
+      ) : (
+        <>
+          <Grid
+            templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}
+          >
+            {user.cart?.products?.map((product: any) => {
               return (
                 <SmallCard
                   _id={product.product._id}
@@ -99,10 +93,12 @@ export default function Cart() {
                   price={product.product.price}
                   color={product.color}
                   discount={product.product.discount}
-                  buttonName=" Add to WishList " />
+                  buttonName=" Add to WishList "
+                />
               );
             })}
-          </Grid><Stack
+          </Grid>
+          <Stack
             borderWidth="1px"
             borderRadius="lg"
             w={{ sm: "100%", md: "50%" }}
@@ -121,11 +117,10 @@ export default function Cart() {
                 {" "}
                 Total Price
               </Text>
-              : ${products.totalPrice} USD
+              : ${user.cart.totalPrice} USD
             </Text>
             <Button
-              // eslint-disable-next-line react-hooks/rules-of-hooks
-              colorScheme={useColorModeValue("gray.900", "gray.600")}
+              // colorScheme={useColorModeValue("gray.900", "gray.600")}
               variant="link"
               pr={15}
               mt={3}
@@ -137,9 +132,9 @@ export default function Cart() {
             >
               <CheckIcon mr={1} /> Check Out
             </Button>
-          </Stack></>
-      }
-      {empty && <Heading textAlign={"center"} color={"gray.300"}  mt={30}>Your Cart is Empty</Heading> }
+          </Stack>
+        </>
+      )}
     </div>
   );
 }
