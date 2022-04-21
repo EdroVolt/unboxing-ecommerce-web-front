@@ -39,7 +39,9 @@ const Router = () => {
     setIsAuthenticated(!isAuthenticated);
   };
   const user = useSelector<any>((store: StoreType) => store.user.user);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    !!localStorage.getItem("token")
+  );
 
   console.log("Auth", isAuthenticated);
   useEffect(() => {
