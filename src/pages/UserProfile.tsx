@@ -242,7 +242,12 @@ const UserProfile = () => {
                     changeUserPasswordAPI(user?._id, newassword, oldPassword)
                   )
                     .then(() => {
-                      console.log("gamed gamed");
+                      toast({
+                        title: `password has been changed successfully`,
+                        status: "success",
+                        duration: 9000,
+                        isClosable: true,
+                      });
                     })
                     .catch((e: Error) => {
                       toast({
