@@ -82,9 +82,9 @@ export const addProduct =
       dispatch(Product.getAllOfferProducts(res.data));
     });
 
-export const addReviewToProduct =
+export const addReviewToProductAPI =
   (productId: string, review: ReviewType) => (dispatch: Dispatch<ActionType>) =>
-    Unboxing.post(`/products/:id/reviews`, review).then((res) => {
+    Unboxing.post(`/products/${productId}/reviews`, review).then((res) => {
       console.log(res);
       dispatch(Product.addReviewOnProduct(res.data));
     });

@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   Box,
 } from "@chakra-ui/react";
-import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import {
   addProductToMyCartAPI,
   addProductToMyWishListAPI,
@@ -55,7 +55,6 @@ export default function SmallCard({
       dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
         dispatch(getMeAPI());
       });
-      console.log("no");
     }
   };
   const cart = {
@@ -69,8 +68,6 @@ export default function SmallCard({
           dispatch(getMeAPI());
         });
       });
-
-      console.log(_id, buttonName);
     } else if (buttonName === " Add to WishList ") {
       dispatch(addProductToMyWishListAPI(cart)).then(() => {
         dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
@@ -86,7 +83,7 @@ export default function SmallCard({
         borderWidth="1px"
         borderRadius="lg"
         w={{ sm: "100%", md: "90%" }}
-        height={{ sm: "35rem", md: "27rem", lg: "15rem" }}
+        height={{ sm: "35rem", md: "27rem", lg: "17rem" }}
         direction={{ base: "column", md: "column", lg: "row" }}
         bg={useColorModeValue("white.800", "gray.200")}
       >
@@ -164,7 +161,7 @@ export default function SmallCard({
           >
             <Button
               fontSize={"sm"}
-              rounded={"xl"}
+              // rounded={"xl"}
               bg="gray.300"
               color={"black"}
               _hover={{
@@ -175,19 +172,18 @@ export default function SmallCard({
               }}
               onClick={() => cartHandler(cart, _id)}
             >
-              {/* <AddIcon mr={1} /> */}
               {buttonName}
             </Button>
             <Button
-              bg={useColorModeValue("red.400", "red.400")}
-              fontSize={"sm"}
-              // rounded={"full"}
+              bg={useColorModeValue("red.600", "red.500")}
+              fontSize={"xs"}
               _focus={{
-                bg: "red.200",
+                bg: "red.400",
               }}
               _hover={{
-                bg: "red.300",
+                bg: "red.400",
               }}
+              color={"white"}
               onClick={() => {
                 deleteProduct(_id);
               }}

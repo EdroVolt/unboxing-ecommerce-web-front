@@ -1,18 +1,19 @@
 import {
   Box,
-  Button,
   Flex,
   Grid,
   Heading,
   Image,
+  ModalOverlay,
   Stack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
+import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import ModalPopUp from "../components/common/reviews/reviews";
 import OrderType from "../models/Order.model";
 import {
   getMeAPI,
@@ -20,9 +21,13 @@ import {
 } from "../store/actionCreator/userActionCreator";
 import { StoreType } from "../store/store";
 
+
+
 export default function Orders() {
+  
   const dispatch: any = useDispatch();
   const orders = useSelector((store: StoreType) => store.user?.user?.orders);
+
   let user = useSelector((store: StoreType) => store.user?.user);
 
   useEffect(() => {
@@ -33,9 +38,6 @@ export default function Orders() {
     if (!orders?.length && user?._id) dispatch(getUserOrdersAPI(user._id));
   }, [user]);
 
-  const addReview = (id: string) => {
-    console.log(id);
-  };
 
   return (
     <Box>
@@ -144,16 +146,7 @@ export default function Orders() {
                             >
                               Count: {product.count}
                             </Text>
-                            <Button
-                              variant="link"
-                              textAlign={"left"}
-                              onClick={() => {
-                                addReview(product.product._id);
-                              }}
-                              color={"gray.500"}
-                            >
-                              Review This Order
-                            </Button>
+                            <ModalPopUp productId={product?.product?._id} userId={user?._id}/>
                           </Stack>
                         </Stack>
                       );

@@ -8,7 +8,9 @@ import {
   Heading,
   Stack,
   Text,
+  toast,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,10 +28,18 @@ export default function Cart() {
   const dispatch: any = useDispatch();
   const [empty, setEmpty] = useState(false);
   const [notEmpty, setnotEmpty] = useState(true);
-
+  const toast = useToast();
   let user = useSelector((state: any) => state.user.user);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  console.log("my user: ", user);
+  const order: OrderType = {
+    products: user?.cart?.products?.map((product: any) => {
+      return { product: product.product._id, count: product.count };
+    }),
+    totalCount: user?.cart?.products.length,
+    paymentMethod: "cash",
+  };
 
   useEffect(() => {
     dispatch(getMeAPI()).then(() => {});
@@ -51,17 +61,6 @@ export default function Cart() {
     if (!user?.cart?.products?.length && user?._id) dispatch(getMyCartAPI());
   }, [user]);
 
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-
-  const order: OrderType = {
-    products: user?.cart?.products?.map((product: any) => {
-      return { product: product.product._id, count: product.count };
-    }),
-    totalCount: user?.cart?.products.length,
-    paymentMethod: "cash",
-  };
-
   const setTotalCountF = () => {
     let productsCount = 0;
     user?.cart?.products?.map((product: any) => {
@@ -72,7 +71,25 @@ export default function Cart() {
 
   const checkOut = () => {
     console.log(order);
-    dispatch(checkoutOrder(user._id, order));
+    dispatch(checkoutOrder(user._id, order))
+      .then(() => {
+        toast({
+          title: "CheckOut Success",
+          description: "please check your orders ",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+      .catch((error: any) => {
+        toast({
+          title: `Opps `,
+          description: `${error}`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
 
   return (

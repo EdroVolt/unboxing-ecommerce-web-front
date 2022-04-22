@@ -4,7 +4,6 @@ import {
   Container,
   Stack,
   Text,
-  Select,
   Image,
   Flex,
   Button,
@@ -16,10 +15,7 @@ import {
   ListItem,
   Icon,
   Badge,
-  Input,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
+  useToast,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import React, { useEffect, useState } from "react";
@@ -29,12 +25,6 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
 import { FavouriteButton } from "../Favourite";
 import ProductType from "../../../models/Product.model";
-import CartType from "../../../models/Cart.model";
-import {
-  addProductToUserCart,
-  addProductToUserWishList,
-  getUserDetails,
-} from "../../../store/actions/user.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../../../store/store";
 import {
@@ -42,7 +32,6 @@ import {
   addProductToMyWishListAPI,
   deleteProductFromMyWishListAPI,
   getMeAPI,
-  getUserDetailsAPI,
 } from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
@@ -65,7 +54,21 @@ export default function Simple({
   offer = true,
   reviews,
 }: ProductType) {
+  const dispatch: any = useDispatch();
   let user = useSelector((store: StoreType) => store.user.user);
+  const [userCount, setUserCount] = useState(0);
+  const [userSize, setUserSize] = useState("");
+  const toast = useToast();
+  const [selectedCount, setSelectedCount] = useState(count);
+  const [apled, setApled] = useState(false);
+  const [apledd, setApledd] = useState(true);
+  const cart = {
+    product: _id,
+    count: selectedCount,
+    size: userSize,
+  };
+
+
 
   const [favIsSelected, setFavIsSelected] = useState(
     () =>
@@ -86,7 +89,6 @@ export default function Simple({
     }
     return countList;
   }
-  const dispatch: any = useDispatch();
   useEffect(() => {
     dispatch(getMeAPI());
   }, []);
@@ -99,16 +101,43 @@ export default function Simple({
     );
   }, [user]);
 
-  const [userCount, setUserCount] = useState(0);
-  const [userSize, setUserSize] = useState("");
-  const [selectedCount, setSelectedCount] = useState(count);
+  // const [userCount, setUserCount] = useState(0);
+  // const [userSize, setUserSize] = useState("");
+  // const [selectedCount, setSelectedCount] = useState(count);
 
-  const cart = {
-    product: _id,
-    count: selectedCount,
-  };
+  // const cart = {
+  //   product: _id,
+  //   count: selectedCount,
+  // };
   const cartHandler = (cart: any) => {
-    dispatch(addProductToMyCartAPI(cart));
+    if (!userSize) {
+      toast({
+        title: `Opps `,
+        description: `You forget to choose your size`,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      dispatch(addProductToMyCartAPI(cart)).then(() => {
+        toast({
+          title: `Success `,
+          description: `You add ${name} to your cart`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }).catch((error:any)=>{
+        console.log(error)
+        toast({
+          title: `Error `,
+          description: `${name} is arleady added`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+    }
     console.log(cart);
   };
 
@@ -117,8 +146,6 @@ export default function Simple({
     else dispatch(deleteProductFromMyWishListAPI(_id));
     console.log(cart);
   };
-  const [apled, setApled] = useState(false);
-  const [apledd, setApledd] = useState(true);
 
   const increaseCount = () => {
     if (selectedCount <= userCount) {
