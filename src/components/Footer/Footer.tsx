@@ -1,10 +1,9 @@
 import emailjs, { send } from "emailjs-com";
-
+import { Link } from "react-router-dom";
 import {
   Box,
   chakra,
   Container,
-  Link,
   SimpleGrid,
   Stack,
   Text,
@@ -73,8 +72,8 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default function Footer(props: Footerprops) {
-  let user = useSelector((state: any) => state.user.user);
+export default function Footer({ isAuth }: any) {
+  let user = useSelector((state: any) => state.user);
   const toast = useToast();
   const [toSend, setToSend] = useState({
     from_name: user?.name,
@@ -85,6 +84,7 @@ export default function Footer(props: Footerprops) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
+    console.log(user);
     e.preventDefault();
     send("service_2t90r1h", "template_7gs4ezf", toSend, "5vg6rvpudykTlzC2i")
       .then((response) => {
@@ -106,14 +106,13 @@ export default function Footer(props: Footerprops) {
       });
   };
 
-  const userDetails = { ...props.userDetails };
   const dispatch: any = useDispatch();
   const handleChange = (e: any) => {
     setToSend({ ...toSend, [e.target.name]: e.target.value });
   };
   useEffect(() => {
     dispatch(getMeAPI());
-  }, []);
+  }, [isAuth]);
   return (
     <Box
       bg={useColorModeValue("gray.300", "gray.900")}
@@ -155,13 +154,13 @@ export default function Footer(props: Footerprops) {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Company</ListHeader>
-            <Link href={"/aboutUs"}>About us</Link>
+            <Link to={"/aboutUs"}>About us</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Account</ListHeader>
-            <Link href={`/${userDetails.userId}`}>Your Account</Link>
-            <Link href={"/categories"}>Visit Out Categories</Link>
-            <Link href="/offers">Visit Our Offers</Link>
+            <Link to={`/${user?._id}`}>Your Account</Link>
+            <Link to={"/categories"}>Visit Out Categories</Link>
+            <Link to="/offers">Visit Our Offers</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>will recieve greatfully your feedback</ListHeader>

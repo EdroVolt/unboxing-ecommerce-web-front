@@ -31,6 +31,7 @@ import { boolean } from "yup";
 import { StoreType } from "../store/store";
 import Navbar from "../components/Navbar/Navbar";
 import { Box } from "@chakra-ui/react";
+import Footer from "../components/Footer/Footer";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
@@ -96,6 +97,7 @@ const Router = () => {
           {/* <Route path={error} element={<NotFound />} /> */}
         </Routes>
       </Box>
+      <Footer isAuth={isAuthenticated} />
     </>
   );
 };

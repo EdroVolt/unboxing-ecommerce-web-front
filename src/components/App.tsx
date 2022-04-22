@@ -39,14 +39,11 @@ const theme = extendTheme({
 export const App = () => (
   <Provider store={Store}>
     <ChakraProvider theme={theme}>
-      
-        {/* <Grid minH="100vh" p={3}> */}
-        {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
-        {/* <NotFound /> */}
+      {/* <Grid minH="100vh" p={3}> */}
+      {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
+      {/* <NotFound /> */}
 
-        <Router />
-    
-      <Footer isAuth={true} userDetails />
+      <Router />
     </ChakraProvider>
   </Provider>
 );
