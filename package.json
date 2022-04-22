@@ -19,6 +19,7 @@
     "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "emailjs-com": "^3.2.0",
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.0",
     "framer-motion": "^4.1.17",
