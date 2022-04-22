@@ -40,7 +40,7 @@ export default function Card({
       overflow="hidden"
       color={"black"}
     >
-      <Image src={imageUrl} alt={imageAlt} />
+      <Image src={`http://localhost:8080/${imageUrl}`} alt={imageAlt} />
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">

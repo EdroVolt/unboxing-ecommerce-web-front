@@ -30,6 +30,7 @@ import { StoreType } from "../../../store/store";
 import {
   addProductToMyCartAPI,
   addProductToMyWishListAPI,
+  deleteProductFromMyWishListAPI,
   getMeAPI,
 } from "../../../store/actionCreator/userActionCreator";
 
@@ -67,10 +68,47 @@ export default function Simple({
     size: userSize,
   };
 
+
+
+  const [favIsSelected, setFavIsSelected] = useState(
+    () =>
+      !!user?.wishList?.products?.find(
+        (product: any) => product?.product?._id === _id
+      )
+  );
+
+  console.log(images);
+
+  console.log(user?.wishList);
+
+  function countLimit(count: number) {
+    let countList = [];
+    for (let i = 0; i < count; i++) {
+      console.log(i);
+      countList.push(<option>{i + 1}</option>);
+    }
+    return countList;
+  }
   useEffect(() => {
-    if (!user) dispatch(getMeAPI());
+    dispatch(getMeAPI());
   }, []);
 
+  useEffect(() => {
+    setFavIsSelected(
+      !!user?.wishList?.products?.find((product: any) => {
+        return product?.product?._id === _id;
+      })
+    );
+  }, [user]);
+
+  // const [userCount, setUserCount] = useState(0);
+  // const [userSize, setUserSize] = useState("");
+  // const [selectedCount, setSelectedCount] = useState(count);
+
+  // const cart = {
+  //   product: _id,
+  //   count: selectedCount,
+  // };
   const cartHandler = (cart: any) => {
     if (!userSize) {
       toast({
@@ -89,13 +127,23 @@ export default function Simple({
           duration: 9000,
           isClosable: true,
         });
-      });
+      }).catch((error:any)=>{
+        console.log(error)
+        toast({
+          title: `Error `,
+          description: `${name} is arleady added`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      })
     }
     console.log(cart);
   };
 
   const wishListHandler = (cart: any) => {
-    dispatch(addProductToMyWishListAPI(cart));
+    if (!favIsSelected) dispatch(addProductToMyWishListAPI(cart));
+    else dispatch(deleteProductFromMyWishListAPI(_id));
     console.log(cart);
   };
 
@@ -130,7 +178,7 @@ export default function Simple({
             alt={"product image"}
             src={
               //images[0]
-              "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080"
+              `http://localhost:8080/${images[0]}`
             }
             fit={"cover"}
             align={"center"}
@@ -363,10 +411,16 @@ export default function Simple({
             top="-7"
             right="4"
             w={"50px"}
+            bg={favIsSelected ? "red.700" : "red.200"}
+            color={favIsSelected ? "white" : "black"}
+            _hover={{
+              bg: "blue.200",
+            }}
             children={"Add to wish list"}
             aria-label={`Add ${name} to your favourites`}
             onClick={() => {
               wishListHandler(cart);
+              setFavIsSelected(!favIsSelected);
             }}
           />
           <Button

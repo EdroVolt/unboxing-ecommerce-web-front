@@ -86,7 +86,7 @@ export const addProductToMyWishListAPI =
     });
 
 export const deleteProductFromMyWishListAPI =
-  (productId: string) => (dispatch: Dispatch<actions.ActionType>) =>
+  (productId: string | number) => (dispatch: Dispatch<actions.ActionType>) =>
     Unboxing.delete(`/users/me/wishList`, {
       data: { product: productId },
     }).then((res) => {
