@@ -1,7 +1,6 @@
 import { ReactNode, useState, useEffect } from "react";
 
 import React from "react";
-import "./Navbar.css";
 import { Logo } from ".././../Logo";
 import cities from "./../common/cities.json";
 import { NavLink, Link } from "react-router-dom";
@@ -67,6 +66,7 @@ import {
 } from "../../router/routePaths";
 import { useNavigate } from "react-router";
 import { GoLocation } from "react-icons/all";
+import "./Navbar.css";
 
 interface city {
   id: string;
@@ -137,21 +137,30 @@ export default function Navbar({ isAuth }: any) {
     console.log(isAuth);
   }, [isAuth]);
 
-  console.log(user);
-
   return (
     <>
-      <Box
-        bg={useColorModeValue("gray.100", "gray.900")}
-        pb={"1"}
-        pt={"1"}
-        mb={"2"}
-      >
-        <Flex alignItems={"center"} width="100%" justifyContent={"left"}>
+      <Box bg={"gray.900"} color={"white"} py={"1"} mb={"2"}>
+        <Flex
+          alignItems={"center"}
+          px={"10"}
+          width="100%"
+          justifyContent={"left"}
+        >
           <Box>
-            <Flex>
-              <Logo width={["20%", "20%", "20%", "10%"]} mr={"3"} />
-              <Box display="flex" alignItems="start">
+            <Flex alignItems={"center"}>
+              <Link to={home}>
+                <Text
+                  className="brand"
+                  color={"yellow.400"}
+                  fontSize="5xl"
+                  fontWeight={"bold"}
+                  letterSpacing="0.05em"
+                  me={"2"}
+                >
+                  Unboxing
+                </Text>
+              </Link>
+              <Box display="flex" me={5} alignItems="start">
                 <VStack
                   justifyContent={"center"}
                   divider={<StackDivider borderColor="gray.200" />}
@@ -196,8 +205,10 @@ export default function Navbar({ isAuth }: any) {
                 <MenuButton
                   placholder={"categories"}
                   as={Button}
-                  borderRadius="none"
-                  bg={"lightgray"}
+                  bg={"gray.200"}
+                  color="black"
+                  borderRadius={"none"}
+                  fontWeight="700"
                   rightIcon={
                     <ChevronDownIcon
                       ml={"100%"}
@@ -207,10 +218,10 @@ export default function Navbar({ isAuth }: any) {
                     />
                   }
                 >
-                  {searchValue.name}
+                  Category
                 </MenuButton>
 
-                <MenuList>
+                <MenuList bg={"gray.300"} color={"black"}>
                   {categories.map((category: CategoryType) => {
                     return (
                       <>
@@ -237,6 +248,8 @@ export default function Navbar({ isAuth }: any) {
               <Input
                 type="search"
                 textColor={"black"}
+                border="none"
+                borderRadius={0}
                 onChange={(e) => {
                   setSearchFor(e.target.value);
                 }}
@@ -263,82 +276,111 @@ export default function Navbar({ isAuth }: any) {
           </Box>
 
           <Flex>
-            <Menu onOpen={onMenuOpen} onClose={onMenuClose} isOpen={isMenuOpen}>
-              <HStack>
-                <MenuButton
-                  px={2}
-                  mx={4}
-                  py={2}
-                  overflowY={"hidden"}
-                  transition="all 0.2s"
-                  borderRadius="md"
-                  maxH={"80%"}
-                  textAlign={"center"}
-                  borderWidth="1px"
-                  onMouseOver={onMenuOpen}
-                  _focus={{
-                    boxShadow: "outline",
-                    borderWidth: "1",
-                    borderColor: "white",
-                  }}
-                >
-                  <Text fontSize={11}>
-                    {" "}
-                    "Hello",{isAuth ? user?.name : null}
-                  </Text>
-                  <Text fontSize={13} fontWeight={"bold"}>
-                    Account&Lists
-                  </Text>
-                  <ChevronDownIcon />
-                </MenuButton>
-              </HStack>
-              <MenuList
-                zIndex={30}
-                minH={"29%"}
-                bgColor={useColorModeValue("white", "dark")}
+            <Box alignSelf={"center"} fontSize="18" mx={4} role="button">
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "/wishlist" : "/"}
               >
-                <HStack justifyContent={"center"} textAlign={"center"}>
-                  {isAuth ? (
-                    <>
-                      {" "}
-                      <Box>
-                        <Text fontWeight={"bold"} fontSize={16}>
-                          Your list
-                        </Text>
-                        <MenuItem fontSize={11}>
-                          <NavLink
-                            className={({ isActive }) =>
-                              isActive ? "active" : "inactive"
-                            }
-                            to="/wishlist"
-                          >
-                            "visit your list"
-                          </NavLink>
-                        </MenuItem>
-                      </Box>
-                    </>
-                  ) : null}
-                  <MenuDivider color={"black"} bgColor={"black"}></MenuDivider>{" "}
-                  <Box>
-                    <Text fontWeight={"bold"} fontSize={16}>
-                      Your Accounts
+                {isAuth ? "Wishlist" : null}
+              </NavLink>
+            </Box>
+            <Box alignSelf={"center"} fontSize="18" mx={4}>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={"/products"}
+              >
+                Products
+              </NavLink>
+            </Box>
+            <Box alignSelf={"center"} fontSize="18" mx={4}>
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "orders" : "/"}
+              >
+                {isAuth ? "Orders" : null}
+              </NavLink>
+            </Box>
+            <Box
+              _hover={{ border: "black", borderWidth: "2" }}
+              width={20}
+              alignSelf={"center"}
+              mx={4}
+            >
+              <NavLink
+                className={({ isActive }) => (isActive ? "active" : "inactive")}
+                to={isAuth ? "/cart" : "/login"}
+              >
+                <HStack>
+                  <Text fontSize={"18"}>Cart</Text>
+                  <svg
+                    fill={"silver"}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 576 512"
+                    width={"22"}
+                    height={"30"}
+                  >
+                    <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
+                  </svg>
+                </HStack>
+              </NavLink>
+            </Box>
+            {isAuth ? (
+              <Menu
+                onOpen={onMenuOpen}
+                onClose={onMenuClose}
+                isOpen={isMenuOpen}
+              >
+                <HStack>
+                  <MenuButton
+                    px={2}
+                    mx={4}
+                    py={2}
+                    overflowY={"hidden"}
+                    transition="all 0.2s"
+                    borderRadius="md"
+                    maxH={"80%"}
+                    display="flex"
+                    width={150}
+                    onMouseOver={onMenuOpen}
+                    _hover={{
+                      bg: "gray.600",
+                    }}
+                  >
+                    <Text fontSize={18} color="gold" fontWeight={"bold"}>
+                      Hello 👋
                     </Text>
-                    <MenuItem fontSize={11}>
+                    <Text fontSize={18}>{isAuth ? user?.name : null}</Text>
+                    <ChevronDownIcon />
+                  </MenuButton>
+                </HStack>
+                <MenuList
+                  zIndex={30}
+                  minH={"29%"}
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  bgColor={useColorModeValue("gray.300", "gray.900")}
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  color={useColorModeValue("gray.900", "gray.300")}
+                >
+                  <Box justifyContent={"start"} px={5} textAlign={"start"}>
+                    <MenuItem p={0} width={20} fontSize={11}>
                       <NavLink
                         className={({ isActive }) =>
                           isActive ? "active" : "inactive"
                         }
                         to={isAuth ? "/profile" : "/login"}
                       >
-                        {isAuth ? "account" : "sign in"}
+                        <Text fontSize={"xl"} fontWeight="bold">
+                          {isAuth ? "Account" : "Login"}
+                        </Text>
                       </NavLink>
                     </MenuItem>
                     {isAuth ? (
                       <>
-                        <MenuItem
-                          backgroundColor={"red.700"}
-                          role={"button"}
-                          rounded={"2xl"}
+                        <Text
+                          fontSize={18}
+                          color={"red.500"}
+                          fontWeight="bold"
+                          rounded="md"
                         >
                           <NavLink
                             className={({ isActive }) =>
@@ -350,89 +392,41 @@ export default function Navbar({ isAuth }: any) {
                               window.location.reload();
                             }}
                           >
-                            logout
+                            Logout
                           </NavLink>
-                        </MenuItem>
+                        </Text>
                       </>
                     ) : null}
-                    <MenuItem fontSize={11}>
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive ? "active" : "inactive"
-                        }
-                        to={isAuth ? "/profile" : "/signUp"}
-                      >
-                        {isAuth ? null : "signUp"}
-                      </NavLink>
-                    </MenuItem>
                   </Box>
-                </HStack>
-              </MenuList>
-            </Menu>
-            <Box alignSelf={"center"} mx={4} role="button">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-                to={isAuth ? "/wishlist" : "/"}
-              >
-                {isAuth ? "wishlist" : null}
-              </NavLink>
-            </Box>
-            <Box alignSelf={"center"} mx={4}>
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-                to={"/products"}
-              >
-                products
-              </NavLink>
-            </Box>
-            <Box alignSelf={"center"} mx={4}>
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-                to={isAuth ? "orders" : "/"}
-              >
-                {isAuth ? "orders" : null}
-              </NavLink>
-            </Box>
-            <Box
-              _hover={{ border: "black", borderWidth: "2" }}
-              width={20}
+                </MenuList>
+              </Menu>
+            ) : null}
+
+            {!isAuth ? (
+              <Box alignSelf={"center"}>
+                <Button
+                  color={"gray.900"}
+                  onClick={() => {
+                    if (isAuth) {
+                      localStorage.clear();
+                      window.location.reload();
+                    } else {
+                      navigate("/login");
+                    }
+                  }}
+                >
+                  {isAuth ? "Logout" : "Login"}
+                </Button>
+              </Box>
+            ) : null}
+            <ColorModeSwitcher
+              justifySelf="flex-end"
               alignSelf={"center"}
-              mx={4}
-            >
-              {" "}
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-                to={isAuth ? "/cart" : "/login"}
-              >
-                <HStack>
-                  <svg
-                    fill={svgColor}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 576 512"
-                    width={"70"}
-                    height={"40"}
-                  >
-                    <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
-                  </svg>
-                  <Box> cart</Box>
-                </HStack>{" "}
-              </NavLink>
-            </Box>
-            <Box alignSelf={"center"}>
-              <Button
-                onClick={() => {
-                  if (isAuth) {
-                    localStorage.clear();
-                    window.location.reload();
-                  } else {
-                    navigate("/login");
-                  }
-                }}
-              >
-                {isAuth ? "Logout" : "Login"}
-              </Button>
-              <ColorModeSwitcher justifySelf="flex-end" />
-            </Box>
+              _hover={{
+                color: "gray.900",
+                bg: "gray.300",
+              }}
+            />
           </Flex>
         </Flex>
 

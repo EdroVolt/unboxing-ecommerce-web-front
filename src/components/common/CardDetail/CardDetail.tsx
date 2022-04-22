@@ -4,7 +4,6 @@ import {
   Container,
   Stack,
   Text,
-  Select,
   Image,
   Flex,
   Button,
@@ -16,10 +15,7 @@ import {
   ListItem,
   Icon,
   Badge,
-  Input,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
+  useToast,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import React, { useEffect, useState } from "react";
@@ -29,12 +25,6 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
 import { FavouriteButton } from "../Favourite";
 import ProductType from "../../../models/Product.model";
-import CartType from "../../../models/Cart.model";
-import {
-  addProductToUserCart,
-  addProductToUserWishList,
-  getUserDetails,
-} from "../../../store/actions/user.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../../../store/store";
 import {
@@ -42,7 +32,6 @@ import {
   addProductToMyWishListAPI,
   deleteProductFromMyWishListAPI,
   getMeAPI,
-  getUserDetailsAPI,
 } from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
@@ -65,18 +54,21 @@ export default function Simple({
   offer = true,
   reviews,
 }: ProductType) {
+  const dispatch: any = useDispatch();
   let user = useSelector((store: StoreType) => store.user.user);
+  const [userCount, setUserCount] = useState(0);
+  const [userSize, setUserSize] = useState("");
+  const toast = useToast();
+  const [selectedCount, setSelectedCount] = useState(count);
+  const [apled, setApled] = useState(false);
+  const [apledd, setApledd] = useState(true);
+  const cart = {
+    product: _id,
+    count: selectedCount,
+    size: userSize,
+  };
 
-  const [favIsSelected, setFavIsSelected] = useState(
-    () =>
-      !!user?.wishList?.products?.find(
-        (product: any) => product?.product?._id === _id
-      )
-  );
-
-  console.log(images);
-
-  console.log(user?.wishList);
+  const [favIsSelected, setFavIsSelected] = useState(false);
 
   function countLimit(count: number) {
     let countList = [];
@@ -86,7 +78,29 @@ export default function Simple({
     }
     return countList;
   }
-  const dispatch: any = useDispatch();
+
+  const wishListHandler = (cart: any) => {
+    dispatch(addProductToMyWishListAPI(cart))
+      .then(() => {
+        toast({
+          title: "Added to WishList ",
+          status: "info",
+          duration: 4000,
+          isClosable: true,
+        });
+      })
+      .catch(() => {
+        dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
+          toast({
+            title: "Removed",
+            status: "warning",
+            duration: 4000,
+            isClosable: true,
+          });
+        });
+      });
+  };
+
   useEffect(() => {
     dispatch(getMeAPI());
   }, []);
@@ -97,28 +111,49 @@ export default function Simple({
         return product?.product?._id === _id;
       })
     );
-  }, [user]);
+  });
 
-  const [userCount, setUserCount] = useState(0);
-  const [userSize, setUserSize] = useState("");
-  const [selectedCount, setSelectedCount] = useState(count);
+  // const [userCount, setUserCount] = useState(0);
+  // const [userSize, setUserSize] = useState("");
+  // const [selectedCount, setSelectedCount] = useState(count);
 
-  const cart = {
-    product: _id,
-    count: selectedCount,
-  };
+  // const cart = {
+  //   product: _id,
+  //   count: selectedCount,
+  // };
   const cartHandler = (cart: any) => {
-    dispatch(addProductToMyCartAPI(cart));
+    if (!userSize) {
+      toast({
+        title: `Opps `,
+        description: `You forget to choose your size`,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      dispatch(addProductToMyCartAPI(cart))
+        .then(() => {
+          toast({
+            title: `Success `,
+            description: `You add ${name} to your cart`,
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast({
+            title: `Error `,
+            description: `${name} is arleady added`,
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
+        });
+    }
     console.log(cart);
   };
-
-  const wishListHandler = (cart: any) => {
-    if (!favIsSelected) dispatch(addProductToMyWishListAPI(cart));
-    else dispatch(deleteProductFromMyWishListAPI(_id));
-    console.log(cart);
-  };
-  const [apled, setApled] = useState(false);
-  const [apledd, setApledd] = useState(true);
 
   const increaseCount = () => {
     if (selectedCount <= userCount) {
@@ -392,8 +427,8 @@ export default function Simple({
             children={"Add to wish list"}
             aria-label={`Add ${name} to your favourites`}
             onClick={() => {
+              // setFavIsSelected(!favIsSelected);
               wishListHandler(cart);
-              setFavIsSelected(!favIsSelected);
             }}
           />
           <Button
@@ -453,6 +488,7 @@ export default function Simple({
                   />
                   <Text fontWeight={"bold"} display="inline-block" ml="2">
                     {review?.userId?.name}
+                    {console.log(review)}
                   </Text>
                   <List spacing={2}>
                     <ListItem ml="10">
@@ -461,7 +497,7 @@ export default function Simple({
                         .map((_, i) => (
                           <StarIcon
                             key={i}
-                            color={i > review?.rate ? "gray.300" : "blue.400"}
+                            color={i >= review?.rate ? "gray.300" : "blue.400"}
                           />
                         ))}
                     </ListItem>

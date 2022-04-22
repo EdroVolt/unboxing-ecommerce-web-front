@@ -72,8 +72,9 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default function Footer({ isAuth }: any) {
-  let user = useSelector((state: any) => state.user);
+
+export default function Footer(props: Footerprops) {
+  let user = useSelector((state: any) => state.user.user);
   const toast = useToast();
   const [toSend, setToSend] = useState({
     from_name: user?.name,
@@ -84,7 +85,6 @@ export default function Footer({ isAuth }: any) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
-    console.log(user);
     e.preventDefault();
     send("service_2t90r1h", "template_7gs4ezf", toSend, "5vg6rvpudykTlzC2i")
       .then((response) => {
@@ -106,6 +106,7 @@ export default function Footer({ isAuth }: any) {
       });
   };
 
+  const userDetails = { ...props.userDetails };
   const dispatch: any = useDispatch();
   const handleChange = (e: any) => {
     setToSend({ ...toSend, [e.target.name]: e.target.value });
@@ -113,6 +114,7 @@ export default function Footer({ isAuth }: any) {
   useEffect(() => {
     dispatch(getMeAPI());
   }, [isAuth]);
+
   return (
     <Box
       bg={useColorModeValue("gray.300", "gray.900")}
