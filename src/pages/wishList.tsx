@@ -65,11 +65,13 @@ export default function WishList() {
             {notEmpty && (
               <>
                 <Heading
-                  fontSize={"3xl"}
-                  fontFamily={"body"}
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  color={useColorModeValue("yellow.500", "white")}
-                  ml={{ sm: "10", md: "90" }}
+                   fontSize={"3xl"}
+                   fontFamily={"body"}
+                   fontWeight={"bold"}
+                   // eslint-disable-next-line react-hooks/rules-of-hooks
+                   color={useColorModeValue("yellow.500", "white")}
+                   ml={{ sm: "10", md: "90" }}
+                   mb={10}
                 >
                   Wish List
                 </Heading>

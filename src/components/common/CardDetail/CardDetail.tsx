@@ -4,7 +4,6 @@ import {
   Container,
   Stack,
   Text,
-  Select,
   Image,
   Flex,
   Button,
@@ -16,10 +15,7 @@ import {
   ListItem,
   Icon,
   Badge,
-  Input,
-  InputGroup,
-  InputRightElement,
-  InputLeftElement,
+  useToast,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import React, { useEffect, useState } from "react";
@@ -29,19 +25,12 @@ import { FiShoppingCart } from "react-icons/fi";
 import { Avatar } from "@chakra-ui/react";
 import { FavouriteButton } from "../Favourite";
 import ProductType from "../../../models/Product.model";
-import CartType from "../../../models/Cart.model";
-import {
-  addProductToUserCart,
-  addProductToUserWishList,
-  getUserDetails,
-} from "../../../store/actions/user.actions";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../../../store/store";
 import {
   addProductToMyCartAPI,
   addProductToMyWishListAPI,
   getMeAPI,
-  getUserDetailsAPI,
 } from "../../../store/actionCreator/userActionCreator";
 
 export default function Simple({
@@ -64,30 +53,44 @@ export default function Simple({
   offer = true,
   reviews,
 }: ProductType) {
-  function countLimit(count: number) {
-    let countList = [];
-    for (let i = 0; i < count; i++) {
-      console.log(i);
-      countList.push(<option>{i + 1}</option>);
-    }
-    return countList;
-  }
   const dispatch: any = useDispatch();
   let user = useSelector((store: StoreType) => store.user.user);
+  const [userCount, setUserCount] = useState(0);
+  const [userSize, setUserSize] = useState("");
+  const toast = useToast();
+  const [selectedCount, setSelectedCount] = useState(count);
+  const [apled, setApled] = useState(false);
+  const [apledd, setApledd] = useState(true);
+  const cart = {
+    product: _id,
+    count: selectedCount,
+    size: userSize,
+  };
+
   useEffect(() => {
     if (!user) dispatch(getMeAPI());
   }, []);
 
-  const [userCount, setUserCount] = useState(0);
-  const [userSize, setUserSize] = useState("");
-  const [selectedCount, setSelectedCount] = useState(count);
-
-  const cart = {
-      product: _id,
-      count: selectedCount,
-  };
   const cartHandler = (cart: any) => {
-    dispatch(addProductToMyCartAPI(cart));
+    if (!userSize) {
+      toast({
+        title: `Opps `,
+        description: `You forget to choose your size`,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      dispatch(addProductToMyCartAPI(cart)).then(() => {
+        toast({
+          title: `Success `,
+          description: `You add ${name} to your cart`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
+    }
     console.log(cart);
   };
 
@@ -95,8 +98,6 @@ export default function Simple({
     dispatch(addProductToMyWishListAPI(cart));
     console.log(cart);
   };
-  const [apled, setApled] = useState(false);
-  const [apledd, setApledd] = useState(true);
 
   const increaseCount = () => {
     if (selectedCount <= userCount) {
@@ -171,7 +172,7 @@ export default function Simple({
             </Text>
             {discount > 0 && (
               <Text
-              // eslint-disable-next-line react-hooks/rules-of-hooks
+                // eslint-disable-next-line react-hooks/rules-of-hooks
                 color={useColorModeValue("gray.500", "gray.400")}
                 fontWeight={300}
                 fontSize={"xl"}
@@ -228,7 +229,6 @@ export default function Simple({
                 fontWeight={"bond"}
                 textAlign={"left"}
                 mb={2}
-
               >
                 Size
               </Text>
