@@ -48,10 +48,10 @@ export const getAllOfferProducts = (data: {
   },
 });
 
-export const getProductDetails = (product:ProductType) => ({
+export const getProductDetails = (product: ProductType) => ({
   type: actions.GET_PRODUCT_DETAILS,
   payload: {
-   product
+    product,
   },
 });
 
@@ -64,14 +64,10 @@ export const addProduct = (product: ProductType) => ({
   },
 });
 
-export const addReviewOnProduct = (
-  productId: string | number,
-  review: ReviewType
-) => ({
+export const addReviewOnProduct = (product: ProductType) => ({
   type: actions.ADD_REVIEW_ON_PRODUCT,
   payload: {
-    productId,
-    review,
+    product,
   },
 });
 

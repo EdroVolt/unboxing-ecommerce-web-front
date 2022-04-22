@@ -40,6 +40,7 @@ import { StoreType } from "../../../store/store";
 import {
   addProductToMyCartAPI,
   addProductToMyWishListAPI,
+  deleteProductFromMyWishListAPI,
   getMeAPI,
   getUserDetailsAPI,
 } from "../../../store/actionCreator/userActionCreator";
@@ -64,6 +65,19 @@ export default function Simple({
   offer = true,
   reviews,
 }: ProductType) {
+  let user = useSelector((store: StoreType) => store.user.user);
+
+  const [favIsSelected, setFavIsSelected] = useState(
+    () =>
+      !!user?.wishList?.products?.find(
+        (product: any) => product?.product?._id === _id
+      )
+  );
+
+  console.log(images);
+
+  console.log(user?.wishList);
+
   function countLimit(count: number) {
     let countList = [];
     for (let i = 0; i < count; i++) {
@@ -73,18 +87,25 @@ export default function Simple({
     return countList;
   }
   const dispatch: any = useDispatch();
-  let user = useSelector((store: StoreType) => store.user.user);
   useEffect(() => {
-    if (!user) dispatch(getMeAPI());
+    dispatch(getMeAPI());
   }, []);
+
+  useEffect(() => {
+    setFavIsSelected(
+      !!user?.wishList?.products?.find((product: any) => {
+        return product?.product?._id === _id;
+      })
+    );
+  }, [user]);
 
   const [userCount, setUserCount] = useState(0);
   const [userSize, setUserSize] = useState("");
   const [selectedCount, setSelectedCount] = useState(count);
 
   const cart = {
-      product: _id,
-      count: selectedCount,
+    product: _id,
+    count: selectedCount,
   };
   const cartHandler = (cart: any) => {
     dispatch(addProductToMyCartAPI(cart));
@@ -92,7 +113,8 @@ export default function Simple({
   };
 
   const wishListHandler = (cart: any) => {
-    dispatch(addProductToMyWishListAPI(cart));
+    if (!favIsSelected) dispatch(addProductToMyWishListAPI(cart));
+    else dispatch(deleteProductFromMyWishListAPI(_id));
     console.log(cart);
   };
   const [apled, setApled] = useState(false);
@@ -129,7 +151,7 @@ export default function Simple({
             alt={"product image"}
             src={
               //images[0]
-              "https://images.unsplash.com/photo-1596516109370-29001ec8ec36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyODE1MDl8MHwxfGFsbHx8fHx8fHx8fDE2Mzg5MzY2MzE&ixlib=rb-1.2.1&q=80&w=1080"
+              `http://localhost:8080/${images[0]}`
             }
             fit={"cover"}
             align={"center"}
@@ -171,7 +193,7 @@ export default function Simple({
             </Text>
             {discount > 0 && (
               <Text
-              // eslint-disable-next-line react-hooks/rules-of-hooks
+                // eslint-disable-next-line react-hooks/rules-of-hooks
                 color={useColorModeValue("gray.500", "gray.400")}
                 fontWeight={300}
                 fontSize={"xl"}
@@ -228,7 +250,6 @@ export default function Simple({
                 fontWeight={"bond"}
                 textAlign={"left"}
                 mb={2}
-
               >
                 Size
               </Text>
@@ -363,10 +384,16 @@ export default function Simple({
             top="-7"
             right="4"
             w={"50px"}
+            bg={favIsSelected ? "red.700" : "red.200"}
+            color={favIsSelected ? "white" : "black"}
+            _hover={{
+              bg: "blue.200",
+            }}
             children={"Add to wish list"}
             aria-label={`Add ${name} to your favourites`}
             onClick={() => {
               wishListHandler(cart);
+              setFavIsSelected(!favIsSelected);
             }}
           />
           <Button

@@ -19,37 +19,52 @@ import {
   getMyCartAPI,
 } from "../store/actionCreator/userActionCreator";
 import OrderType from "../models/Order.model";
+import { Spinner } from "@chakra-ui/spinner";
 import ProductType from "../models/Product.model";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
-  const products = useSelector((store: StoreType) => store.user.user.cart);
-  const cart = useSelector((store: StoreType) => store.user.cart);
-  let user = useSelector((store: StoreType) => store.user.user);
+  const [empty, setEmpty] = useState(false);
+  const [notEmpty, setnotEmpty] = useState(true);
 
- 
+  let user = useSelector((state: any) => state.user.user);
+
+  console.log("my user: ", user);
+
   useEffect(() => {
-    if (!user) dispatch(getMeAPI());
+    dispatch(getMeAPI()).then(() => {});
   }, []);
 
   useEffect(() => {
-    if (!products?.length && user?._id) dispatch(getMyCartAPI());
-  }, [user, products]);
+    if (!user) dispatch(getMeAPI());
+    else if (user?.cart?.products.length) {
+      setEmpty(false);
+      setnotEmpty(true);
+      console.log(user?.cart?.products);
+    } else {
+      setEmpty(true);
+      setnotEmpty(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (!user?.cart?.products?.length && user?._id) dispatch(getMyCartAPI());
+  }, [user]);
 
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
   const order: OrderType = {
-    products: products.products?.map((product: any) => {
+    products: user?.cart?.products?.map((product: any) => {
       return { product: product.product._id, count: product.count };
     }),
-    totalCount:products.products.length,
+    totalCount: user?.cart?.products.length,
     paymentMethod: "cash",
   };
 
   const setTotalCountF = () => {
     let productsCount = 0;
-    products?.products?.map((product: any) => {
+    user?.cart?.products?.map((product: any) => {
       productsCount += product.count;
       return setTotalCount(productsCount);
     });
@@ -62,70 +77,96 @@ export default function Cart() {
 
   return (
     <div>
-      <Heading
-        fontSize={"3xl"}
-        fontFamily={"body"}
-        fontWeight={"bold"}
-        color={useColorModeValue("yellow.500", "white")}
-        ml={{ sm: "10", md: "90" }}
-        mb={10}
-      >
-        {" "}
-        Cart{" "}
-      </Heading>
-      <Grid templateColumns={{ sm: "repeate(1, 1fr)", md: "repeat(2, 1fr)" }}>
-        {products?.products?.map((product: any) => {
-          return (
-            <SmallCard
-              _id={product.product._id}
-              name={product.product.name}
-              count={product.count}
-              categoryName={product.categoryName}
-              images={product.product.images}
-              size={product.size}
-              price={product.product.price}
-              color={product.color}
-              discount={product.product.discount}
-              buttonName=" Add to WishList "
-            />
-          );
-        })}
-      </Grid>
-      <Stack
-        borderWidth="1px"
-        borderRadius="lg"
-        w={{ sm: "100%", md: "50%" }}
-        // ml={{ sm: "1", md: "100" }}
-        direction={{ base: "row", md: "row", lg: "row" }}
-        justifyContent={"space-between"}
-       margin={"auto"}
-      >
-        <Text
-          ml={{ sm: "15", md: "15" }}
-          mt={3}
-          mb={3}
-          fontSize={{ sm: "xl", md: "xl" }}
-        >
-          <Text fontWeight={"black"} display={"inline-block"} mr={2}>
+      {notEmpty && (
+        <>
+          <Heading
+            fontSize={"3xl"}
+            fontFamily={"body"}
+            fontWeight={"bold"}
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            color={useColorModeValue("yellow.500", "white")}
+            ml={{ sm: "10", md: "90" }}
+            mb={10}
+          >
             {" "}
-            Total Price
-          </Text>
-          : ${products.totalPrice} USD
-        </Text>
-        <Button
-          colorScheme={useColorModeValue("gray.900", "gray.600")}
-          variant="link"
-          pr={15}
-          mt={3}
-          mb={3}
-          textDecoration={"underline"}
-          fontWeight={"bold"}
-          fontSize={{ sm: "l", md: "xl" }}
-          onClick={checkOut}
-        >
-          <CheckIcon mr={1} /> Check Out
-        </Button>
-      </Stack>
+            Cart{" "}
+          </Heading>
+          {!user ? (
+            <Spinner
+              position={"absolute"}
+              right={"50vw"}
+              top={"25vh"}
+              size="xl"
+            />
+          ) : (
+            <>
+              <Grid
+                templateColumns={{
+                  sm: "repeate(1, 1fr)",
+                  md: "repeat(2, 1fr)",
+                }}
+              >
+                {user.cart?.products?.map((product: any) => {
+                  return (
+                    <SmallCard
+                      _id={product.product._id}
+                      name={product.product.name}
+                      count={product.count}
+                      categoryName={product.categoryName}
+                      images={product.product.images}
+                      size={product.size}
+                      price={product.product.price}
+                      color={product.color}
+                      discount={product.product.discount}
+                      buttonName=" Add to WishList "
+                    />
+                  );
+                })}
+              </Grid>
+              <Stack
+                borderWidth="1px"
+                borderRadius="lg"
+                w={{ sm: "100%", md: "50%" }}
+                // ml={{ sm: "1", md: "100" }}
+                direction={{ base: "row", md: "row", lg: "row" }}
+                justifyContent={"space-between"}
+                margin={"auto"}
+              >
+                <Text
+                  ml={{ sm: "15", md: "15" }}
+                  mt={3}
+                  mb={3}
+                  fontSize={{ sm: "xl", md: "xl" }}
+                >
+                  <Text fontWeight={"black"} display={"inline-block"} mr={2}>
+                    {" "}
+                    Total Price
+                  </Text>
+                  : ${user.cart.totalPrice} USD
+                </Text>
+                <Button
+                  // colorScheme={useColorModeValue("gray.900", "gray.600")}
+                  variant="link"
+                  pr={15}
+                  mt={3}
+                  mb={3}
+                  textDecoration={"underline"}
+                  fontWeight={"bold"}
+                  fontSize={{ sm: "l", md: "xl" }}
+                  onClick={checkOut}
+                >
+                  <CheckIcon mr={1} /> Check Out
+                </Button>
+              </Stack>
+            </>
+          )}
+        </>
+      )}
+      {empty && (
+        <Heading textAlign={"center"} color={"gray.300"} mt={30}>
+          Your Cart is Empty
+        </Heading>
+      )}
     </div>
   );
 }

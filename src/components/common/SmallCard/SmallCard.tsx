@@ -9,7 +9,13 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DeleteIcon, AddIcon } from "@chakra-ui/icons";
-import { deleteProductFromMyCartAPI } from "../../../store/actionCreator/userActionCreator";
+import {
+  addProductToMyCartAPI,
+  addProductToMyWishListAPI,
+  deleteProductFromMyCartAPI,
+  deleteProductFromMyWishListAPI,
+  getMeAPI,
+} from "../../../store/actionCreator/userActionCreator";
 import { useDispatch } from "react-redux";
 import "../CardDetail/CardDetail";
 
@@ -40,8 +46,38 @@ export default function SmallCard({
   const dispatch: any = useDispatch();
 
   const deleteProduct = (_id: string) => {
-    console.log(_id);
-    dispatch(deleteProductFromMyCartAPI(_id));
+    if (buttonName === " Add to Cart ") {
+      dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
+        dispatch(getMeAPI());
+      });
+      console.log(_id, buttonName);
+    } else if (buttonName === " Add to WishList ") {
+      dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
+        dispatch(getMeAPI());
+      });
+      console.log("no");
+    }
+  };
+  const cart = {
+    product: _id,
+    count: count,
+  };
+  const cartHandler = (cart: any, _id: string) => {
+    if (buttonName === " Add to Cart ") {
+      dispatch(addProductToMyCartAPI(cart)).then(() => {
+        dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
+          dispatch(getMeAPI());
+        });
+      });
+
+      console.log(_id, buttonName);
+    } else if (buttonName === " Add to WishList ") {
+      dispatch(addProductToMyWishListAPI(cart)).then(() => {
+        dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
+          dispatch(getMeAPI());
+        });
+      });
+    }
   };
 
   return (
@@ -106,10 +142,13 @@ export default function SmallCard({
               {size && (
                 <Text fontSize={"l"} px={3}>
                   Size: {size}
-                  
                 </Text>
               )}
-              <Text fontSize={"l"} px={3} color={useColorModeValue("gray.600", "black")}>
+              <Text
+                fontSize={"l"}
+                px={3}
+                color={useColorModeValue("gray.600", "black")}
+              >
                 Count: {count}
               </Text>
             </Stack>
@@ -134,6 +173,7 @@ export default function SmallCard({
               _focus={{
                 bg: "gray.400",
               }}
+              onClick={() => cartHandler(cart, _id)}
             >
               {/* <AddIcon mr={1} /> */}
               {buttonName}
