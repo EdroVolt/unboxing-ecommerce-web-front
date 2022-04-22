@@ -82,8 +82,22 @@ export default function Footer({ isAuth }: any) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
-    send("service_2t90r1h", "template_7gs4ezf", toSend, "5vg6rvpudykTlzC2i")
+    user ? dispatch(getMeAPI()) : console.log("welcome guest");
+    send(
+      "service_2t90r1h",
+      "template_7gs4ezf",
+      {
+        from_name: user?.name || "guest",
+        to_name: "admin",
+        message: toSend.message,
+        user_name: user?.name || toSend.user_name,
+        user_id: user?._id,
+        reply_to: user?.email || toSend.reply_to,
+      },
+      "5vg6rvpudykTlzC2i"
+    )
       .then((response) => {
+        console.log(toSend);
         console.log("SUCCESS!", response.status, response.text);
         toast({
           duration: 9000,
@@ -198,6 +212,7 @@ export default function Footer({ isAuth }: any) {
               />
               <HStack mb={"5"} w={"full"}>
                 <Input
+                  onChange={handleChange}
                   aria-label="Name"
                   placeholder="Name"
                   type="text"
@@ -209,19 +224,20 @@ export default function Footer({ isAuth }: any) {
                   px={"4"}
                   fontWeight={"bold"}
                   borderRadius={"none"}
-                  value={toSend.from_name}
+                  value={user?.name}
                 />
                 <Input
                   aria-label="Email"
                   placeholder="Email"
                   type="email"
                   w={"full"}
+                  onChange={handleChange}
                   ms="5"
                   fontWeight={"bold"}
                   name="reply_to"
                   color={"gray.100"}
                   borderRadius={"none"}
-                  value={toSend.reply_to}
+                  value={user?.email}
                 />
               </HStack>
 
