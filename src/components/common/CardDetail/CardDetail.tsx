@@ -68,18 +68,7 @@ export default function Simple({
     size: userSize,
   };
 
-
-
-  const [favIsSelected, setFavIsSelected] = useState(
-    () =>
-      !!user?.wishList?.products?.find(
-        (product: any) => product?.product?._id === _id
-      )
-  );
-
-  console.log(images);
-
-  console.log(user?.wishList);
+  const [favIsSelected, setFavIsSelected] = useState(false);
 
   function countLimit(count: number) {
     let countList = [];
@@ -89,6 +78,23 @@ export default function Simple({
     }
     return countList;
   }
+
+  const wishListHandler = (cart: any) => {
+    // if (!favIsSelected) {
+    dispatch(addProductToMyWishListAPI(cart))
+      .then(() => {
+        // setFavIsSelected(false);
+      })
+      .catch(() => {
+        dispatch(deleteProductFromMyWishListAPI(_id));
+        // setFavIsSelected(true);
+      });
+    // } else {
+    //   console.log(cart);
+    // }
+    // setFavIsSelected(!favIsSelected);
+  };
+
   useEffect(() => {
     dispatch(getMeAPI());
   }, []);
@@ -99,7 +105,7 @@ export default function Simple({
         return product?.product?._id === _id;
       })
     );
-  }, [user]);
+  });
 
   // const [userCount, setUserCount] = useState(0);
   // const [userSize, setUserSize] = useState("");
@@ -119,31 +125,27 @@ export default function Simple({
         isClosable: true,
       });
     } else {
-      dispatch(addProductToMyCartAPI(cart)).then(() => {
-        toast({
-          title: `Success `,
-          description: `You add ${name} to your cart`,
-          status: "success",
-          duration: 9000,
-          isClosable: true,
+      dispatch(addProductToMyCartAPI(cart))
+        .then(() => {
+          toast({
+            title: `Success `,
+            description: `You add ${name} to your cart`,
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast({
+            title: `Error `,
+            description: `${name} is arleady added`,
+            status: "error",
+            duration: 9000,
+            isClosable: true,
+          });
         });
-      }).catch((error:any)=>{
-        console.log(error)
-        toast({
-          title: `Error `,
-          description: `${name} is arleady added`,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      })
     }
-    console.log(cart);
-  };
-
-  const wishListHandler = (cart: any) => {
-    if (!favIsSelected) dispatch(addProductToMyWishListAPI(cart));
-    else dispatch(deleteProductFromMyWishListAPI(_id));
     console.log(cart);
   };
 
@@ -419,8 +421,8 @@ export default function Simple({
             children={"Add to wish list"}
             aria-label={`Add ${name} to your favourites`}
             onClick={() => {
+              // setFavIsSelected(!favIsSelected);
               wishListHandler(cart);
-              setFavIsSelected(!favIsSelected);
             }}
           />
           <Button
