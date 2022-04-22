@@ -478,7 +478,7 @@ export default function Navbar({ isAuth }: any) {
                           })
                         );
                       }}
-                      placeholder="Select option"
+                      placeholder={user?.address?.government}
                       textAlign={"center"}
                     >
                       {governments[2].data?.map((government) => {
@@ -514,7 +514,7 @@ export default function Navbar({ isAuth }: any) {
                           })
                         );
                       }}
-                      placeholder="Select option"
+                      placeholder={user?.address?.city}
                       textAlign={"center"}
                     >
                       {governmentsCities?.map((newCity) => {
