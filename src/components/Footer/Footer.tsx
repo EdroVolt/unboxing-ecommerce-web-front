@@ -1,10 +1,9 @@
 import emailjs, { send } from "emailjs-com";
-
+import { Link } from "react-router-dom";
 import {
   Box,
   chakra,
   Container,
-  Link,
   SimpleGrid,
   Stack,
   Text,
@@ -73,6 +72,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
+
 export default function Footer(props: Footerprops) {
   let user = useSelector((state: any) => state.user.user);
   const toast = useToast();
@@ -113,7 +113,8 @@ export default function Footer(props: Footerprops) {
   };
   useEffect(() => {
     dispatch(getMeAPI());
-  }, []);
+  }, [isAuth]);
+
   return (
     <Box
       bg={useColorModeValue("gray.300", "gray.900")}
@@ -155,13 +156,13 @@ export default function Footer(props: Footerprops) {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Company</ListHeader>
-            <Link href={"/aboutUs"}>About us</Link>
+            <Link to={"/aboutUs"}>About us</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Account</ListHeader>
-            <Link href={`/${userDetails.userId}`}>Your Account</Link>
-            <Link href={"/categories"}>Visit Out Categories</Link>
-            <Link href="/offers">Visit Our Offers</Link>
+            <Link to={`/${user?._id}`}>Your Account</Link>
+            <Link to={"/categories"}>Visit Out Categories</Link>
+            <Link to="/offers">Visit Our Offers</Link>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>will recieve greatfully your feedback</ListHeader>
