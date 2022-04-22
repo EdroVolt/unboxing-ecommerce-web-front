@@ -21,10 +21,7 @@ import {
 } from "../store/actionCreator/userActionCreator";
 import { StoreType } from "../store/store";
 
-
-
 export default function Orders() {
-  
   const dispatch: any = useDispatch();
   const orders = useSelector((store: StoreType) => store.user?.user?.orders);
 
@@ -37,7 +34,6 @@ export default function Orders() {
   useEffect(() => {
     if (!orders?.length && user?._id) dispatch(getUserOrdersAPI(user._id));
   }, [user]);
-
 
   return (
     <Box>
@@ -121,10 +117,7 @@ export default function Orders() {
                             <Image
                               objectFit="cover"
                               boxSize="100%"
-                              src={
-                                product.product.image
-                                // "https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-                              }
+                              src={`http://localhost:8080/${product.product.images[0]}`}
                             />
                           </Flex>
                           <Stack
@@ -146,7 +139,10 @@ export default function Orders() {
                             >
                               Count: {product.count}
                             </Text>
-                            <ModalPopUp productId={product?.product?._id} userId={user?._id}/>
+                            <ModalPopUp
+                              productId={product?.product?._id}
+                              userId={user?._id}
+                            />
                           </Stack>
                         </Stack>
                       );

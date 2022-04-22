@@ -80,19 +80,25 @@ export default function Simple({
   }
 
   const wishListHandler = (cart: any) => {
-    // if (!favIsSelected) {
     dispatch(addProductToMyWishListAPI(cart))
       .then(() => {
-        // setFavIsSelected(false);
+        toast({
+          title: "Added to WishList ",
+          status: "info",
+          duration: 4000,
+          isClosable: true,
+        });
       })
       .catch(() => {
-        dispatch(deleteProductFromMyWishListAPI(_id));
-        // setFavIsSelected(true);
+        dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
+          toast({
+            title: "Removed",
+            status: "warning",
+            duration: 4000,
+            isClosable: true,
+          });
+        });
       });
-    // } else {
-    //   console.log(cart);
-    // }
-    // setFavIsSelected(!favIsSelected);
   };
 
   useEffect(() => {
@@ -482,6 +488,7 @@ export default function Simple({
                   />
                   <Text fontWeight={"bold"} display="inline-block" ml="2">
                     {review?.userId?.name}
+                    {console.log(review)}
                   </Text>
                   <List spacing={2}>
                     <ListItem ml="10">
@@ -490,7 +497,7 @@ export default function Simple({
                         .map((_, i) => (
                           <StarIcon
                             key={i}
-                            color={i > review?.rate ? "gray.300" : "blue.400"}
+                            color={i >= review?.rate ? "gray.300" : "blue.400"}
                           />
                         ))}
                     </ListItem>

@@ -88,7 +88,11 @@ export default function SmallCard({
         bg={useColorModeValue("white.800", "gray.200")}
       >
         <Flex flex={0.75} bg="black">
-          <Image objectFit="cover" boxSize="100%" src={images} />
+          <Image
+            objectFit="cover"
+            boxSize="100%"
+            src={`http://localhost:8080/${images}`}
+          />
         </Flex>
         <Stack
           flex={1.5}

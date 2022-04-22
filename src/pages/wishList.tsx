@@ -65,13 +65,13 @@ export default function WishList() {
             {notEmpty && (
               <>
                 <Heading
-                   fontSize={"3xl"}
-                   fontFamily={"body"}
-                   fontWeight={"bold"}
-                   // eslint-disable-next-line react-hooks/rules-of-hooks
-                   color={useColorModeValue("yellow.500", "white")}
-                   ml={{ sm: "10", md: "90" }}
-                   mb={10}
+                  fontSize={"3xl"}
+                  fontFamily={"body"}
+                  fontWeight={"bold"}
+                  // eslint-disable-next-line react-hooks/rules-of-hooks
+                  color={useColorModeValue("yellow.500", "white")}
+                  ml={{ sm: "10", md: "90" }}
+                  mb={10}
                 >
                   Wish List
                 </Heading>
@@ -87,8 +87,8 @@ export default function WishList() {
                         _id={product.product._id}
                         name={product.product.name}
                         count={product.count}
-                        categoryName={product.categoryName}
-                        images={product.images}
+                        categoryName={product.product.categoryName}
+                        images={product.product.images}
                         price={product.product.price}
                         color={product.color}
                         discount={product.product.discount}
