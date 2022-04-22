@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import "./UserProfile.css";
+import cities from "./../components/common/cities.json";
+import governments from "./../components/common/governments.json";
+
 import {
   FormControl,
   FormLabel,
@@ -25,6 +28,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Select,
 } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
@@ -50,13 +54,33 @@ const breakpoints = {
 };
 const theme = extendTheme({ breakpoints });
 
+interface government {
+  id: string;
+  governorate_name_ar: string;
+  governorate_name_en: string;
+}
+interface city {
+  id: string;
+  governorate_id: string;
+  city_name_ar: string;
+  city_name_en: string;
+}
 const UserProfile = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const user = useSelector((store: StoreType) => store.user.user);
   const [oldPassword, setOldPassword] = useState("");
   const [newassword, setnewPassword] = useState("");
-
+  const [citiesOfGovernment, setCitiesOfGovernment] = useState<
+    Array<city> | undefined
+  >([
+    {
+      id: "1",
+      governorate_id: "1",
+      city_name_ar: "15 مايو",
+      city_name_en: "15 May",
+    },
+  ]);
   const dispatch: any = useDispatch();
 
   const [userInfo, setUserInfo] = useState<UserType>({
@@ -65,6 +89,11 @@ const UserProfile = () => {
     password: user?.password,
     phoneNumber: user?.phoneNumper,
     address: { ...user?.address },
+  });
+  const [userGovernment, setgovernment] = useState<government | undefined>({
+    id: "3",
+    governorate_name_ar: "الأسكندرية",
+    governorate_name_en: "Alexandria",
   });
 
   const formateDate = (): UserType => {
@@ -329,29 +358,43 @@ const UserProfile = () => {
                 <FormLabel htmlFor="government" marginBottom="1em">
                   Government:
                 </FormLabel>
-                <Box display="flex">
-                  <InputGroup size="md">
-                    <Input
-                      id="government"
-                      name="government"
-                      variant="filled"
-                      placeholder="Government"
-                      value={userInfo.address?.government}
-                      onChange={(e) =>
-                        setUserInfo({
-                          ...userInfo,
-                          address: {
-                            city: userInfo?.address?.city,
-                            street: userInfo?.address?.street,
-                            government: e?.target?.value,
-                          },
+                <Box>
+                  <Select
+                    onChange={(e) => {
+                      const newgovernment = governments[2].data?.find(
+                        (h) => h.id == e.target.value
+                      );
+                      setgovernment(newgovernment);
+
+                      setCitiesOfGovernment(
+                        cities[2].data?.filter((a) => {
+                          return a.governorate_id == newgovernment?.id;
                         })
-                      }
-                    />
-                    <InputRightElement width="4.5rem">
-                      <EditIcon className="editIcon" />
-                    </InputRightElement>
-                  </InputGroup>
+                      );
+                      console.log(newgovernment?.governorate_name_en);
+
+                      setUserInfo({
+                        ...userInfo,
+                        address: {
+                          city: user?.address?.city,
+                          street: user?.address?.street,
+                          government: governments[2].data?.find(
+                            (h) => h.id == e.target.value
+                          )?.governorate_name_en,
+                        },
+                      });
+                    }}
+                    placeholder={userInfo.address?.government}
+                    textAlign={"center"}
+                  >
+                    {governments[2].data?.map((government) => {
+                      return (
+                        <option value={government.id}>
+                          {government.governorate_name_en}
+                        </option>
+                      );
+                    })}
+                  </Select>
                 </Box>
               </FormControl>
             </Stack>
@@ -369,26 +412,34 @@ const UserProfile = () => {
                 </FormLabel>
                 <Box display="flex">
                   <InputGroup size="md">
-                    <Input
-                      id="city"
-                      name="city"
-                      variant="filled"
-                      placeholder="City"
-                      value={userInfo.address?.city}
-                      onChange={(e) =>
+                    <Select
+                      onChange={(e) => {
                         setUserInfo({
                           ...userInfo,
                           address: {
-                            city: e?.target?.value,
-                            street: userInfo?.address?.street,
+                            city: cities[2].data?.find(
+                              (a) => a.id == e.target.value
+                            )?.city_name_en,
+                            street: user?.address?.street,
                             government: userInfo?.address?.government,
                           },
-                        })
-                      }
-                    />
-                    <InputRightElement width="4.5rem">
-                      <EditIcon className="editIcon" />
-                    </InputRightElement>
+                        });
+                        console.log(
+                          cities[2].data?.find((a) => a.id == e.target.value)
+                            ?.city_name_en
+                        );
+                      }}
+                      placeholder={user?.address?.city}
+                      textAlign={"center"}
+                    >
+                      {citiesOfGovernment?.map((newCity) => {
+                        return (
+                          <option value={newCity.id}>
+                            {newCity.city_name_en}
+                          </option>
+                        );
+                      })}
+                    </Select>
                   </InputGroup>
                 </Box>
               </FormControl>
