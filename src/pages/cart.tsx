@@ -25,7 +25,6 @@ import {
 import OrderType from "../models/Order.model";
 import { Spinner } from "@chakra-ui/spinner";
 import ProductType from "../models/Product.model";
-import { orders } from "../router/routePaths";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
@@ -96,8 +95,9 @@ export default function Cart() {
     console.log(order);
     dispatch(checkoutOrder(user._id, order))
       .then(() => {
-        sendEmail(user.orders[orders.length - 1]._id);
-
+        const userOrders = user?.orders;
+        sendEmail(userOrders[userOrders?.length - 1]?._id);
+        console.log(user.orders);
         toast({
           title: "CheckOut Success",
           description: "please check your orders ",
