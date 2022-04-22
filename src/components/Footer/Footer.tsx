@@ -1,3 +1,5 @@
+import emailjs, { send } from "emailjs-com";
+
 import {
   Box,
   chakra,
@@ -10,12 +12,23 @@ import {
   Input,
   IconButton,
   useColorModeValue,
+  FormLabel,
+  Textarea,
+  Button,
+  useToast,
 } from "@chakra-ui/react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 
 import { Logo } from "../../Logo";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getMeAPI,
+  getUserDetailsAPI,
+} from "../../store/actionCreator/userActionCreator";
+import { EditIcon, EmailIcon } from "@chakra-ui/icons";
+
 interface Footerprops {
   isAuth: boolean;
   userDetails: { userId: string; userEmail: string } | {};
@@ -61,9 +74,46 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
 };
 
 export default function Footer(props: Footerprops) {
+  let user = useSelector((state: any) => state.user.user);
+  const toast = useToast();
+  const [toSend, setToSend] = useState({
+    from_name: user?.name,
+    to_name: "admin",
+    message: "",
+    user_name: user?.name,
+    user_id: user?._id,
+    reply_to: user?.email,
+  });
+  const onSubmit = (e: any) => {
+    e.preventDefault();
+    send("service_2t90r1h", "template_7gs4ezf", toSend, "5vg6rvpudykTlzC2i")
+      .then((response) => {
+        console.log("SUCCESS!", response.status, response.text);
+        toast({
+          duration: 9000,
+          isClosable: true,
+
+          title: "your feadback had been sent, we will response immediately",
+        });
+      })
+      .catch((err) => {
+        toast({
+          duration: 9000,
+          isClosable: true,
+          status: "error",
+          title: "something went wrong",
+        });
+      });
+  };
+
   const userDetails = { ...props.userDetails };
-  const isAuth = props.isAuth;
-  const [guestEmail, setGuestEmail] = useState<string>("");
+  const dispatch: any = useDispatch();
+  const handleChange = (e: any) => {
+    setToSend({ ...toSend, [e.target.name]: e.target.value });
+  };
+  useEffect(() => {
+    dispatch(getMeAPI());
+  }, []);
   return (
     <Box
       bg={useColorModeValue("gray.300", "gray.900")}
@@ -114,30 +164,40 @@ export default function Footer(props: Footerprops) {
             <Link href="/offers">Visit Our Offers</Link>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Stay up to date</ListHeader>
-            <Stack direction={"row"}>
+            <ListHeader>will recieve greatfully your feedback</ListHeader>
+            <form onSubmit={onSubmit}>
               <Input
-                placeholder={"Your email address"}
-                bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-                border={0}
-                onChange={(e) => {
-                  setGuestEmail(e.target.value);
-                }}
-                value={isAuth ? userDetails.userEmail : guestEmail}
-                _focus={{
-                  bg: "whiteAlpha.300",
-                }}
+                type="hidden"
+                name="contact_number"
+                onChange={handleChange}
+              />
+              <FormLabel>Name</FormLabel>
+              <Input
+                aria-label="Name"
+                type="text"
+                name="from_name"
+                value={toSend.from_name}
+              />
+              <FormLabel>Email</FormLabel>
+              <Input
+                aria-label="Message"
+                type="email"
+                name="reply_to"
+                value={toSend.reply_to}
+              />
+              <FormLabel>Message</FormLabel>
+              <Textarea
+                aria-label="messages"
+                name="message"
+                onChange={handleChange}
               />
               <IconButton
-                bg={useColorModeValue("green.400", "green.800")}
-                color={useColorModeValue("white", "gray.800")}
-                _hover={{
-                  bg: "green.600",
-                }}
-                aria-label="Subscribe"
-                icon={<BiMailSend />}
-              />
-            </Stack>
+                aria-label="Email"
+                icon={<EmailIcon />}
+                type="submit"
+                value="Send"
+              />{" "}
+            </form>
           </Stack>
         </SimpleGrid>
       </Container>
