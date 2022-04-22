@@ -72,7 +72,14 @@ export const editUser = (user: UserType) => ({
     user,
   },
 });
+// --------- change password ------------------------------
 
+export const changeUserPassword = (user: UserType) => ({
+  type: actions.CHANGE_USER_PASSWORD,
+  payload: {
+    user,
+  },
+});
 // --------- Delete ------------------------------
 
 export const deleteProductFromUserCart = (productId: string | number) => ({

@@ -35,6 +35,16 @@ export const editUserAPI =
       console.log(res);
       dispatch(User.editUser(res.data));
     });
+export const changeUserPasswordAPI =
+  (_id: string, newPassword: string, oldPassword: string) =>
+  (dispatch: Dispatch<actions.ActionType>) =>
+    Unboxing.put(`/users/${_id}/changePassword`, {
+      newPassword,
+      oldPassword,
+    }).then((res) => {
+      console.log(res);
+      dispatch(User.changeUserPassword(res.data));
+    });
 
 export const deleteUserAPI =
   (_id: string | number) => (dispatch: Dispatch<actions.ActionType>) =>

@@ -38,6 +38,7 @@ export const CHECKOUT_ORDER = "CHECKOUT_ORDER"; // TODO: add payment getway
 export const EDIT_PRODUCT = "EDIT_PRODUCT";
 export const EDIT_CATEGORY = "EDIT_CATEGORY";
 export const EDIT_USER = "EDIT_USER";
+export const CHANGE_USER_PASSWORD = "CHANGE_USER_PASSWORD";
 
 //  ---------------- DELETE ---------------------
 

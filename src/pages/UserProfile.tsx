@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../store/store";
 
 import {
+  changeUserPasswordAPI,
   editUserAPI,
   getMeAPI,
 } from "../store/actionCreator/userActionCreator";
@@ -56,7 +57,7 @@ const UserProfile = () => {
       _id: user._id,
       name: userInfo.name,
       email: userInfo.email,
-      password: userInfo.password,
+      password: userInfo?.password,
       phoneNumber: userInfo.phoneNumber,
       address: {
         government: userInfo.address?.government || "none",
@@ -237,23 +238,21 @@ const UserProfile = () => {
               <Button
                 bgColor={"green.800"}
                 onClick={() => {
-                  try {
-                    dispatch(singInUserAPI(userInfo.email, oldPassword));
-                    dispatch(
-                      editUserAPI({
-                        ...userInfo,
-                        password: newassword,
-                      })
-                    );
-                  } catch (error) {
-                    toast({
-                      title: " enter a valid password.",
-                      description: " you didn't write the right password",
-                      status: "error",
-                      duration: 9000,
-                      isClosable: true,
+                  dispatch(
+                    changeUserPasswordAPI(user?._id, newassword, oldPassword)
+                  )
+                    .then(() => {
+                      console.log("gamed gamed");
+                    })
+                    .catch((e: Error) => {
+                      toast({
+                        title: `${e.name}`,
+                        description: " you didn't write the right password",
+                        status: "error",
+                        duration: 9000,
+                        isClosable: true,
+                      });
                     });
-                  }
                 }}
               >
                 confirm
