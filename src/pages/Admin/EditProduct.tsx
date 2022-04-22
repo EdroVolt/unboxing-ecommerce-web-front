@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Form from "../components/common/ProductForm/ProductForm";
+import Form from "../../components/common/ProductForm/ProductForm";
 
 
 const editHandling = (values: any) => {
@@ -11,8 +11,8 @@ export default function EditeProduct() {
     image: "Watch",
     name: "watch",
     price: 550,
-    discription: "jjjjjjjjjjjjjjj",
-    categoryName: "mjklhlj",
+    description: "",
+    category:[],
     xlCount: 0,
     lCount: 3,
     mdCount: 0,
@@ -27,15 +27,15 @@ export default function EditeProduct() {
     <Form
       eventHandler={editHandling}
       name={product.name}
-      discription={product.discription}
+      description={product.description}
       price={product.price}
-      categoryName={product.categoryName}
-      xlCount={product.xlCount}
-      lCount={product.lCount}
-      mdCount={product.mdCount}
-      sCount={product.sCount}
-    xsCount={product.xsCount}
-    offer={product.offer}
+      // category={product.category}
+    //   xlCount={product.xlCount}
+    //   lCount={product.lCount}
+    //   mdCount={product.mdCount}
+    //   sCount={product.sCount}
+    // xsCount={product.xsCount}
+    // offer={product.offer}
     discount={product.discount}
 
     />

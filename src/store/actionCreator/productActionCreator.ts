@@ -75,11 +75,11 @@ export const getProductDetailsAPI =
 
 // ------------------ Add ----------------------
 
-export const addProduct =
+export const addProductAPI =
   (productData: ProductType) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.post(`/products`, productData).then((res) => {
       console.log(res);
-      dispatch(Product.getAllOfferProducts(res.data));
+      dispatch(Product.addProduct(res.data));
     });
 
 export const addReviewToProductAPI =

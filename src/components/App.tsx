@@ -16,6 +16,7 @@ import Router from "../router/routes";
 import NotFound from "../pages/NotFound";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
+import AdminRouter from "../pages/Admin/Router/PrivateRoutes";
 
 // 2. Call `extendTheme` and pass your custom values
 const theme = extendTheme({
@@ -43,7 +44,9 @@ export const App = () => (
       {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
       {/* <NotFound /> */}
 
-      <Router />
+      {/* <Router /> */}
+      <AdminRouter/>
+
     </ChakraProvider>
   </Provider>
 );

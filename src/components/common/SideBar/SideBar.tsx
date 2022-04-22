@@ -28,7 +28,7 @@ interface LinkItemProps {
   icon: IconType;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Product List', icon: FiHome },
+  { name: 'Product List', icon: FiHome }, 
   { name: 'Add New Produc', icon: FiStar  },
   { name: 'Category List', icon: FiHome },
   { name: 'Add New Category', icon: FiStar },
@@ -38,7 +38,7 @@ const LinkItems: Array<LinkItemProps> = [
 export default function Sidebar({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box>
+    <Box mt={"-6"}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: 'none', md: 'block' }}

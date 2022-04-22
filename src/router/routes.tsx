@@ -32,6 +32,7 @@ import { StoreType } from "../store/store";
 import Navbar from "../components/Navbar/Navbar";
 import { Box } from "@chakra-ui/react";
 import Footer from "../components/Footer/Footer";
+import Dashboard from "../pages/Admin/Dashboard";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
@@ -45,7 +46,7 @@ const Router = () => {
     !!localStorage.getItem("token")
   );
 
-  console.log("Auth", isAuthenticated);
+  // console.log("Auth", isAuthenticated);
   useEffect(() => {
     let token = localStorage.getItem("token");
     if (token) {
@@ -71,16 +72,8 @@ const Router = () => {
             <Route path={wishList} element={<WishList />} />
             <Route path={orders} element={<Orders />} />
           </Route>
-          {/* <Route
-          path={dashboard}
-          element={
-            <PrivateRoute
-              isLogged={isLogged && user.roles.includes("admin")}
-            >
-              <DashBoard user={user} />
-            </PrivateRoute>
-          }
-        /> */}
+          <Route path={dashboard} element={<Dashboard />} />
+
 
           <Route path={products} element={<Products />} />
           <Route path={productDetails} element={<ProductDetail />} />
