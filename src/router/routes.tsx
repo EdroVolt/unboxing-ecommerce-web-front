@@ -17,7 +17,7 @@ import Home from "../pages/Home";
 import UserProfile from "../pages/UserProfile";
 import Products from "../pages/Products";
 import ProductDetail from "../pages/productDetail";
-//import { AboutUs } from "../components/AboutUs/AboutUs";
+import { AboutUs } from "../components/AboutUs/AboutUs";
 import Cart from "../pages/cart";
 import WishList from "../pages/wishList";
 import Orders from "../pages/Orders";
@@ -61,7 +61,7 @@ const Router = () => {
     <>
       <Navbar isAuth={isAuthenticated} setIsAuth={setIsAuthenticated} />
 
-      <Box my="25" minHeight={"49vh"} fontSize="xl">
+      <Box mt="25" minHeight={"49vh"} fontSize="xl">
         <Routes>
           <Route path={home} element={<Home />} />
 
@@ -84,6 +84,7 @@ const Router = () => {
 
           <Route path={products} element={<Products />} />
           <Route path={productDetails} element={<ProductDetail />} />
+          <Route path={about} element={<AboutUs />} />
           <Route
             path={login}
             element={

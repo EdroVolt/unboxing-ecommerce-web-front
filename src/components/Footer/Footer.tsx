@@ -15,6 +15,7 @@ import {
   Textarea,
   Button,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
@@ -27,11 +28,8 @@ import {
   getUserDetailsAPI,
 } from "../../store/actionCreator/userActionCreator";
 import { EditIcon, EmailIcon } from "@chakra-ui/icons";
+import { about, home } from "../../router/routePaths";
 
-interface Footerprops {
-  isAuth: boolean;
-  userDetails: { userId: string; userEmail: string } | {};
-}
 const SocialButton = ({
   children,
   label,
@@ -72,8 +70,7 @@ const ListHeader = ({ children }: { children: ReactNode }) => {
   );
 };
 
-
-export default function Footer(props: Footerprops) {
+export default function Footer({ isAuth }: any) {
   let user = useSelector((state: any) => state.user.user);
   const toast = useToast();
   const [toSend, setToSend] = useState({
@@ -85,7 +82,6 @@ export default function Footer(props: Footerprops) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
-    e.preventDefault();
     send("service_2t90r1h", "template_7gs4ezf", toSend, "5vg6rvpudykTlzC2i")
       .then((response) => {
         console.log("SUCCESS!", response.status, response.text);
@@ -106,7 +102,6 @@ export default function Footer(props: Footerprops) {
       });
   };
 
-  const userDetails = { ...props.userDetails };
   const dispatch: any = useDispatch();
   const handleChange = (e: any) => {
     setToSend({ ...toSend, [e.target.name]: e.target.value });
@@ -116,30 +111,31 @@ export default function Footer(props: Footerprops) {
   }, [isAuth]);
 
   return (
-    <Box
-      bg={useColorModeValue("gray.300", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
-      // position="fixed"
-      // right="0"
-      // left="0"
-    >
-      <Container as={Stack} maxW={"6xl"} py={10}>
+    <Box bg={"gray.900"} color={"gray.200"}>
+      <Container as={Stack} maxW={"8xl"} pt={10} pb="3">
         <SimpleGrid
-          templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
+          templateColumns={{ sm: "1fr 1fr", md: "1fr 1fr 2fr" }}
           spacing={8}
         >
-          <Stack spacing={6}>
+          <Stack spacing={2}>
             <Box>
-              <Logo
-                width={"50%"}
-                height={"30%"}
-                color={useColorModeValue("gray.700", "white")}
-              />
+              <Link to={home}>
+                <Text
+                  className="brand"
+                  color={"yellow.400"}
+                  fontSize="5xl"
+                  fontWeight={"bold"}
+                  letterSpacing="0.05em"
+                  me={"2"}
+                >
+                  Unboxing
+                </Text>
+              </Link>
             </Box>
-            <Text fontSize={"sm"}>
-              © 2022 Unposing Team Templates. All rights reserved
-            </Text>
-            <Stack direction={"row"} spacing={6}>
+
+            <Link to={about}>About us</Link>
+
+            <Stack direction={"row"} pt={"6"} spacing={6}>
               <SocialButton label={"Twitter"} href={"https://www.twitter.com"}>
                 <FaTwitter />
               </SocialButton>
@@ -155,52 +151,115 @@ export default function Footer(props: Footerprops) {
             </Stack>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Company</ListHeader>
-            <Link to={"/aboutUs"}>About us</Link>
+            <ListHeader>
+              {" "}
+              <Text
+                fontSize={24}
+                lineHeight="none"
+                borderLeft="4px solid pink"
+                px="2"
+              >
+                Our Talented Team
+              </Text>
+            </ListHeader>
+            <Link to={`https://www.linkedin.com/in/edrovolt/`}>
+              Ahmed Edrees
+            </Link>
+            <Link to={"https://www.linkedin.com/in/menna-refaat"}>
+              Menna Refaat
+            </Link>
+            <Link to="https://www.linkedin.com/in/nesma-taha-46a136113">
+              Nesma Taha
+            </Link>
+            <Link to="https://www.linkedin.com/in/rana-wagdi">Rana Wagdi</Link>
           </Stack>
-          <Stack align={"flex-start"}>
-            <ListHeader>Account</ListHeader>
-            <Link to={`/${user?._id}`}>Your Account</Link>
-            <Link to={"/categories"}>Visit Out Categories</Link>
-            <Link to="/offers">Visit Our Offers</Link>
-          </Stack>
-          <Stack align={"flex-start"}>
-            <ListHeader>will recieve greatfully your feedback</ListHeader>
-            <form onSubmit={onSubmit}>
+
+          <SimpleGrid
+            templateColumns={{ sm: "1fr 1fr", md: "1fr  2fr" }}
+            spacing="10"
+            w="full"
+          >
+            <ListHeader>
+              <Text
+                fontSize={30}
+                lineHeight="none"
+                borderLeft="4px solid pink"
+                px="2"
+              >
+                Your Feedback is very appreciated
+              </Text>
+            </ListHeader>
+            <Box>
               <Input
                 type="hidden"
                 name="contact_number"
                 onChange={handleChange}
+                m="5"
               />
-              <FormLabel>Name</FormLabel>
-              <Input
-                aria-label="Name"
-                type="text"
-                name="from_name"
-                value={toSend.from_name}
-              />
-              <FormLabel>Email</FormLabel>
-              <Input
-                aria-label="Message"
-                type="email"
-                name="reply_to"
-                value={toSend.reply_to}
-              />
-              <FormLabel>Message</FormLabel>
+              <HStack mb={"5"} w={"full"}>
+                <Input
+                  aria-label="Name"
+                  placeholder="Name"
+                  type="text"
+                  w={"full"}
+                  me="5"
+                  name="from_name"
+                  color={"gray.100"}
+                  border="1px solid white"
+                  px={"4"}
+                  fontWeight={"bold"}
+                  borderRadius={"none"}
+                  value={toSend.from_name}
+                />
+                <Input
+                  aria-label="Email"
+                  placeholder="Email"
+                  type="email"
+                  w={"full"}
+                  ms="5"
+                  fontWeight={"bold"}
+                  name="reply_to"
+                  color={"gray.100"}
+                  borderRadius={"none"}
+                  value={toSend.reply_to}
+                />
+              </HStack>
+
               <Textarea
                 aria-label="messages"
                 name="message"
+                fontWeight={"bold"}
+                borderColor={"gray.600"}
+                placeholder="Message"
                 onChange={handleChange}
+                mb="3"
               />
               <IconButton
                 aria-label="Email"
                 icon={<EmailIcon />}
                 type="submit"
                 value="Send"
-              />{" "}
-            </form>
-          </Stack>
+                w="100%"
+                fontSize={"32"}
+                color="black"
+                onClick={onSubmit}
+              />
+            </Box>
+          </SimpleGrid>
         </SimpleGrid>
+        <Text textAlign={"center"} fontSize={"sm"}>
+          Made with 💓 by
+          <Text
+            className="brand"
+            display={"inline-block"}
+            color={"yellow.400"}
+            mx="2"
+            fontSize="lg"
+          >
+            Unboxing
+          </Text>
+          Team. ©2022 All rights reserved
+        </Text>
       </Container>
     </Box>
   );

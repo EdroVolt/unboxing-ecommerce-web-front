@@ -1,12 +1,13 @@
 import { Box, Flex, HStack, Image, Link, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-import bgimg from "./.././.././../public/assets/yas.svg";
-import dartIcon from "./.././.././../public/assets/darts-svgrepo-com.svg";
-import hearIcon from "./.././.././../public/assets/love-svgrepo-com.svg";
-import teamIcon from "./.././.././../public/assets/team-svgrepo-com.svg";
+// import bgimg from "assets/yas.svg";
+// import dartIcon from "assets/darts-svgrepo-com.svg";
+// import hearIcon from "assets/love-svgrepo-com.svg";
+// import teamIcon from "assets/team-svgrepo-com.svg";
+
 export const AboutUs = () => {
   return (
-    <Box width={"100%"} height={"100%"} bgColor={"#A67A46"}>
+    <Box width={"100%"} height={"100vh"} mt={-7} bgColor={"red.100"}>
       {/* paraghraph section */}
       <HStack>
         <Box width={"50%"}>
@@ -35,7 +36,7 @@ export const AboutUs = () => {
             ml={"25%"}
           >
             <Box>
-              <Image src={dartIcon} width={10}></Image>
+              <Image src={"assets/darts-svgrepo-com.svg"} width={10}></Image>
               <Text fontSize={10}> Our Target Audience </Text>
               <Text fontSize={8}>
                 Everybody Thinks There's Something Missing, Hopefully We Have A
@@ -43,7 +44,7 @@ export const AboutUs = () => {
               </Text>
             </Box>
             <Box>
-              <Image src={hearIcon} width={10}></Image>
+              <Image src={"assets/love-svgrepo-com.svg"} width={10}></Image>
               <Text fontSize={10}> Why People Prefer Us </Text>
               <Text fontSize={8}>
                 Because We Will Search With You For Everything You Need
@@ -56,7 +57,7 @@ export const AboutUs = () => {
               borderRadius={"2xl"}
               borderColor={"white"}
             >
-              <Image src={teamIcon} width={10}></Image>
+              <Image src={"assets/team-svgrepo-com.svg"} width={10}></Image>
               <Text fontSize={10}> Follow Our Best Developers Team </Text>
               <VStack alignItems={"self-start"}>
                 <Link fontWeight={"bold"} href="https://github.com/mennarefaat">
@@ -85,7 +86,7 @@ export const AboutUs = () => {
 
         {/* end paragraph section */}
         {/* start image section */}
-        <Image width={"50%"} src={bgimg}></Image>
+        <Image width={"50%"} src={"assets/yas.svg"}></Image>
       </HStack>
       {/* end image section */}
     </Box>
