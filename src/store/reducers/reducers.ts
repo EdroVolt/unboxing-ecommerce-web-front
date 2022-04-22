@@ -39,6 +39,7 @@ export const userReducer = (
     // user info
     case actions.CREATE_USER:
     case actions.GET_USER_DETAILS:
+    case actions.CHANGE_USER_PASSWORD:
     case actions.EDIT_USER:
       return { ...state, user: payload.user };
     case actions.DELETE_USER:
