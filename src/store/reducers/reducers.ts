@@ -79,6 +79,22 @@ export const productReducer = (
     case actions.GET_PRODUCT_DETAILS:
       return { ...state, products: payload.products };
 
+    case actions.EDIT_PRODUCT:
+      return {
+        ...state,
+        products: state.products.filter((item) =>
+          item._id === payload.product._id ? payload.product : item
+        ),
+      };
+
+    case actions.DELETE_PRODUCT_FROM_STORE:
+      return {
+        ...state,
+        products: state.products.filter(
+          (item) => item._id !== payload.productId
+        ),
+      };
+
     case actions.ADD_REVIEW_ON_PRODUCT:
       return {
         ...state,
@@ -99,6 +115,17 @@ export const categoryReducer = (
     // products
     case actions.GET_CATEGORIES:
       return { ...state, categories: payload.categories };
+
+    case actions.ADD_CATEGORY:
+      return { ...state, categories: [...state.categories, payload.category] };
+
+    case actions.EDIT_CATEGORY:
+      return {
+        ...state,
+        categories: state.categories.filter((item) =>
+          item._id === payload.category._id ? payload.category : item
+        ),
+      };
 
     default:
       return state;

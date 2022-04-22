@@ -116,6 +116,7 @@ export default function Footer({ isAuth }: any) {
         <SimpleGrid
           templateColumns={{ sm: "1fr 1fr", md: "1fr 1fr 2fr" }}
           spacing={8}
+          mb="35"
         >
           <Stack spacing={2}>
             <Box>
@@ -168,10 +169,11 @@ export default function Footer({ isAuth }: any) {
             <Link to={"https://www.linkedin.com/in/menna-refaat"}>
               Menna Refaat
             </Link>
-            <Link to="https://www.linkedin.com/in/nesma-taha-46a136113">
-              Nesma Taha
-            </Link>
+            <Link to="https://www.linkedin.com/in/nesma-taha">Nesma Taha</Link>
             <Link to="https://www.linkedin.com/in/rana-wagdi">Rana Wagdi</Link>
+            <Link to="https://www.linkedin.com/in/yasmen-mohammed/">
+              Yasmen Abodabash
+            </Link>
           </Stack>
 
           <SimpleGrid

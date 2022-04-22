@@ -89,6 +89,22 @@ export const addReviewToProductAPI =
       dispatch(Product.addReviewOnProduct(res.data));
     });
 
+// ------------------ Edit ----------------------
+
+export const EditProductAPI =
+  (productData: ProductType) => (dispatch: Dispatch<ActionType>) =>
+    Unboxing.put(`/products/${productData._id}`, productData).then((res) => {
+      console.log(res);
+      dispatch(Product.editProduct(res.data));
+    });
+
+export const deleteProductAPI =
+  (productId: string | number) => (dispatch: Dispatch<ActionType>) =>
+    Unboxing.delete(`/products/${productId}`).then((res) => {
+      console.log(res);
+      dispatch(Product.deleteProductFromStore(res.data._id));
+    });
+
 // (product: ProductType) => ({
 //   type: actions.ADD_PRODUCT,
 //   payload: {
