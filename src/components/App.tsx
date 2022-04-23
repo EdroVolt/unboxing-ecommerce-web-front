@@ -44,9 +44,8 @@ export const App = () => (
       {/* <ColorModeSwitcher justifySelf="flex-end" /> */}
       {/* <NotFound /> */}
 
-      {/* <Router /> */}
-      <AdminRouter/>
-
+      <Router />
+      {/* <AdminRouter /> */}
     </ChakraProvider>
   </Provider>
 );

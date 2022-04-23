@@ -78,11 +78,16 @@ export const getProductDetailsAPI =
 export const addProductAPI =
   (productData: any) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.post(`/products`, productData, {
-      data:{
-        file:productData?.file
-      }
+      headers: {
+        "Content-Type": `multipart/form-data; boundary=${productData._boundary}`,
+      },
+      // data: {
+      //   file: file,
+      // },
     }).then((res) => {
       console.log(res);
+      console.log("haslkdnlaks", productData);
+
       dispatch(Product.addProduct(res.data));
     });
 
