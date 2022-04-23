@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
+import emailjs, { send } from "emailjs-com";
+
 import SmallCard from "../components/common/SmallCard/SmallCard";
 import {
   Box,
@@ -30,6 +32,26 @@ export default function Cart() {
   const [notEmpty, setnotEmpty] = useState(true);
   const toast = useToast();
   let user = useSelector((state: any) => state.user.user);
+  const sendEmail = (userOrder: any) => {
+    emailjs
+      .send(
+        "service_djz6kp8",
+        "template_v0u6eur",
+        { from_name: user?.name, user_id: user?._id, order: userOrder },
+
+        "Fqt5OrHHp5LmQVDbP"
+      )
+      .then(
+        (result) => {
+          console.log([order, user]);
+          console.log(result.text);
+        },
+        (error) => {
+          console.log(error.text);
+        }
+      );
+  };
+
   const [totalCount, setTotalCount] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
 
@@ -73,6 +95,9 @@ export default function Cart() {
     console.log(order);
     dispatch(checkoutOrder(user._id, order))
       .then(() => {
+        const userOrders = user?.orders;
+        sendEmail(userOrders[userOrders?.length - 1]?._id);
+        console.log(user.orders);
         toast({
           title: "CheckOut Success",
           description: "please check your orders ",
