@@ -76,8 +76,12 @@ export const getProductDetailsAPI =
 // ------------------ Add ----------------------
 
 export const addProductAPI =
-  (productData: ProductType) => (dispatch: Dispatch<ActionType>) =>
-    Unboxing.post(`/products`, productData).then((res) => {
+  (productData: any) => (dispatch: Dispatch<ActionType>) =>
+    Unboxing.post(`/products`, productData, {
+      data:{
+        file:productData?.file
+      }
+    }).then((res) => {
       console.log(res);
       dispatch(Product.addProduct(res.data));
     });

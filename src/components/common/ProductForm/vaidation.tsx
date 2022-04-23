@@ -15,19 +15,15 @@ export const ProductSchema = Yup.object().shape({
 export const sleep = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
 
-export const formateData = (values: any) => {
-  const newValues={...values,sizeCount:{
-    xl:values.xl,
-    l:values.l,
-    md:values.md,
-    s:values.s,
-    xs:values.xs
-  } }
-  console.log(newValues)
-  return newValues
-};
+  export const onSubmit = (values: any) => {
+    sleep(300).then(() => {
+      window.alert(JSON.stringify(values, null, 2));
+   });
+  }
+
+
 export type ProductFormProps = {
-  image?: string;
+  images?: string;
   name?: string;
   price?: number;
   description?: string;

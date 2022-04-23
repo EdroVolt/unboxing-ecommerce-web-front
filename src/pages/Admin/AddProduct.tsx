@@ -12,10 +12,22 @@ export default function AddProduct() {
 
   const dispatch:any = useDispatch()
 
+  const formateData = (values: any) => {
+    const newValues={...values,sizeCount:{
+      xl:values.xl,
+      l:values.l,
+      md:values.md,
+      s:values.s,
+      xs:values.xs
+    }, images:[values?.file.name], file:values.file}
+    console.log(newValues)
+    return newValues
+  };
+
   const categories = useSelector((store:StoreType)=>store?.category.categories)
   const addHandling = (values: ProductType) => {
-    console.log(values)
-    dispatch(addProductAPI(values))
+    
+    dispatch(addProductAPI(formateData(values)))
   };
 
   useEffect(()=>{

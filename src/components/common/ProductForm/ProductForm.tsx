@@ -1,7 +1,6 @@
 //imports
 import {
   Box,
-  Button,
   ButtonGroup,
   Center,
   FormLabel,
@@ -9,7 +8,7 @@ import {
   NumberInput,
   Radio,
 } from "@chakra-ui/react";
-import { Field, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import {
   InputControl,
   SubmitButton,
@@ -19,12 +18,11 @@ import {
   ResetButton,
 } from "formik-chakra-ui";
 import React, { useEffect, useState } from "react";
-// import { onSubmit } from "../CategForm/Validations";
 
-import { formateData, ProductFormProps, ProductSchema } from "./vaidation";
+import { onSubmit, ProductFormProps, ProductSchema } from "./vaidation";
 
 export default function ProductForm({
-  image,
+  images,
   name,
   price,
   description,
@@ -38,8 +36,9 @@ export default function ProductForm({
   discount,
   eventHandler = () => {},
 }: ProductFormProps) {
+  const [file, setFile]=useState("")
   const initialValues = {
-    image: image,
+    image: images,
     name: name,
     price: price,
     description: description,
@@ -57,19 +56,17 @@ export default function ProductForm({
     <Formik
       initialValues={initialValues}
       validationSchema={ProductSchema}
-      onSubmit={(values:any)=>{
-       console.log(values)
-        const productValues= formateData(values)
-       
-       eventHandler(productValues)
-      }}
+      onSubmit={onSubmit}
+      // enctype="multipart/form-data"
+
     >
       {({ handleSubmit, values, errors }) => (
         <Center>
-          <Box
-            width={{ sm: "100%", md: "50%" }}
-            mb={5}
-            as="form"
+          <Form
+            // width={{ sm: "100%", md: "50%" }}
+            // mb={5}
+            // as="form"
+            // enctype="multipart/form-data"
             onSubmit={handleSubmit as any}
           >
             <FormLabel htmlFor="product-name" mt={5}>
@@ -151,24 +148,24 @@ export default function ProductForm({
             <Field
               id="product-image"
               placeholder="Product image"
-              name="image"
+              name="images"
               type="file"
+              onChange={(e:any)=>{setFile(e?.target?.files[0])}}
             />
-            {/* <ButtonGroup display="block" mt={4}> */}
-              <Button
-              type="submit"
+            <ButtonGroup display="block" mt={4}>
+              <SubmitButton
                 colorScheme="gray"
                 pr={20}
                 pl={20}
-                onClick={()=>{console.log("kkkk")}}
+                onClick={()=>{eventHandler({...values, file})}}
               >
                 Submit
-              </Button>
+              </SubmitButton>
               <ResetButton colorScheme="gray" ml={4} pr={10} pl={10}>
                 Reset
               </ResetButton>
-            {/* </ButtonGroup> */}
-          </Box>
+            </ButtonGroup>
+          </Form>
         </Center>
       )}
     </Formik>
