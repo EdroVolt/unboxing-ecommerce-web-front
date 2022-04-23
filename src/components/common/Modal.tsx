@@ -13,6 +13,11 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteUserAPI,
+  getMeAPI,
+} from "../../store/actionCreator/userActionCreator";
 
 export default function BackdropExample() {
   const OverlayOne = () => (
@@ -21,11 +26,14 @@ export default function BackdropExample() {
       backdropFilter="blur(10px) hue-rotate(90deg)"
     />
   );
-
+  const dispatch: any = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const user = useSelector((store: any) => store.user.user);
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   //confirmDelete()
-
+  // useEffect(() => {
+  //   dispatch(getMeAPI());
+  // }, []);
   return (
     <>
       <Button
@@ -58,7 +66,12 @@ export default function BackdropExample() {
                 colorScheme="blue"
                 width="10rem"
                 boxShadow="xl"
-                onClick={onClose}
+                onClick={() => {
+                  dispatch(deleteUserAPI(user?._id));
+                  localStorage.clear();
+                  window.location.reload();
+                  onClose();
+                }}
               >
                 Yes
               </Button>
@@ -73,4 +86,7 @@ export default function BackdropExample() {
       </Modal>
     </>
   );
+}
+function useEffect(arg0: () => void, arg1: never[]) {
+  throw new Error("Function not implemented.");
 }
