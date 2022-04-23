@@ -69,6 +69,7 @@ import {
 import { useNavigate } from "react-router";
 import { GoLocation } from "react-icons/all";
 import "./Navbar.css";
+import { allowedNodeEnvironmentFlags } from "process";
 
 interface city {
   id: string;
@@ -226,10 +227,24 @@ export default function Navbar({ isAuth }: any) {
                     />
                   }
                 >
-                  Category
+                  {searchValue?.name || "Category"}
                 </MenuButton>
 
                 <MenuList bg={"gray.300"} color={"black"}>
+                  <MenuItem
+                    key={"all"}
+                    id={""}
+                    name={"all"}
+                    onClick={(e: any) => {
+                      setSearchedCategory({
+                        _id: undefined,
+                        name: "All",
+                        image: "all.jpg",
+                      });
+                    }}
+                  >
+                    All
+                  </MenuItem>
                   {categories.map((category: CategoryType) => {
                     return (
                       <>
@@ -497,7 +512,7 @@ export default function Navbar({ isAuth }: any) {
                     >
                       {governments[2].data?.map((government) => {
                         return (
-                          <option value={government.id}>
+                          <option key={government.id} value={government.id}>
                             {government.governorate_name_en}
                           </option>
                         );
@@ -533,7 +548,7 @@ export default function Navbar({ isAuth }: any) {
                     >
                       {governmentsCities?.map((newCity) => {
                         return (
-                          <option value={newCity.id}>
+                          <option key={newCity.id} value={newCity.id}>
                             {newCity.city_name_en}
                           </option>
                         );
