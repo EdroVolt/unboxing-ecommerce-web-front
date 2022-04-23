@@ -137,10 +137,12 @@ const UserProfile = () => {
   return (
     <>
       <Box
-        width="70vw"
+        width="90vw"
+        maxW="1270"
         margin="auto"
         padding="1em"
         p={3}
+        mb="5"
         borderWidth={1}
         borderRadius={8}
         boxShadow="dark-lg"
@@ -233,10 +235,10 @@ const UserProfile = () => {
               align="center"
               marginBottom="1.5em"
             >
-              change Password:
+              Change Password:
               <FormControl>
                 <FormLabel htmlFor="passowrd" marginBottom="1em"></FormLabel>
-                old password
+                Old Password
                 <Box display="flex">
                   <InputGroup size="md">
                     <Input
@@ -259,7 +261,7 @@ const UserProfile = () => {
               </FormControl>{" "}
               <FormControl>
                 <FormLabel htmlFor="passowrd" marginBottom="1em"></FormLabel>
-                new password
+                New Password
                 <Box display="flex">
                   <InputGroup size="md">
                     <Input
@@ -281,7 +283,17 @@ const UserProfile = () => {
                 </Box>
               </FormControl>
               <Button
-                bgColor={"green.800"}
+                colorScheme="blue"
+                width="10rem"
+                boxShadow="xl"
+                alignSelf={"flex-end"}
+                w={{
+                  sm: "auto",
+                  md: "auto",
+                  lg: "10rem",
+                  xl: "10rem",
+                  "2xl": "10rem",
+                }}
                 onClick={() => {
                   dispatch(
                     changeUserPasswordAPI(user?._id, newassword, oldPassword)

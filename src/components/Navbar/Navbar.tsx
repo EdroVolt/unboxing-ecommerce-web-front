@@ -53,7 +53,9 @@ import {
 } from "../../store/actionCreator/userActionCreator";
 import {
   getAllProductsAPI,
+  getAllProductsByCategoryAPI,
   getAllProductsByNameAndCategoryAPI,
+  getAllProductsByNameAPI,
 } from "../../store/actionCreator/productActionCreator";
 import {
   orders,
@@ -252,7 +254,7 @@ export default function Navbar({ isAuth }: any) {
               </Menu>
 
               <Input
-                type="search"
+                type="text"
                 textColor={"black"}
                 border="none"
                 borderRadius={0}
@@ -267,12 +269,18 @@ export default function Navbar({ isAuth }: any) {
                 bg="none"
                 cursor={"pointer"}
                 onClick={() => {
-                  dispatch(
-                    getAllProductsByNameAndCategoryAPI(
-                      searchFor,
-                      searchValue._id!
-                    )
-                  );
+                  if (searchFor && searchValue._id)
+                    dispatch(
+                      getAllProductsByNameAndCategoryAPI(
+                        searchFor,
+                        searchValue._id!
+                      )
+                    );
+                  else if (!searchFor && searchValue._id)
+                    dispatch(getAllProductsByCategoryAPI(searchValue._id!));
+                  else if (searchFor && !searchValue._id)
+                    dispatch(getAllProductsByNameAPI(searchValue._id!));
+                  else dispatch(getAllProductsAPI());
                   navigate("/products");
                 }}
               >

@@ -8,15 +8,14 @@
   justify-content: space-evenly;
   gap: 1em;
 }
-.boxStyleResponsive {
-  width: 100%;
-  margin: auto;
-  padding: 1rem;
-  border-radius: 10px;
-  justify-content: space-evenly;
-  gap: 1em;
-}
+
 
 .editIcon {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 450px) {
+  .boxStyle {
+    flex-direction: column;
+  }
 }

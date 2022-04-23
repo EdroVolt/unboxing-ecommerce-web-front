@@ -34,13 +34,14 @@ export default function Card({
   return (
     <Box
       bg={color}
+      h="full"
       maxW="sm"
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
       color={"black"}
     >
-      <Image src={`http://localhost:8080/${imageUrl}`} alt={imageAlt} />
+      <Image src={`http://localhost:8080/${imageUrl}`} alt={imageAlt} w="240" />
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">
