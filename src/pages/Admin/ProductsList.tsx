@@ -10,33 +10,25 @@ import{
     Button,
 
   }from'@chakra-ui/react'
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { getAllProductsAPI } from '../../store/actionCreator/productActionCreator'
+import { StoreType } from '../../store/store'
  
 
 export default function ProductsList(){
 
-    const [products, setProducts]=useState(
-        [{
-            name:"watch",
-            description:"watch product",
-            count:"5",
-            sizeCount: {
-                xs: 3,
-                s: 4,
-                md: 2,
-                l: 1,
-                xl: 5,
-            },
-            categoryId:"electronics",
-            ingredients:["stell","steel"],
-            images:[""],
-            price:500,
-            discount:20,
-            offer:true,
-   
-        
-        }]
-    )
+    
+
+  const products = useSelector((store: StoreType) => store?.product?.products);
+
+
+    const dispatch:any = useDispatch()
+
+    useEffect(()=>{
+      dispatch(getAllProductsAPI())
+    },[products])
 
  return(  
    <>
@@ -56,19 +48,19 @@ export default function ProductsList(){
         </Tr>
       </Thead>
       <Tbody>
-            {products.map((product)=>{
+            {products?.map((product:any)=>{
                 return (
                     <Tr _hover={{bg:"gray.100", color: "black"}} >
-                    <Td >{product.images[0]}</Td>
-                    <Td>{product.name}</Td>
-                    <Td>{product.description}</Td>
-                    <Td >{product.price}</Td>
-                    <Td >{product.sizeCount.xl}</Td>
-                    <Td >{product.categoryId}</Td>
-                    <Td >{product.discount}</Td>
-                    <Td >{product.offer===true?<CheckIcon color="green"/>:<CloseIcon color="red"/>}</Td>
+                    <Td >{product?.images[0]}</Td>
+                    <Td>{product?.name}</Td>
+                    <Td>{product?.description}</Td>
+                    <Td >{product?.price}</Td>
+                    <Td >{product?.sizeCount.xl}</Td>
+                    <Td >{product?.category?.name}</Td>
+                    <Td >{product?.discount}</Td>
+                    <Td >{product?.offer===true?<CheckIcon color="green"/>:<CloseIcon color="red"/>}</Td>
                     <Td >
-                        <Button mr={2} >Edit</Button>
+                        <Link to={`/products/${product?._id}`}><Button mr={2} >Edit</Button></Link>
                         <Button>Delete</Button>
                     </Td>
         </Tr>

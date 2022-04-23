@@ -1,4 +1,3 @@
-
 import {
   Table,
   Thead,
@@ -9,16 +8,18 @@ import {
   TableContainer,
   Button,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCategoriesAPI } from "../../store/actionCreator/categoryActionCreator";
+import { StoreType } from "../../store/store";
 
 export default function CategoryList() {
-  const [categories, setCategory] = useState([
-    {
-      name: "watch",
-      image: "",
-    },
-  ]);
+  const categories = useSelector((store:StoreType)=>store?.category.categories)
+  const dispatch:any = useDispatch()
 
+  useEffect(()=>{
+    dispatch(getAllCategoriesAPI())
+  },[])
   return (
     <>
       <TableContainer width="85%" ml="14.5%">
@@ -31,14 +32,13 @@ export default function CategoryList() {
             </Tr>
           </Thead>
           <Tbody>
-            {categories.map((category) => {
+            {categories?.map((category:any) => {
               return (
                 <Tr _hover={{ bg: "gray.100", color: "black" }}>
                   <Td>{category.image}</Td>
                   <Td>{category.name}</Td>
                   <Td>
                     <Button mr={2}>Edit</Button>
-                    <Button>Delete</Button>
                   </Td>
                 </Tr>
               );

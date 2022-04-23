@@ -8,7 +8,7 @@ import {
   NumberInput,
   Radio,
 } from "@chakra-ui/react";
-import { Field, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import {
   InputControl,
   SubmitButton,
@@ -21,53 +21,52 @@ import React, { useEffect, useState } from "react";
 
 import { onSubmit, ProductFormProps, ProductSchema } from "./vaidation";
 
-
-
-
 export default function ProductForm({
-  image,
+  images,
   name,
   price,
-  discription,
-  categoryName,
-  xlCount,
-  lCount,
-  mdCount,
-  sCount,
-  xsCount,
+  description,
+  category,
+  xl,
+  l,
+  md,
+  s,
+  xs,
   offer,
   discount,
-  eventHandler,
+  eventHandler = () => {},
 }: ProductFormProps) {
-
- const initialValues={
-        image:image,
-        name: name,
-        price: price,
-        discription: discription,
-        categoryName: categoryName,
-        xlCount: xlCount,
-        lCount: lCount,
-        mdCount: mdCount,
-        sCount: sCount,
-        xsCount: xsCount,
-        offer: offer,
-        discount: discount,
-}
-
+  const [file, setFile]=useState("")
+  const initialValues = {
+    image: images,
+    name: name,
+    price: price,
+    description: description,
+    category: category,
+    xl: xl,
+    l: l,
+    md: md,
+    s: s,
+    xs: xs,
+    offer: offer,
+    discount: discount,
+  };
 
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={ProductSchema}
       onSubmit={onSubmit}
+      // enctype="multipart/form-data"
+
     >
       {({ handleSubmit, values, errors }) => (
         <Center>
-          <Box
-            width={{ sm: "100%", md: "50%" }}
-            mb={5}
-            as="form"
+          <Form
+            // width={{ sm: "100%", md: "50%" }}
+            // mb={5}
+            // as="form"
+            // enctype="multipart/form-data"
             onSubmit={handleSubmit as any}
           >
             <FormLabel htmlFor="product-name" mt={5}>
@@ -75,26 +74,28 @@ export default function ProductForm({
             </FormLabel>
             <InputControl id="name" placeholder="Product name" name="name" />
 
-            <FormLabel htmlFor="product-discription" mt={5}>
-              Product Discription
+            <FormLabel htmlFor="product-description" mt={5}>
+              Product Description
             </FormLabel>
             <TextareaControl
-              id="product-discription"
+              id="product-description"
               placeholder="Product name"
-              name="discription"
+              name="description"
             />
             <FormLabel htmlFor="product-price" mt={5}>
               Product price
             </FormLabel>
             <InputControl id="product-Price" name="price" />
-            <FormLabel htmlFor="categoryName" mt={5}>
+            <FormLabel htmlFor="category" mt={5}>
               Category Name
             </FormLabel>
             <SelectControl
-              name="select"
+              name="category"
               selectProps={{ placeholder: "Select option" }}
             >
-              <option value="option1">Option 1</option>
+              {category?.map((cate:any)=>{
+                return <option value={cate._id}>{cate.name}</option>
+              })}
             </SelectControl>
             <FormLabel htmlFor="sizeCount" mt={5}>
               Sizes Count
@@ -102,36 +103,42 @@ export default function ProductForm({
             <Grid templateColumns="repeat(5, 1fr)" gap={6} ml={6} mr={6}>
               <NumberInput>
                 <span>XL</span>
-                <InputControl name="xlCount" />
+                <InputControl name="xl" />
               </NumberInput>
               <NumberInput>
                 <span>L</span>
-                <InputControl name="lCount" />
+                <InputControl name="l" />
               </NumberInput>
               <NumberInput>
                 <span>md</span>
-                <InputControl name="mdCount" />
+                <InputControl name="md" />
               </NumberInput>
               <NumberInput>
                 <span>S</span>
-                <InputControl name="sCount" />
+                <InputControl name="s" />
               </NumberInput>
               <NumberInput>
                 <span>XS</span>
-                <InputControl name="xsCount" />
+                <InputControl name="xs" />
               </NumberInput>
             </Grid>
-            <FormLabel htmlFor="product-discount" mt={5}>
+            <FormLabel htmlFor="discount" mt={5}>
               Product discount
             </FormLabel>
             <NumberInput>
               <InputControl id="discount" name="discount" />
             </NumberInput>
-            <RadioGroupControl name="favoriteColor" label=" Product offer">
-              <Radio value="#ff0000" mr={4}>
+            <RadioGroupControl
+              name="offer"
+              label=" Product offer"
+              onChange={(e: any) => {
+                offer = e.target.value;
+              }}
+            >
+              <Radio value="false" mr={4}>
                 False
               </Radio>
-              <Radio value="#00ff00" mr={4}>
+              <Radio value="true" mr={4}>
                 True
               </Radio>
             </RadioGroupControl>
@@ -141,17 +148,16 @@ export default function ProductForm({
             <Field
               id="product-image"
               placeholder="Product image"
-              name="image"
+              name="images"
               type="file"
+              onChange={(e:any)=>{setFile(e?.target?.files[0])}}
             />
             <ButtonGroup display="block" mt={4}>
               <SubmitButton
                 colorScheme="gray"
                 pr={20}
                 pl={20}
-                onClick={() => {
-                  eventHandler(values);
-                }}
+                onClick={()=>{eventHandler({...values, file})}}
               >
                 Submit
               </SubmitButton>
@@ -159,7 +165,7 @@ export default function ProductForm({
                 Reset
               </ResetButton>
             </ButtonGroup>
-          </Box>
+          </Form>
         </Center>
       )}
     </Formik>

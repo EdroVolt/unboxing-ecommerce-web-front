@@ -102,7 +102,7 @@ export default function Simple({
   };
 
   useEffect(() => {
-    dispatch(getMeAPI());
+    dispatch(getMeAPI())
   }, []);
 
   useEffect(() => {

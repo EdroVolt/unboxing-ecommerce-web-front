@@ -1,5 +1,5 @@
 import { useState } from "react";
-import FormCategory from "../components/common/CategForm/CategForm";
+import FormCategory from "../../components/common/CategForm/CategForm";
 
 
 
