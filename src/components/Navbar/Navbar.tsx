@@ -80,11 +80,6 @@ interface government {
   governorate_name_en: string;
 }
 export default function Navbar({ isAuth }: any) {
-  const [userGovernment, setgovernment] = useState<government | undefined>({
-    id: "3",
-    governorate_name_ar: "الأسكندرية",
-    governorate_name_en: "Alexandria",
-  });
   let user = useSelector((state: any) => state.user.user);
 
   const [searchFor, setSearchFor] = useState("");
@@ -93,21 +88,32 @@ export default function Navbar({ isAuth }: any) {
     name: "all",
     image: "ff",
   });
+  const userSetedGovernment = governments[2].data?.find((a) => {
+    return a.governorate_name_en == user?.government;
+  });
+  const userSetedcity = cities[2].data?.find((a) => {
+    return a.city_name_en == user?.city;
+  });
+  const [userGovernment, setgovernment] = useState<any | undefined>({
+    id: userSetedGovernment?.id,
+    governorate_name_ar: userSetedGovernment?.governorate_name_ar,
+    governorate_name_en: userSetedGovernment?.governorate_name_en,
+  });
   const [governmentsCities, setGovernmentsCities] = useState<
-    Array<city> | undefined
+    Array<any> | undefined
   >([
     {
-      id: "1",
-      governorate_id: "1",
-      city_name_ar: "15 مايو",
-      city_name_en: "15 May",
+      id: userSetedcity?.id,
+      governorate_id: userSetedcity?.governorate_id,
+      city_name_ar: userSetedcity?.city_name_ar,
+      city_name_en: userSetedcity?.city_name_en,
     },
   ]);
-  const [userCity, setUserCites] = useState<city | undefined>({
-    id: "1",
-    governorate_id: "1",
-    city_name_ar: "15 مايو",
-    city_name_en: "15 May",
+  const [userCity, setUserCites] = useState<any | undefined>({
+    id: userSetedcity?.id,
+    governorate_id: userSetedcity?.governorate_id,
+    city_name_ar: userSetedcity?.city_name_ar,
+    city_name_en: userSetedcity?.city_name_en,
   });
   const categories = useSelector(
     (store: StoreType) => store.category.categories
@@ -229,7 +235,7 @@ export default function Navbar({ isAuth }: any) {
                           key={category.name}
                           id={category._id?.toString()}
                           name={category.name}
-                          onClick={(e) => {
+                          onClick={(e: any) => {
                             setSearchedCategory({
                               _id: category._id?.toString(),
                               name: category.name,
