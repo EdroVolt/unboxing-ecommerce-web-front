@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import Unboxing from "../apis/unboxing";
 import CardDetail from "../components/common/CardDetail/CardDetail";
 
-export default function ProductDetail() {
+export default function ProductDetail({ isAuth }: any) {
   const params = useParams();
   const id = params.id;
 
@@ -21,6 +21,7 @@ export default function ProductDetail() {
 
   return (
     <CardDetail
+      isAuth={isAuth}
       _id={product?._id}
       name={product?.name}
       description={product?.description}

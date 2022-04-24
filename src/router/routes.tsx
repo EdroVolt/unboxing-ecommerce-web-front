@@ -33,6 +33,7 @@ import Navbar from "../components/Navbar/Navbar";
 import { Box } from "@chakra-ui/react";
 import Footer from "../components/Footer/Footer";
 import Dashboard from "../pages/Admin/Dashboard";
+import NotFound from "../pages/NotFound";
 // import NotFound from "../pages/NotFound";
 
 const Router = () => {
@@ -74,9 +75,11 @@ const Router = () => {
           </Route>
           <Route path={dashboard} element={<Dashboard />} />
 
-
           <Route path={products} element={<Products />} />
-          <Route path={productDetails} element={<ProductDetail />} />
+          <Route
+            path={productDetails}
+            element={<ProductDetail isAuth={isAuthenticated} />}
+          />
           <Route path={about} element={<AboutUs />} />
           <Route
             path={login}
@@ -88,7 +91,7 @@ const Router = () => {
             }
           />
           <Route path={singUp} element={<SingUp />} />
-          {/* <Route path={error} element={<NotFound />} /> */}
+          <Route path={error} element={<NotFound />} />
         </Routes>
       </Box>
       <Footer isAuth={isAuthenticated} />

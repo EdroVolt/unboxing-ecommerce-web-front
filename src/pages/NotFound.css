@@ -13,7 +13,7 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 body {
@@ -24,7 +24,7 @@ body {
   line-height: 1;
 }
 
-label {
+/* label {
   cursor: pointer;
 }
 
@@ -35,17 +35,17 @@ a {
   background: transparent;
   text-decoration: none;
   color: #000;
-}
+} */
 
-input,
+/* input,
 select,
 button,
 textarea {
   margin: 0;
   font-size: 100%;
-}
+} */
 
-html,
+/* html,
 div,
 span,
 applet,
@@ -112,7 +112,7 @@ input {
   font-size: 100%;
   vertical-align: baseline;
   background: transparent;
-}
+} */
 
 .top-header:before {
   background-image: url(https://1.bp.blogspot.com/-gxsOcYWghHA/Xp_izTh4sFI/AAAAAAAAU8s/y637Fwg99qAuzW9na_NT_uApny8Vce95gCEwYBhgL/s1600/header-footer-gradient-bg.png);

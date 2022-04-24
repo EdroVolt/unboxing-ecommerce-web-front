@@ -31,7 +31,7 @@ export default function ModalPopUp(props: any) {
 
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
-  const dispatch:any=useDispatch()
+  const dispatch: any = useDispatch();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
@@ -41,24 +41,32 @@ export default function ModalPopUp(props: any) {
     setRating(rate);
   };
   const addReview = () => {
-    dispatch(addReviewToProductAPI(props.productId, {userId:props.userId, comment, rate: rating})).then(()=>{
-      onClose()
-      toast({
-        title: `Success `,
-        description: `Your review is added`,
-        status: "success",
-        duration: 9000,
-        isClosable: true,
+    dispatch(
+      addReviewToProductAPI(props.productId, {
+        userId: props.userId,
+        comment,
+        rate: rating,
+      })
+    )
+      .then(() => {
+        onClose();
+        toast({
+          title: `Success `,
+          description: `Your review is added`,
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      })
+      .catch(() => {
+        toast({
+          title: "Opps",
+          description: `Error , please try again`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
       });
-    }).catch(()=>{
-      toast({
-        title: "Opps",
-        description: `Error , please try again`,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    })
   };
 
   return (
@@ -66,7 +74,7 @@ export default function ModalPopUp(props: any) {
       <Button
         variant="link"
         textAlign={"left"}
-        color={"gray.500"}
+        color={"blue.300"}
         onClick={() => {
           setOverlay(<OverlayOne />);
           onOpen();

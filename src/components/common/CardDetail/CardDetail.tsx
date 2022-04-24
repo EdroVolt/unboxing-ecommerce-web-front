@@ -46,6 +46,7 @@ export default function Simple({
     l: 0,
     xl: 0,
   },
+  isAuth,
   category,
   ingredients,
   images = ["mm"],
@@ -53,7 +54,7 @@ export default function Simple({
   discount = 0,
   offer = true,
   reviews,
-}: ProductType) {
+}: any) {
   const dispatch: any = useDispatch();
   let user = useSelector((store: StoreType) => store.user.user);
   const [userCount, setUserCount] = useState(0);
@@ -102,7 +103,7 @@ export default function Simple({
   };
 
   useEffect(() => {
-    dispatch(getMeAPI())
+    dispatch(getMeAPI());
   }, []);
 
   useEffect(() => {
@@ -145,7 +146,9 @@ export default function Simple({
           console.log(error);
           toast({
             title: `Error `,
-            description: `${name} is arleady added`,
+            description: isAuth
+              ? `${name} is arleady added`
+              : "you can't order without account",
             status: "error",
             duration: 9000,
             isClosable: true,
@@ -260,7 +263,7 @@ export default function Simple({
                 Features
               </Text>
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                {ingredients?.map((ingred) => {
+                {ingredients?.map((ingred: any) => {
                   return (
                     <List spacing={2}>
                       <ListItem>{ingred}</ListItem>{" "}
@@ -478,7 +481,7 @@ export default function Simple({
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
               {reviews?.length} reviews
             </Box>
-            {reviews?.map((review) => {
+            {reviews?.map((review: any) => {
               return (
                 <List spacing={2} mt={4}>
                   <Avatar

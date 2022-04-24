@@ -119,7 +119,7 @@ const SignUp = () => {
                 <ErrorMessage
                   name="FullName"
                   component="div"
-                  className="error"
+                  className="errorr"
                 />
               </Box>
               <Box className="form-group">
@@ -132,7 +132,7 @@ const SignUp = () => {
                     (errors.email && touched.email ? " is-invalid" : "")
                   }
                 />
-                <ErrorMessage name="email" component="div" className="error" />
+                <ErrorMessage name="email" component="div" className="errorr" />
               </Box>
               <Box className="form-group">
                 <Field
@@ -158,7 +158,7 @@ const SignUp = () => {
                 <ErrorMessage
                   name="phoneNumber"
                   component="div"
-                  className="error"
+                  className="errorr"
                 />
               </Box>
               <Box className="form-group">
@@ -183,7 +183,7 @@ const SignUp = () => {
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="error"
+                  className="errorr"
                 />
               </Box>
               <Box className="form-group">
@@ -203,7 +203,7 @@ const SignUp = () => {
                 <ErrorMessage
                   name="confirmPassword"
                   component="div"
-                  className="error"
+                  className="errorr"
                 />
               </Box>
               <Box className="form-group">

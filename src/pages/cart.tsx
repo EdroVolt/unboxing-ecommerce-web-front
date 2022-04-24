@@ -28,6 +28,7 @@ import ProductType from "../models/Product.model";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
+  const [disaple, setDisaple] = useState(false);
   const [empty, setEmpty] = useState(false);
   const [notEmpty, setnotEmpty] = useState(true);
   const toast = useToast();
@@ -105,6 +106,7 @@ export default function Cart() {
           duration: 9000,
           isClosable: true,
         });
+        setDisaple(true);
       })
       .catch((error: any) => {
         toast({
@@ -187,6 +189,7 @@ export default function Cart() {
                   : ${user.cart.totalPrice} USD
                 </Text>
                 <Button
+                  disabled={disaple}
                   // colorScheme={useColorModeValue("gray.900", "gray.600")}
                   variant="link"
                   pr={15}

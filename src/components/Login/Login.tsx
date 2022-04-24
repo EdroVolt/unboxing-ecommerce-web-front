@@ -95,7 +95,7 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
         const { errors, touched, isValid, dirty } = formik;
         return (
           <>
-            <Box className="container">
+            <Box pb="50" className="container">
               <Form className="form__login" style={{ width: "350px" }}>
                 <Heading className="title" as="h1" size="md" textAlign="center">
                   Sign in
@@ -120,7 +120,7 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
                   <ErrorMessage
                     name="email"
                     component="div"
-                    className="error"
+                    className="errorr"
                   />
                 </Box>
 
@@ -148,7 +148,7 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
                   <ErrorMessage
                     name="password"
                     component="div"
-                    className="error"
+                    className="errorr"
                   />
                 </Box>
                 {/* <Link to={home} > */}

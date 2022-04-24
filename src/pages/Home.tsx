@@ -28,12 +28,14 @@ export default function Home() {
 
   return (
     <>
-      <Box position={"relative"} marginTop={-8} height="90vh">
+      <Box position={"relative"} marginTop={-8} height="93vh">
         <Box
           as="video"
           src="/assets/cover1.mp4"
           height="100%"
           autoPlay
+          loop
+          muted
           objectFit="cover"
           sx={{
             aspectRatio: "16/4",
