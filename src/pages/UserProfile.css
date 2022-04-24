@@ -1,0 +1,21 @@
+.boxStyle {
+  width: 100%;
+  margin: auto;
+  /* border: 2px solid teal; */
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1em;
+}
+
+
+.editIcon {
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 450px) {
+  .boxStyle {
+    flex-direction: column;
+  }
+}
