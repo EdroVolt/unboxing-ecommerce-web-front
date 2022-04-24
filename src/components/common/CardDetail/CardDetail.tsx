@@ -189,7 +189,7 @@ export default function Simple({
             alt={"product image"}
             src={
               //images[0]
-              `http://localhost:8080/${images[0]}`
+              `https://unboxingjs.herokuapp.com//${images[0]}`
             }
             fit={"cover"}
             align={"center"}

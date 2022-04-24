@@ -41,7 +41,11 @@ export default function Card({
       overflow="hidden"
       color={"black"}
     >
-      <Image src={`http://localhost:8080/${imageUrl}`} alt={imageAlt} w="240" />
+      <Image
+        src={`https://unboxingjs.herokuapp.com//${imageUrl}`}
+        alt={imageAlt}
+        w="240"
+      />
 
       <Box p="6">
         <Box display="flex" alignItems="baseline">
