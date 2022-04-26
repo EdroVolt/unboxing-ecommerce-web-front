@@ -34,23 +34,12 @@ export default function Cart() {
   const toast = useToast();
   let user = useSelector((state: any) => state.user.user);
   const sendEmail = (userOrder: any) => {
-    emailjs
-      .send(
-        "service_djz6kp8",
-        "template_v0u6eur",
-        { from_name: user?.name, user_id: user?._id, order: userOrder },
-
-        "Fqt5OrHHp5LmQVDbP"
-      )
-      .then(
-        (result) => {
-          console.log([order, user]);
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        }
-      );
+    emailjs.send(
+      process.env.REACT_APP_EMAIL_SERVICE_ID!,
+      process.env.REACT_APP_EMAIL_SERVICE_ORDER!,
+      { from_name: user?.name, user_id: user?._id, order: userOrder },
+      process.env.REACT_APP_API_KEY!
+    );
   };
 
   const [totalCount, setTotalCount] = useState(0);
@@ -73,7 +62,6 @@ export default function Cart() {
     else if (user?.cart?.products.length) {
       setEmpty(false);
       setnotEmpty(true);
-      console.log(user?.cart?.products);
     } else {
       setEmpty(true);
       setnotEmpty(false);
@@ -93,12 +81,10 @@ export default function Cart() {
   };
 
   const checkOut = () => {
-    console.log(order);
     dispatch(checkoutOrder(user._id, order))
       .then(() => {
         const userOrders = user?.orders;
         sendEmail(userOrders[userOrders?.length - 1]?._id);
-        console.log(user.orders);
         toast({
           title: "CheckOut Success",
           description: "please check your orders ",
@@ -120,7 +106,7 @@ export default function Cart() {
   };
 
   return (
-    <div>
+    <Box px="5" mb="5">
       {notEmpty && (
         <>
           <Heading
@@ -132,8 +118,7 @@ export default function Cart() {
             ml={{ sm: "10", md: "90" }}
             mb={10}
           >
-            {" "}
-            Cart{" "}
+            Cart
           </Heading>
           {!user ? (
             <Spinner
@@ -153,6 +138,7 @@ export default function Cart() {
                 {user.cart?.products?.map((product: any) => {
                   return (
                     <SmallCard
+                      key={product.product._id}
                       _id={product.product._id}
                       name={product.product.name}
                       count={product.count}
@@ -176,17 +162,11 @@ export default function Cart() {
                 justifyContent={"space-between"}
                 margin={"auto"}
               >
-                <Text
-                  ml={{ sm: "15", md: "15" }}
-                  mt={3}
-                  mb={3}
-                  fontSize={{ sm: "xl", md: "xl" }}
-                >
+                <Text ml={15} mt={3} mb={3} fontSize={{ sm: "xl", md: "xl" }}>
                   <Text fontWeight={"black"} display={"inline-block"} mr={2}>
-                    {" "}
                     Total Price
                   </Text>
-                  : ${user.cart.totalPrice} USD
+                  : ${user.cart.totalPrice}
                 </Text>
                 <Button
                   disabled={disaple}
@@ -212,6 +192,6 @@ export default function Cart() {
           Your Cart is Empty
         </Heading>
       )}
-    </div>
+    </Box>
   );
 }

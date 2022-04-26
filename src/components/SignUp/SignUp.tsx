@@ -62,7 +62,6 @@ const SignUp = () => {
           .required("Phone Number is required"),
       })}
       onSubmit={(fields): any => {
-        console.log(fields);
         dispatch(
           createUserAPI({
             name: fields.FullName,

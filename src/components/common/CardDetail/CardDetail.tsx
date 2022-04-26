@@ -16,6 +16,7 @@ import {
   Icon,
   Badge,
   useToast,
+  Skeleton,
 } from "@chakra-ui/react";
 import { MdLocalShipping } from "react-icons/md";
 import React, { useEffect, useState } from "react";
@@ -49,7 +50,7 @@ export default function Simple({
   isAuth,
   category,
   ingredients,
-  images = ["mm"],
+  images = [""],
   price = 0,
   discount = 0,
   offer = true,
@@ -71,14 +72,13 @@ export default function Simple({
 
   const [favIsSelected, setFavIsSelected] = useState(false);
 
-  function countLimit(count: number) {
-    let countList = [];
-    for (let i = 0; i < count; i++) {
-      console.log(i);
-      countList.push(<option>{i + 1}</option>);
-    }
-    return countList;
-  }
+  // function countLimit(count: number) {
+  //   let countList = [];
+  //   for (let i = 0; i < count; i++) {
+  //     countList.push(<option>{i + 1}</option>);
+  //   }
+  //   return countList;
+  // }
 
   const wishListHandler = (cart: any) => {
     dispatch(addProductToMyWishListAPI(cart))
@@ -143,7 +143,6 @@ export default function Simple({
           });
         })
         .catch((error: any) => {
-          console.log(error);
           toast({
             title: `Error `,
             description: isAuth
@@ -155,7 +154,6 @@ export default function Simple({
           });
         });
     }
-    console.log(cart);
   };
 
   const increaseCount = () => {
@@ -184,18 +182,25 @@ export default function Simple({
         py={{ base: 18, md: 24 }}
       >
         <Flex>
-          <Image
-            rounded={"md"}
-            alt={"product image"}
-            src={
-              //images[0]
-              `https://unboxingjs.herokuapp.com//${images[0]}`
-            }
-            fit={"cover"}
-            align={"center"}
-            w={"100%"}
-            h={{ base: "100%", sm: "400px", lg: "500px" }}
-          />
+          {!images[0] ? (
+            <Skeleton
+              w={"100%"}
+              h={{ base: "100%", sm: "400px", lg: "500px" }}
+            ></Skeleton>
+          ) : (
+            <Image
+              rounded={"md"}
+              alt={"product image"}
+              src={
+                //images[0]
+                `https://unboxingjs.herokuapp.com//${images[0]}`
+              }
+              fit={"cover"}
+              align={"center"}
+              w={"100%"}
+              h={{ base: "100%", sm: "400px", lg: "500px" }}
+            />
+          )}
         </Flex>
         <Stack spacing={{ base: 6, md: 10 }} position={"relative"}>
           <Box as={"header"}>
@@ -491,7 +496,6 @@ export default function Simple({
                   />
                   <Text fontWeight={"bold"} display="inline-block" ml="2">
                     {review?.userId?.name}
-                    {console.log(review)}
                   </Text>
                   <List spacing={2}>
                     <ListItem ml="10">
@@ -505,7 +509,7 @@ export default function Simple({
                         ))}
                     </ListItem>
                   </List>
-                  <ListItem margin={10}>{review?.comment}</ListItem>{" "}
+                  <ListItem margin={10}>{review?.comment}</ListItem>
                 </List>
               );
             })}

@@ -8,7 +8,6 @@ export const getAllCategoriesAPI =
   (page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
     Unboxing.get(`/categories?page=${page}`).then((res) => {
-      console.log(res);
       dispatch(Category.getAllCategories(res.data));
     });
 
@@ -17,6 +16,5 @@ export const getAllCategoriesAPI =
 export const addCategoryAPI =
   (category: CategoryType) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.post(`/categories`).then((res) => {
-      console.log(res);
       dispatch(Category.addCategory(res.data));
     });

@@ -1,7 +1,6 @@
 import { ReactNode, useState, useEffect } from "react";
 
 import React from "react";
-import { Logo } from ".././../Logo";
 import cities from "./../common/cities.json";
 import { NavLink, Link } from "react-router-dom";
 import governments from "./../common/governments.json";
@@ -39,8 +38,14 @@ import {
   Divider,
   border,
   position,
+  Icon,
 } from "@chakra-ui/react";
-import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import {
+  SearchIcon,
+  ChevronDownIcon,
+  HamburgerIcon,
+  CloseIcon,
+} from "@chakra-ui/icons";
 import { ColorModeSwitcher } from "../ColorModeSwitcher";
 
 import CategoryType from "../../models/Category.model";
@@ -67,7 +72,7 @@ import {
   cart,
 } from "../../router/routePaths";
 import { useNavigate } from "react-router";
-import { GoLocation } from "react-icons/all";
+import { FiShoppingCart, GoLocation } from "react-icons/all";
 import "./Navbar.css";
 import { allowedNodeEnvironmentFlags } from "process";
 
@@ -84,6 +89,7 @@ interface government {
 }
 export default function Navbar({ isAuth }: any) {
   let user = useSelector((state: any) => state.user.user);
+  const [openHamburger, setOpenHamburger] = useState("none");
 
   const [searchFor, setSearchFor] = useState("");
   const [searchValue, setSearchedCategory] = useState<CategoryType>({
@@ -142,8 +148,7 @@ export default function Navbar({ isAuth }: any) {
   useEffect(() => {
     dispatch(getAllCategoriesAPI());
     dispatch(getMeAPI());
-    dispatch(getAllProductsAPI(1));
-    console.log(isAuth);
+    dispatch(getAllProductsAPI());
   }, [isAuth]);
 
   return (
@@ -151,11 +156,26 @@ export default function Navbar({ isAuth }: any) {
       <Box bg={"gray.900"} color={"white"} py={"1"} mb={"2"}>
         <Flex
           alignItems={"center"}
-          px={"10"}
+          px={["2", "2", "2", "10"]}
           width="100%"
-          justifyContent={"left"}
+          justifyContent={[
+            "space-between",
+            "space-between",
+            "space-between",
+            "left",
+          ]}
         >
-          <Box>
+          <ColorModeSwitcher
+            display={["flex", "flex", "flex", "none"]}
+            alignSelf={"center"}
+            textAlign="center"
+            _hover={{
+              color: "gray.900",
+              bg: "gray.300",
+            }}
+          />
+
+          <Box alignSelf="center">
             <Flex alignItems={"center"}>
               <Link to={home}>
                 <Text
@@ -169,7 +189,12 @@ export default function Navbar({ isAuth }: any) {
                   Unboxing
                 </Text>
               </Link>
-              <Box display="flex" me={5} alignItems="start">
+              {/* start: address */}
+              <Box
+                display={["none", "none", "none", "flex"]}
+                me={5}
+                alignItems="start"
+              >
                 <VStack
                   justifyContent={"center"}
                   divider={<StackDivider borderColor="gray.200" />}
@@ -197,9 +222,13 @@ export default function Navbar({ isAuth }: any) {
                 </VStack>
                 <Spacer />
               </Box>
+              {/* end: address */}
             </Flex>
           </Box>
+
+          {/* start: search */}
           <Box
+            display={["none", "none", "none", "block"]}
             alignSelf={"center"}
             className="parent"
             bg="white"
@@ -216,6 +245,7 @@ export default function Navbar({ isAuth }: any) {
                   as={Button}
                   bg={"gray.200"}
                   color="black"
+                  border="0"
                   borderRadius={"none"}
                   fontWeight="700"
                   rightIcon={
@@ -247,22 +277,20 @@ export default function Navbar({ isAuth }: any) {
                   </MenuItem>
                   {categories.map((category: CategoryType) => {
                     return (
-                      <>
-                        <MenuItem
-                          key={category.name}
-                          id={category._id?.toString()}
-                          name={category.name}
-                          onClick={(e: any) => {
-                            setSearchedCategory({
-                              _id: category._id?.toString(),
-                              name: category.name,
-                              image: "aa",
-                            });
-                          }}
-                        >
-                          {category.name}
-                        </MenuItem>
-                      </>
+                      <MenuItem
+                        key={category.name}
+                        id={category._id?.toString()}
+                        name={category.name}
+                        onClick={(e: any) => {
+                          setSearchedCategory({
+                            _id: category._id?.toString(),
+                            name: category.name,
+                            image: "aa",
+                          });
+                        }}
+                      >
+                        {category.name}
+                      </MenuItem>
                     );
                   })}
                 </MenuList>
@@ -270,18 +298,23 @@ export default function Navbar({ isAuth }: any) {
 
               <Input
                 type="text"
-                textColor={"black"}
+                variant="flushed"
                 border="none"
+                placeholder="searching ..."
+                textColor={"black"}
                 borderRadius={0}
                 onChange={(e) => {
                   setSearchFor(e.target.value);
                 }}
-                placeholder=""
               />
               <InputRightElement
                 color={"black"}
                 as={Button}
                 bg="none"
+                borderLeft="none"
+                _hover={{
+                  borderRadius: "none",
+                }}
                 cursor={"pointer"}
                 onClick={() => {
                   if (searchFor && searchValue._id)
@@ -303,17 +336,49 @@ export default function Navbar({ isAuth }: any) {
               </InputRightElement>
             </InputGroup>
           </Box>
+          {/* end: search */}
 
-          <Flex>
-            <Box alignSelf={"center"} fontSize="18" mx={4} role="button">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-                to={isAuth ? "/wishlist" : "/"}
-              >
-                {isAuth ? "Wishlist" : null}
-              </NavLink>
-            </Box>
-            <Box alignSelf={"center"} fontSize="18" mx={4}>
+          {/* start: nav items */}
+
+          <Flex
+            display={[openHamburger, openHamburger, openHamburger, "flex"]}
+            h={["100vh", "100vh", "100vh", "inherit"]}
+            bg={["gray.900", "gray.900", "gray.900", "transparent"]}
+            justifyContent="flex-end"
+            py={["50", "0"]}
+            gap={["45", "0"]}
+            zIndex="10"
+            direction={[
+              "column-reverse",
+              "column-reverse",
+              "column-reverse",
+              "row",
+            ]}
+            alignItems="center"
+            position={["fixed", "fixed", "fixed", "inherit"]}
+            top={["0", "0", "0", "inherit"]}
+            bottom={["0", "0", "0", "inherit"]}
+            left={["0", "0", "0", "inherit"]}
+            right={["0", "0", "0", "inherit"]}
+          >
+            <IconButton
+              position={"absolute"}
+              top="5"
+              right="2"
+              aria-label="Close Menu"
+              size="sm"
+              onClick={() => setOpenHamburger("none")}
+              bg="gray.800"
+              icon={<CloseIcon />}
+              display={["inline-block", "inline-block", "inline-block", "none"]}
+            />
+
+            <Box
+              onClick={() => setOpenHamburger("none")}
+              alignSelf={"center"}
+              fontSize="18"
+              mx={4}
+            >
               <NavLink
                 className={({ isActive }) => (isActive ? "active" : "inactive")}
                 to={"/products"}
@@ -321,15 +386,46 @@ export default function Navbar({ isAuth }: any) {
                 Products
               </NavLink>
             </Box>
-            <Box alignSelf={"center"} fontSize="18" mx={4}>
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "inactive")}
-                to={isAuth ? "orders" : "/"}
+
+            {isAuth ? (
+              <Box
+                onClick={() => setOpenHamburger("none")}
+                alignSelf={"center"}
+                fontSize="18"
+                mx={4}
+                role="button"
               >
-                {isAuth ? "Orders" : null}
-              </NavLink>
-            </Box>
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                  to={isAuth ? "/wishlist" : "/"}
+                >
+                  {isAuth ? "Wishlist" : null}
+                </NavLink>
+              </Box>
+            ) : null}
+
+            {isAuth ? (
+              <Box
+                onClick={() => setOpenHamburger("none")}
+                alignSelf={"center"}
+                fontSize="18"
+                mx={4}
+              >
+                <NavLink
+                  className={({ isActive }) =>
+                    isActive ? "active" : "inactive"
+                  }
+                  to={isAuth ? "orders" : "/"}
+                >
+                  {isAuth ? "Orders" : null}
+                </NavLink>
+              </Box>
+            ) : null}
+
             <Box
+              onClick={() => setOpenHamburger("none")}
               _hover={{ border: "black", borderWidth: "2" }}
               width={20}
               alignSelf={"center"}
@@ -339,17 +435,11 @@ export default function Navbar({ isAuth }: any) {
                 className={({ isActive }) => (isActive ? "active" : "inactive")}
                 to={isAuth ? "/cart" : "/login"}
               >
-                <HStack>
+                <HStack alignItems="center" justifyContent={"center"}>
                   <Text fontSize={"18"}>Cart</Text>
-                  <svg
-                    fill={"silver"}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 576 512"
-                    width={"22"}
-                    height={"30"}
-                  >
-                    <path d="M96 0C107.5 0 117.4 8.19 119.6 19.51L121.1 32H541.8C562.1 32 578.3 52.25 572.6 72.66L518.6 264.7C514.7 278.5 502.1 288 487.8 288H170.7L179.9 336H488C501.3 336 512 346.7 512 360C512 373.3 501.3 384 488 384H159.1C148.5 384 138.6 375.8 136.4 364.5L76.14 48H24C10.75 48 0 37.25 0 24C0 10.75 10.75 0 24 0H96zM128 464C128 437.5 149.5 416 176 416C202.5 416 224 437.5 224 464C224 490.5 202.5 512 176 512C149.5 512 128 490.5 128 464zM512 464C512 490.5 490.5 512 464 512C437.5 512 416 490.5 416 464C416 437.5 437.5 416 464 416C490.5 416 512 437.5 512 464z" />
-                  </svg>
+                  <Text display={["none", "none", "none", "block"]}>
+                    <Icon as={FiShoppingCart} ms="0" fontSize={14} />
+                  </Text>
                 </HStack>
               </NavLink>
             </Box>
@@ -390,15 +480,19 @@ export default function Navbar({ isAuth }: any) {
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   color={useColorModeValue("gray.900", "gray.300")}
                 >
-                  <Box justifyContent={"start"} px={5} textAlign={"start"}>
-                    <MenuItem p={0} width={20} fontSize={11}>
-                      <NavLink
-                        className={({ isActive }) =>
-                          isActive ? "active" : "inactive"
-                        }
-                        to={isAuth ? "/profile" : "/login"}
-                      >
-                        <Text fontSize={"xl"} fontWeight="bold">
+                  <Box
+                    onClick={() => setOpenHamburger("none")}
+                    justifyContent={"start"}
+                    px={5}
+                    textAlign={"start"}
+                  >
+                    <MenuItem bg="transparent" p={0} width={20} fontSize={11}>
+                      <NavLink to={isAuth ? "/profile" : "/login"}>
+                        <Text
+                          bg="transparent"
+                          fontSize={"xl"}
+                          fontWeight="bold"
+                        >
                           {isAuth ? "Account" : "Login"}
                         </Text>
                       </NavLink>
@@ -412,13 +506,11 @@ export default function Navbar({ isAuth }: any) {
                           rounded="md"
                         >
                           <NavLink
-                            className={({ isActive }) =>
-                              isActive ? "active" : "inactive"
-                            }
                             to="/"
                             onClick={() => {
                               localStorage.clear();
                               window.location.reload();
+                              setOpenHamburger("none");
                             }}
                           >
                             Logout
@@ -432,7 +524,10 @@ export default function Navbar({ isAuth }: any) {
             ) : null}
 
             {!isAuth ? (
-              <Box alignSelf={"center"}>
+              <Box
+                onClick={() => setOpenHamburger("none")}
+                alignSelf={"center"}
+              >
                 <Button
                   color={"gray.900"}
                   onClick={() => {
@@ -449,16 +544,31 @@ export default function Navbar({ isAuth }: any) {
               </Box>
             ) : null}
             <ColorModeSwitcher
-              justifySelf="flex-end"
+              justifySelf="center"
               alignSelf={"center"}
+              display={["none", "none", "none", "flex"]}
               _hover={{
                 color: "gray.900",
                 bg: "gray.300",
               }}
             />
           </Flex>
+
+          {/* start: Burger Icon */}
+          <IconButton
+            aria-label="Open Menu"
+            size="lg"
+            onClick={() => setOpenHamburger("flex")}
+            bg="gray.800"
+            icon={<HamburgerIcon />}
+            display={["inline-block", "inline-block", "inline-block", "none"]}
+          />
+          {/* end: Burger Icon */}
+
+          {/* end: nav items */}
         </Flex>
 
+        {/* start: address modal */}
         <Box borderRadius={"full"}>
           <Modal
             closeOnOverlayClick={true}
@@ -528,9 +638,7 @@ export default function Navbar({ isAuth }: any) {
                             (a) => a.id == e.target.value
                           )[0]
                         );
-                        console.log(
-                          cities[2].data?.find((a) => (a.id = e.target.value))
-                        );
+
                         onModalClose();
 
                         dispatch(
@@ -569,6 +677,10 @@ export default function Navbar({ isAuth }: any) {
             </ModalContent>
           </Modal>
         </Box>
+        {/* end: address modal */}
+
+        {/* Mobile navbar */}
+        {/* <Flex direction="column"></Flex> */}
       </Box>
     </>
   );

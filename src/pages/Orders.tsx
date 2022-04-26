@@ -63,21 +63,25 @@ export default function Orders() {
                   bg={useColorModeValue("gray.200", "gray.400")}
                   borderWidth="1px"
                   overflow="hidden"
-                  w={"90%"}
+                  w={["95%", "90%"]}
+                  px={["5", "0"]}
                   mb={6}
-                  ml={10}
+                  ms={[3, 3, 3, 10]}
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   color={useColorModeValue("black", "gray.800")}
                 >
                   <Text
                     color="black"
                     mb={5}
-                    ml={5}
                     mt={5}
+                    ms={[0, 0, 10, 10]}
                     fontSize={"xl"}
+                    fontWeight="bold"
                     fontFamily={"body"}
                   >
-                    {order.createdAt}
+                    {new Date(order?.createdAt || "2022").toLocaleDateString(
+                      "en-Uk"
+                    )}
                   </Text>
                   <hr
                     style={{

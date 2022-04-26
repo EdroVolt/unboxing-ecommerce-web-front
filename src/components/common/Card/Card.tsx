@@ -1,5 +1,12 @@
 import { StarIcon } from "@chakra-ui/icons";
-import { Badge, Box, Image } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Image,
+  Skeleton,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
 import {} from "react-icons";
 
 type CardProps = {
@@ -33,7 +40,7 @@ export default function Card({
 }: CardProps) {
   return (
     <Box
-      bg={color}
+      bg={useColorModeValue(color, "gray.700")}
       h="full"
       maxW="sm"
       borderWidth="1px"
@@ -41,21 +48,27 @@ export default function Card({
       overflow="hidden"
       color={"black"}
     >
-      <Image
-        src={`https://unboxingjs.herokuapp.com//${imageUrl}`}
-        alt={imageAlt}
-        w="240"
-      />
+      {!imageUrl ? (
+        <Skeleton w="full" h="240"></Skeleton>
+      ) : (
+        <Image
+          loading="lazy"
+          src={`https://unboxingjs.herokuapp.com//${imageUrl}`}
+          alt={imageAlt}
+          w="full"
+          h="240"
+        />
+      )}
 
-      <Box p="6">
+      <VStack align="flex-start" p="6">
         <Box display="flex" alignItems="baseline">
           {isOffer && (
-            <Badge borderRadius="full" px="2" colorScheme="teal">
+            <Badge borderRadius="full" pe="2" colorScheme="teal">
               offer
             </Badge>
           )}
           <Box
-            color="gray.500"
+            color={useColorModeValue("gray.500", "gray.100")}
             fontWeight="semibold"
             letterSpacing="wide"
             fontSize="xs"
@@ -67,6 +80,7 @@ export default function Card({
         </Box>
 
         <Box
+          color={useColorModeValue("gray.900", "gray.100")}
           mt="1"
           fontWeight="semibold"
           as="h4"
@@ -77,15 +91,22 @@ export default function Card({
           {title}
         </Box>
 
-        <Box textAlign="start">
+        <Box
+          color={useColorModeValue("gray.900", "gray.100")}
+          textAlign="start"
+        >
           {formattedPrice}
-          <Box as="span" color="gray.600" fontSize="sm">
+          <Box
+            color={useColorModeValue("gray.600", "gray.400")}
+            as="span"
+            fontSize="sm"
+          >
             $
           </Box>
         </Box>
 
         {reviewCount ? (
-          <Box display="flex" mt="2" alignItems="center">
+          <Box display="flex" mt="auto" alignItems="center">
             {Array(5)
               .fill("")
               .map((_, i) => (
@@ -99,11 +120,11 @@ export default function Card({
             </Box>
           </Box>
         ) : (
-          <Box as="span" ml="2" color="gray.600" fontSize="sm">
+          <Box as="span" ms="auto" color="gray.600" fontSize="sm">
             no reviews
           </Box>
         )}
-      </Box>
+      </VStack>
     </Box>
   );
 }

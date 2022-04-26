@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SmallCard from "../components/common/SmallCard/SmallCard";
-import { Grid, Heading, useColorModeValue } from "@chakra-ui/react";
+import { Box, Grid, Heading, useColorModeValue } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { StoreType } from "../store/store";
 import {
@@ -24,7 +24,6 @@ export default function WishList() {
     else if (user?.wishList?.products.length) {
       setEmpty(false);
       setnotEmpty(true);
-      console.log(user?.wishList?.products);
     } else {
       setEmpty(true);
       setnotEmpty(false);
@@ -51,7 +50,7 @@ export default function WishList() {
   const [notEmpty, setnotEmpty] = useState(true);
 
   return (
-    <div>
+    <Box px="5">
       <>
         {!user ? (
           <Spinner
@@ -107,6 +106,6 @@ export default function WishList() {
           </>
         )}
       </>
-    </div>
+    </Box>
   );
 }

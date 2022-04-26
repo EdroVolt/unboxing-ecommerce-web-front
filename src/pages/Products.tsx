@@ -22,21 +22,23 @@ export default function Products() {
     dispatch(getAllProductsAPI(page));
   }, [page]);
 
-  console.log(products);
-  // console.log(numOfPages);
-
   return (
     <>
-      <Grid templateColumns="repeat(5, 1fr)" gap={6} ml={6} mr={6}>
+      {!products.length ? (
+        <Spinner position={"absolute"} right={"50vw"} top={"25vh"} size="xl" />
+      ) : (
         <>
-          {!products.length ? (
-            <Spinner
-              position={"absolute"}
-              right={"50vw"}
-              top={"25vh"}
-              size="xl"
-            />
-          ) : (
+          <Grid
+            templateColumns={[
+              "repeat(1, 1fr)",
+              "repeat(2, 1fr)",
+              "repeat(3, 1fr)",
+              "repeat(5, 1fr)",
+            ]}
+            gap={6}
+            ml={6}
+            mr={6}
+          >
             <>
               {products?.map((product: ProductType) => {
                 return (
@@ -57,34 +59,34 @@ export default function Products() {
                 );
               })}
             </>
-          )}
-        </>
-      </Grid>
+          </Grid>
 
-      <HStack w={"full"} my="10" px="6">
-        <Button
-          bg="blue.400"
-          color={"white"}
-          disabled={page === 1 ? true : false}
-          onClick={() => {
-            if (page === 1) setPage(1);
-            else setPage(page - 1);
-          }}
-        >
-          {"< Prev"}
-        </Button>
-        <Button
-          bg="gray.400"
-          color={"white"}
-          // disabled={page === numOfPages ? true : false}
-          onClick={() => {
-            // if (page === numOfPages) setPage(numOfPages);
-            setPage(page + 1);
-          }}
-        >
-          {"Next >"}
-        </Button>
-      </HStack>
+          <HStack w={"full"} my="10" px="6">
+            <Button
+              bg="blue.400"
+              color={"white"}
+              disabled={page === 1 ? true : false}
+              onClick={() => {
+                if (page === 1) setPage(1);
+                else setPage(page - 1);
+              }}
+            >
+              {"< Prev"}
+            </Button>
+            <Button
+              bg="gray.400"
+              color={"white"}
+              // disabled={page === numOfPages ? true : false}
+              onClick={() => {
+                // if (page === numOfPages) setPage(numOfPages);
+                setPage(page + 1);
+              }}
+            >
+              {"Next >"}
+            </Button>
+          </HStack>
+        </>
+      )}
     </>
   );
 }

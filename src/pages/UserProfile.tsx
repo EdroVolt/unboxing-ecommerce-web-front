@@ -127,7 +127,6 @@ const UserProfile = () => {
   }, [user]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     setUserInfo((prevState) => ({
       ...prevState,
       [event.target.name]: event.target.value,
@@ -387,7 +386,6 @@ const UserProfile = () => {
                           return a.governorate_id == newgovernment?.id;
                         })
                       );
-                      console.log(newgovernment?.governorate_name_en);
 
                       setUserInfo({
                         ...userInfo,
@@ -440,10 +438,6 @@ const UserProfile = () => {
                             government: userInfo?.address?.government,
                           },
                         });
-                        console.log(
-                          cities[2].data?.find((a) => a.id == e.target.value)
-                            ?.city_name_en
-                        );
                       }}
                       placeholder={user?.address?.city}
                       textAlign={"center"}
@@ -502,7 +496,6 @@ const UserProfile = () => {
               <ButtonGroup variant="outline" spacing="6">
                 <Button
                   onClick={() => {
-                    console.log(formateDate());
                     dispatch(
                       editUserAPI({
                         ...formateDate(),

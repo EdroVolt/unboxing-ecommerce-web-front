@@ -21,13 +21,9 @@ import { ReactNode, useEffect, useState } from "react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { BiMailSend } from "react-icons/bi";
 
-import { Logo } from "../../Logo";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getMeAPI,
-  getUserDetailsAPI,
-} from "../../store/actionCreator/userActionCreator";
-import { EditIcon, EmailIcon } from "@chakra-ui/icons";
+import { getMeAPI } from "../../store/actionCreator/userActionCreator";
+import { EmailIcon } from "@chakra-ui/icons";
 import { about, home } from "../../router/routePaths";
 
 const SocialButton = ({
@@ -82,7 +78,7 @@ export default function Footer({ isAuth }: any) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
-    user ? dispatch(getMeAPI()) : console.log("welcome guest");
+    user && dispatch(getMeAPI());
     send(
       "service_2t90r1h",
       "template_7gs4ezf",
@@ -97,12 +93,9 @@ export default function Footer({ isAuth }: any) {
       "5vg6rvpudykTlzC2i"
     )
       .then((response) => {
-        console.log(toSend);
-        console.log("SUCCESS!", response.status, response.text);
         toast({
           duration: 9000,
           isClosable: true,
-
           title: "your feadback had been sent, we will response immediately",
         });
       })
@@ -167,7 +160,6 @@ export default function Footer({ isAuth }: any) {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>
-              {" "}
               <Text
                 fontSize={24}
                 lineHeight="none"
@@ -177,17 +169,41 @@ export default function Footer({ isAuth }: any) {
                 Our Talented Team
               </Text>
             </ListHeader>
-            <Link to={`https://www.linkedin.com/in/edrovolt/`}>
+            <a
+              href={`https://www.linkedin.com/in/edrovolt/`}
+              target="_blank"
+              rel="noreferrer"
+            >
               Ahmed Edrees
-            </Link>
-            <Link to={"https://www.linkedin.com/in/menna-refaat"}>
+            </a>
+            <a
+              href={"https://www.linkedin.com/in/menna-refaat"}
+              target="_blank"
+              rel="noreferrer"
+            >
               Menna Refaat
-            </Link>
-            <Link to="https://www.linkedin.com/in/nesma-taha">Nesma Taha</Link>
-            <Link to="https://www.linkedin.com/in/rana-wagdi">Rana Wagdi</Link>
-            <Link to="https://www.linkedin.com/in/yasmen-mohammed/">
+            </a>
+            <a
+              href="https://www.linkedin.com/in/nesma-taha"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Nesma Taha
+            </a>
+            <a
+              href="https://www.linkedin.com/in/rana-wagdi"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Rana Wagdi
+            </a>
+            <a
+              href="https://www.linkedin.com/in/yasmen-mohammed/"
+              target="_blank"
+              rel="noreferrer"
+            >
               Yasmen Abodabash
-            </Link>
+            </a>
           </Stack>
 
           <SimpleGrid

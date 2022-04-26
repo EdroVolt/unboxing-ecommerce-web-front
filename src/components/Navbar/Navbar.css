@@ -4,3 +4,7 @@
 .brand{
   font-family: 'Inspiration', cursive !important;
 }
+
+.active{
+  color: gold !important;
+}

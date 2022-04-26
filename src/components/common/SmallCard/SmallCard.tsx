@@ -50,7 +50,6 @@ export default function SmallCard({
       dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
         dispatch(getMeAPI());
       });
-      console.log(_id, buttonName);
     } else if (buttonName === " Add to WishList ") {
       dispatch(deleteProductFromMyCartAPI(_id)).then(() => {
         dispatch(getMeAPI());
@@ -85,7 +84,7 @@ export default function SmallCard({
         w={{ sm: "100%", md: "90%" }}
         height={{ sm: "35rem", md: "27rem", lg: "17rem" }}
         direction={{ base: "column", md: "column", lg: "row" }}
-        bg={useColorModeValue("white.800", "gray.200")}
+        bg={useColorModeValue("gray.200", "gray.700")}
       >
         <Flex flex={0.75} bg="black">
           <Image
@@ -105,7 +104,7 @@ export default function SmallCard({
             fontSize={"2xl"}
             fontFamily={"body"}
             fontWeight={"bold"}
-            color={useColorModeValue("gray.800", "black")}
+            color={useColorModeValue("gray.800", "white")}
             px={3}
           >
             {name}
@@ -125,7 +124,7 @@ export default function SmallCard({
           {discount > 0 && (
             <Text
               // eslint-disable-next-line react-hooks/rules-of-hooks
-              color={useColorModeValue("gray.700", "gray.800")}
+              color={useColorModeValue("gray.700", "gray.100")}
               fontWeight={300}
               fontSize={"xl"}
               px={3}
@@ -148,7 +147,7 @@ export default function SmallCard({
               <Text
                 fontSize={"l"}
                 px={3}
-                color={useColorModeValue("gray.600", "black")}
+                color={useColorModeValue("gray.600", "gray.100")}
               >
                 Count: {count}
               </Text>

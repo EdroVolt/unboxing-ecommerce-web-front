@@ -7,7 +7,7 @@ import React from "react";
 
 export const AboutUs = () => {
   return (
-    <Box width={"100%"} height={"100vh"} mt={-7} bgColor={"red.100"}>
+    <Box width={"100%"} height={"100vh"} mt={-7}>
       {/* paraghraph section */}
       <HStack>
         <Box width={"50%"}>

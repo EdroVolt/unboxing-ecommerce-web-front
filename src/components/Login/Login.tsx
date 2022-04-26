@@ -59,8 +59,6 @@ const Login = ({ isAuthenticated, setIsAuthenticated }: any) => {
             // navigate(-1);
           })
           .catch((e: any) => {
-            console.log("error from catch:", e);
-
             toast({
               title: " enter a valid email or password.",
               description: " enter a valid email or password",

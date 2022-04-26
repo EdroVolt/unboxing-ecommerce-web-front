@@ -43,7 +43,7 @@ export default function Home() {
         />
         <Text
           position={"absolute"}
-          top="30%"
+          top={["20%", "20%", "30%", "30%"]}
           display={"block"}
           left="0"
           right="0"
@@ -58,6 +58,7 @@ export default function Home() {
         >
           Shopping, No Stopping ...
           <Text
+            display={["none", "none", "none", "block"]}
             fontSize={"6rem"}
             color="gray.100"
             fontFamily={"'Inspiration', cursive !important"}

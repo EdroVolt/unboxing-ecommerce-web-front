@@ -1,4 +1,3 @@
-import { getProductDetails } from "./../actions/Product.actions";
 import { Dispatch } from "react";
 import Unboxing from "../../apis/unboxing";
 import ProductType from "../../models/Product.model";
@@ -15,7 +14,7 @@ import ReviewType from "../../models/Review.model";
 //   const value = Object.values(filter)[0];
 //   return Unboxing.get(`/products?page=${page}&${key}=${value}`)
 //     .then((res) => {
-//       console.log(res);
+//
 //       dispatch(Product.getAllProductsByCategory(res.data));
 //     })
 //
@@ -25,7 +24,6 @@ export const getAllProductsAPI =
   (page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
     Unboxing.get(`/products?page=${page}`).then((res) => {
-      console.log(res);
       dispatch(Product.getAllProducts(res.data));
     });
 
@@ -34,7 +32,6 @@ export const getAllProductsByCategoryAPI =
   (dispatch: Dispatch<ActionType>) =>
     Unboxing.get(`/products?page=${page}&category=${categoryId}`).then(
       (res) => {
-        console.log(res);
         dispatch(Product.getAllProductsByCategory(res.data));
       }
     );
@@ -43,7 +40,6 @@ export const getAllProductsByNameAPI =
   (name: string, page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
     Unboxing.get(`/products?page=${page}&name=${name}`).then((res) => {
-      console.log(res);
       dispatch(Product.getAllProductsByName(res.data));
     });
 
@@ -54,7 +50,6 @@ export const getAllProductsByNameAndCategoryAPI =
     Unboxing.get(
       `/products?page=${page}&name=${name}&category=${categoryId}`
     ).then((res) => {
-      console.log(res);
       dispatch(Product.getAllProductsByName(res.data));
     });
 
@@ -62,14 +57,12 @@ export const getAllOfferProductsAPI =
   (page: number = 1) =>
   (dispatch: Dispatch<ActionType>) =>
     Unboxing.get(`/products?page=${page}&offer=true`).then((res) => {
-      console.log(res);
       dispatch(Product.getAllOfferProducts(res.data));
     });
 
 export const getProductDetailsAPI =
   (_id: string | number) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.get(`/products/:${_id}`).then((res) => {
-      console.log(res);
       dispatch(Product.getProductDetails(res.data));
     });
 
@@ -81,20 +74,13 @@ export const addProductAPI =
       headers: {
         "Content-Type": `multipart/form-data; boundary=${productData._boundary}`,
       },
-      // data: {
-      //   file: file,
-      // },
     }).then((res) => {
-      console.log(res);
-      console.log("haslkdnlaks", productData);
-
       dispatch(Product.addProduct(res.data));
     });
 
 export const addReviewToProductAPI =
   (productId: string, review: ReviewType) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.post(`/products/${productId}/reviews`, review).then((res) => {
-      console.log(res);
       dispatch(Product.addReviewOnProduct(res.data));
     });
 
@@ -103,20 +89,11 @@ export const addReviewToProductAPI =
 export const EditProductAPI =
   (productData: ProductType) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.put(`/products/${productData._id}`, productData).then((res) => {
-      console.log(res);
       dispatch(Product.editProduct(res.data));
     });
 
 export const deleteProductAPI =
   (productId: string | number) => (dispatch: Dispatch<ActionType>) =>
     Unboxing.delete(`/products/${productId}`).then((res) => {
-      console.log(res);
       dispatch(Product.deleteProductFromStore(res.data._id));
     });
-
-// (product: ProductType) => ({
-//   type: actions.ADD_PRODUCT,
-//   payload: {
-//     product,
-//   },
-// });

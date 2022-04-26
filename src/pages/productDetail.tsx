@@ -10,13 +10,9 @@ export default function ProductDetail({ isAuth }: any) {
   const [product, setProduct] = useState<any>();
 
   useEffect(() => {
-    Unboxing.get(`/products/${id}`)
-      .then((response) => {
-        setProduct(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    Unboxing.get(`/products/${id}`).then((response) => {
+      setProduct(response.data);
+    });
   }, []);
 
   return (
