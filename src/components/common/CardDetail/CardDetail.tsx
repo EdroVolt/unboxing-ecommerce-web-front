@@ -193,7 +193,7 @@ export default function Simple({
               alt={"product image"}
               src={
                 //images[0]
-                `https://unboxingjs.herokuapp.com//${images[0]}`
+                `${process.env.REACT_APP_UNBOXING_URL + images[0]}`
               }
               fit={"cover"}
               align={"center"}

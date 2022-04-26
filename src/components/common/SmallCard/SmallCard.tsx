@@ -90,7 +90,7 @@ export default function SmallCard({
           <Image
             objectFit="cover"
             boxSize="100%"
-            src={`https://unboxingjs.herokuapp.com//${images}`}
+            src={`${process.env.REACT_APP_UNBOXING_URL! + images}`}
           />
         </Flex>
         <Stack

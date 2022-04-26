@@ -121,7 +121,10 @@ export default function Orders() {
                             <Image
                               objectFit="cover"
                               boxSize="100%"
-                              src={`https://unboxingjs.herokuapp.com//${product.product.images[0]}`}
+                              src={`${
+                                process.env.REACT_APP_UNBOXING_URL! +
+                                product.product.images[0]
+                              }`}
                             />
                           </Flex>
                           <Stack

@@ -475,10 +475,8 @@ export default function Navbar({ isAuth }: any) {
                 <MenuList
                   zIndex={30}
                   minH={"29%"}
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  bgColor={useColorModeValue("gray.300", "gray.900")}
-                  // eslint-disable-next-line react-hooks/rules-of-hooks
-                  color={useColorModeValue("gray.900", "gray.300")}
+                  bgColor={"gray.900"}
+                  color={"gray.300"}
                 >
                   <Box
                     onClick={() => setOpenHamburger("none")}

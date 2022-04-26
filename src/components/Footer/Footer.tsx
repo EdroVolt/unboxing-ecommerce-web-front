@@ -78,10 +78,12 @@ export default function Footer({ isAuth }: any) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
+    console.log(process.env.REACT_APP_EMAIL_SERVICE_ID);
+
     user && dispatch(getMeAPI());
     send(
-      "service_2t90r1h",
-      "template_7gs4ezf",
+      process.env.REACT_APP_EMAIL_SERVICE_ID!,
+      process.env.REACT_APP_EMAIL_SERVICE_FEEDBACK!,
       {
         from_name: user?.name || "guest",
         to_name: "admin",
@@ -90,7 +92,7 @@ export default function Footer({ isAuth }: any) {
         user_id: user?._id,
         reply_to: user?.email || toSend.reply_to,
       },
-      "5vg6rvpudykTlzC2i"
+      process.env.REACT_APP_EMAIL_SERVICE_API_KEY!
     )
       .then((response) => {
         toast({

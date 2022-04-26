@@ -53,7 +53,7 @@ export default function Card({
       ) : (
         <Image
           loading="lazy"
-          src={`https://unboxingjs.herokuapp.com//${imageUrl}`}
+          src={`${process.env.REACT_APP_UNBOXING_URL + imageUrl}`}
           alt={imageAlt}
           w="full"
           h="240"
