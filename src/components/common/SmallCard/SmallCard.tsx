@@ -18,6 +18,8 @@ import {
 } from "../../../store/actionCreator/userActionCreator";
 import { useDispatch } from "react-redux";
 import "../CardDetail/CardDetail";
+import { Link } from "react-router-dom";
+import { products } from "../../../router/routePaths";
 
 type CardProps = {
   _id: string;
@@ -87,11 +89,13 @@ export default function SmallCard({
         bg={useColorModeValue("gray.200", "gray.700")}
       >
         <Flex flex={0.75} bg="black">
-          <Image
-            objectFit="cover"
-            boxSize="100%"
-            src={`${process.env.REACT_APP_UNBOXING_URL! + images}`}
-          />
+          <Link to={products + `/${_id}`}>
+            <Image
+              objectFit="cover"
+              boxSize="100%"
+              src={`${process.env.REACT_APP_UNBOXING_URL! + images}`}
+            />
+          </Link>
         </Flex>
         <Stack
           flex={1.5}

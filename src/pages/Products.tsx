@@ -22,6 +22,8 @@ export default function Products() {
     dispatch(getAllProductsAPI(page));
   }, [page]);
 
+  console.log(products);
+
   return (
     <>
       {!products.length ? (
@@ -49,9 +51,10 @@ export default function Products() {
                         imageUrl={product?.images[0]}
                         title={product?.name}
                         // rating={product.rating}
+                        reviews={product?.reviews}
                         isOffer={product?.offer}
                         formattedPrice={product?.price + ""}
-                        reviewCount={product?.numOfReviews}
+                        // reviewCount={product?.numOfReviews}
                         category={product?.category?.name}
                       ></Card>
                     </Link>

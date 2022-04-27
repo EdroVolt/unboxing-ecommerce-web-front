@@ -96,8 +96,9 @@ export default function Home() {
                     formattedPrice={item.price + ""}
                     category="electronics"
                     isOffer={item.offer}
-                    reviewCount={item.numOfReviews}
-                    rating={3}
+                    // reviewCount={item.numOfReviews}
+                    reviews={item.reviews}
+                    // rating={3}
                   />
                 </Box>
               </Link>

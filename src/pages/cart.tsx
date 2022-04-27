@@ -38,7 +38,7 @@ export default function Cart() {
       process.env.REACT_APP_EMAIL_SERVICE_ID!,
       process.env.REACT_APP_EMAIL_SERVICE_ORDER!,
       { from_name: user?.name, user_id: user?._id, order: userOrder },
-      process.env.REACT_APP_API_KEY!
+      process.env.REACT_APP_EMAIL_SERVICE_API_KEY!
     );
   };
 

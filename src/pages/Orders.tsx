@@ -13,8 +13,10 @@ import { Spinner } from "@chakra-ui/spinner";
 import React from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import ModalPopUp from "../components/common/reviews/reviews";
 import OrderType from "../models/Order.model";
+import { products } from "../router/routePaths";
 import {
   getMeAPI,
   getUserOrdersAPI,
@@ -101,7 +103,7 @@ export default function Orders() {
                     mb={6}
                     templateColumns={{
                       sm: "repeat(1, 1fr)",
-                      md: "repeat(3, 1fr)",
+                      md: "repeat(2, 1fr)",
                       xl: "repeat(4, 1fr)",
                     }}
                   >
@@ -118,14 +120,16 @@ export default function Orders() {
                           padding={4}
                         >
                           <Flex flex={1} bg="blue.200">
-                            <Image
-                              objectFit="cover"
-                              boxSize="100%"
-                              src={`${
-                                process.env.REACT_APP_UNBOXING_URL! +
-                                product.product.images[0]
-                              }`}
-                            />
+                            <Link to={products + `/${product.product._id}`}>
+                              <Image
+                                objectFit="cover"
+                                boxSize="100%"
+                                src={`${
+                                  process.env.REACT_APP_UNBOXING_URL! +
+                                  product.product.images[0]
+                                }`}
+                              />
+                            </Link>
                           </Flex>
                           <Stack
                             flex={1}

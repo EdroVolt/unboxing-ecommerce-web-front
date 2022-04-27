@@ -8,6 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import {} from "react-icons";
+import ReviewType from "../../../models/Review.model";
 
 type CardProps = {
   imageUrl?: string;
@@ -16,11 +17,12 @@ type CardProps = {
   baths?: number;
   title: string;
   formattedPrice?: string;
-  reviewCount?: number;
-  rating?: number;
+  // reviewCount?: number;
+  // rating?: number;
   isOffer?: boolean;
   color?: string;
   category?: string;
+  reviews?: ReviewType[];
 };
 
 const props = {
@@ -32,16 +34,25 @@ export default function Card({
   imageAlt,
   title,
   formattedPrice,
-  reviewCount,
-  rating = 0,
+  // reviewCount,
+  // rating = 0,
+  reviews,
   category,
   isOffer = false,
   color = "gray.200",
 }: CardProps) {
+  const rating =
+    reviews?.reduce((sum, review) => sum + review.rate, 0)! / reviews?.length!;
+
   return (
     <Box
       bg={useColorModeValue(color, "gray.700")}
       h="full"
+      _hover={{
+        border: "2px solid gold",
+        transform: "scale(1.05)",
+      }}
+      transition="all .5s ease-in-out"
       maxW="sm"
       borderWidth="1px"
       borderRadius="lg"
@@ -105,7 +116,7 @@ export default function Card({
           </Box>
         </Box>
 
-        {reviewCount ? (
+        {reviews?.length ? (
           <Box display="flex" mt="auto" alignItems="center">
             {Array(5)
               .fill("")
@@ -116,7 +127,7 @@ export default function Card({
                 />
               ))}
             <Box as="span" ml="2" color="gray.600" fontSize="sm">
-              {reviewCount} reviews
+              {reviews?.length} reviews
             </Box>
           </Box>
         ) : (

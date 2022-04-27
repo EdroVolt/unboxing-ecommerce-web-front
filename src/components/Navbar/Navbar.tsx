@@ -485,7 +485,7 @@ export default function Navbar({ isAuth }: any) {
                     textAlign={"start"}
                   >
                     <MenuItem bg="transparent" p={0} width={20} fontSize={11}>
-                      <NavLink to={isAuth ? "/profile" : "/login"}>
+                      <NavLink style={{}} to={isAuth ? "/profile" : "/login"}>
                         <Text
                           bg="transparent"
                           fontSize={"xl"}

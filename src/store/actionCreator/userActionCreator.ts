@@ -31,6 +31,7 @@ export const editUserAPI =
     Unboxing.put(`/users/${userData._id}`, userData).then((res) => {
       dispatch(User.editUser(res.data));
     });
+
 export const changeUserPasswordAPI =
   (_id: string, newPassword: string, oldPassword: string) =>
   (dispatch: Dispatch<actions.ActionType>) =>

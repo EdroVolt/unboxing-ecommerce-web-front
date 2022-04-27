@@ -78,8 +78,6 @@ export default function Footer({ isAuth }: any) {
     reply_to: user?.email,
   });
   const onSubmit = (e: any) => {
-    console.log(process.env.REACT_APP_EMAIL_SERVICE_ID);
-
     user && dispatch(getMeAPI());
     send(
       process.env.REACT_APP_EMAIL_SERVICE_ID!,

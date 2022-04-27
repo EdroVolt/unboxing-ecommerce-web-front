@@ -1,4 +1,5 @@
 import CategoryType from "./Category.model";
+import ReviewType from "./Review.model";
 import UserType from "./User.model";
 
 type ProductType = {
@@ -19,13 +20,7 @@ type ProductType = {
   price: number;
   discount?: number;
   offer?: boolean;
-  reviews?: [
-    {
-      userId: UserType;
-      comment: string;
-      rate: number;
-    }
-  ];
+  reviews?: ReviewType[];
   numOfReviews?: number;
   createdAt?: Date;
   updatedAt?: Date;
