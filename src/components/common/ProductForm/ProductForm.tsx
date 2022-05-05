@@ -36,7 +36,7 @@ export default function ProductForm({
   discount,
   eventHandler = () => {},
 }: ProductFormProps) {
-  const [file, setFile]=useState("")
+  const [file, setFile] = useState("");
   const initialValues = {
     image: images,
     name: name,
@@ -58,7 +58,6 @@ export default function ProductForm({
       validationSchema={ProductSchema}
       onSubmit={onSubmit}
       // enctype="multipart/form-data"
-
     >
       {({ handleSubmit, values, errors }) => (
         <Center>
@@ -93,8 +92,12 @@ export default function ProductForm({
               name="category"
               selectProps={{ placeholder: "Select option" }}
             >
-              {category?.map((cate:any)=>{
-                return <option value={cate._id}>{cate.name}</option>
+              {category?.map((cate: any) => {
+                return (
+                  <option key={cate._id} value={cate._id}>
+                    {cate.name}
+                  </option>
+                );
               })}
             </SelectControl>
             <FormLabel htmlFor="sizeCount" mt={5}>
@@ -150,14 +153,18 @@ export default function ProductForm({
               placeholder="Product image"
               name="images"
               type="file"
-              onChange={(e:any)=>{setFile(e?.target?.files[0])}}
+              onChange={(e: any) => {
+                setFile(e?.target?.files[0]);
+              }}
             />
             <ButtonGroup display="block" mt={4}>
               <SubmitButton
                 colorScheme="gray"
                 pr={20}
                 pl={20}
-                onClick={()=>{eventHandler({...values, file})}}
+                onClick={() => {
+                  eventHandler({ ...values, file });
+                }}
               >
                 Submit
               </SubmitButton>

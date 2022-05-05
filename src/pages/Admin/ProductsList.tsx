@@ -44,7 +44,10 @@ export default function ProductsList() {
           <Tbody>
             {products?.map((product: any) => {
               return (
-                <Tr _hover={{ bg: "gray.100", color: "black" }}>
+                <Tr
+                  key={product._id}
+                  _hover={{ bg: "gray.100", color: "black" }}
+                >
                   <Td>{product?.images[0]}</Td>
                   <Td>{product?.name}</Td>
                   <Td>{product?.description}</Td>

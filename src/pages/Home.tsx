@@ -87,8 +87,8 @@ export default function Home() {
           {offers
             .reverse()
             .slice(0, 10)
-            .map((item: any) => (
-              <Link to={`/products/${item._id}`}>
+            .map((item: any, i: number) => (
+              <Link key={i} to={`/products/${item._id}`}>
                 <Box mx="auto">
                   <Card
                     title={item.name}
@@ -104,36 +104,6 @@ export default function Home() {
               </Link>
             ))}
         </SimpleGrid>
-
-        {/* <Heading
-        as="h2"
-        size="2xl"
-        marginTop={75}
-        marginBottom={25}
-        textAlign="left"
-        textTransform="uppercase"
-        color="secondary.100"
-        isTruncated
-        borderBottom="2px solid #aaa"
-        padding="25px 0"
-      >
-        Top Products
-      </Heading>
-      <SimpleGrid minChildWidth="240px" columns={5} spacing={6} marginTop={3}>
-        {topProducts.map((item) => (
-          <Box>
-            <Card
-              title={item.name}
-              imageUrl={item.images[0]}
-              formattedPrice={item.price + ""}
-              category="electronics"
-              isOffer={item.offer}
-              reviewCount={item.numOfReviews}
-              rating={3}
-            />
-          </Box>
-        ))}
-      </SimpleGrid> */}
       </Container>
     </>
   );

@@ -89,6 +89,8 @@ export default function Simple({
           duration: 4000,
           isClosable: true,
         });
+
+        dispatch(getMeAPI());
       })
       .catch(() => {
         dispatch(deleteProductFromMyWishListAPI(_id)).then(() => {
@@ -98,6 +100,8 @@ export default function Simple({
             duration: 4000,
             isClosable: true,
           });
+
+          dispatch(getMeAPI());
         });
       });
   };
@@ -114,14 +118,6 @@ export default function Simple({
     );
   });
 
-  // const [userCount, setUserCount] = useState(0);
-  // const [userSize, setUserSize] = useState("");
-  // const [selectedCount, setSelectedCount] = useState(count);
-
-  // const cart = {
-  //   product: _id,
-  //   count: selectedCount,
-  // };
   const cartHandler = (cart: any) => {
     if (!userSize) {
       toast({
@@ -141,6 +137,8 @@ export default function Simple({
             duration: 9000,
             isClosable: true,
           });
+
+          dispatch(getMeAPI());
         })
         .catch((error: any) => {
           toast({
@@ -268,9 +266,9 @@ export default function Simple({
                 Features
               </Text>
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                {ingredients?.map((ingred: any) => {
+                {ingredients?.map((ingred: any, i: number) => {
                   return (
-                    <List spacing={2}>
+                    <List key={i} spacing={2}>
                       <ListItem>{ingred}</ListItem>{" "}
                     </List>
                   );
@@ -488,7 +486,7 @@ export default function Simple({
             </Box>
             {reviews?.map((review: any) => {
               return (
-                <List spacing={2} mt={4}>
+                <List key={review._id} spacing={2} mt={4}>
                   <Avatar
                     src="https://bit.ly/broken-link"
                     size="sm"

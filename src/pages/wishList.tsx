@@ -83,6 +83,7 @@ export default function WishList() {
                   {user?.wishList?.products?.map((product: any) => {
                     return (
                       <SmallCard
+                        key={product.product._id}
                         _id={product.product._id}
                         name={product.product.name}
                         count={product.count}

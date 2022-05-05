@@ -25,14 +25,22 @@ import {
 import OrderType from "../models/Order.model";
 import { Spinner } from "@chakra-ui/spinner";
 import ProductType from "../models/Product.model";
+import { useNavigate } from "react-router";
+import { orders } from "../router/routePaths";
 
 export default function Cart() {
   const dispatch: any = useDispatch();
   const [disaple, setDisaple] = useState(false);
   const [empty, setEmpty] = useState(false);
   const [notEmpty, setnotEmpty] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const user = useSelector((state: any) => state.user.user);
+
+  const navigate = useNavigate();
+
   const toast = useToast();
-  let user = useSelector((state: any) => state.user.user);
+
   const sendEmail = (userOrder: any) => {
     emailjs.send(
       process.env.REACT_APP_EMAIL_SERVICE_ID!,
@@ -42,15 +50,48 @@ export default function Cart() {
     );
   };
 
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-
   const order: OrderType = {
     products: user?.cart?.products?.map((product: any) => {
       return { product: product.product._id, count: product.count };
     }),
     totalCount: user?.cart?.products.length,
     paymentMethod: "cash",
+  };
+
+  const setTotalCountF = () => {
+    let productsCount = 0;
+    user?.cart?.products?.map((product: any) => {
+      productsCount += product.count;
+      return setTotalCount(productsCount);
+    });
+  };
+
+  const checkOut = () => {
+    setDisaple(true);
+    dispatch(checkoutOrder(user._id, order))
+      .then(() => {
+        const userOrders = user?.orders;
+        sendEmail(userOrders[userOrders?.length - 1]?._id);
+        toast({
+          title: "CheckOut Success",
+          description: "please check your orders ",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+
+        navigate(orders);
+      })
+      .catch((error: any) => {
+        setDisaple(false);
+        toast({
+          title: `Opps `,
+          description: `${error}`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+        });
+      });
   };
 
   useEffect(() => {
@@ -71,39 +112,6 @@ export default function Cart() {
   useEffect(() => {
     if (!user?.cart?.products?.length && user?._id) dispatch(getMyCartAPI());
   }, [user]);
-
-  const setTotalCountF = () => {
-    let productsCount = 0;
-    user?.cart?.products?.map((product: any) => {
-      productsCount += product.count;
-      return setTotalCount(productsCount);
-    });
-  };
-
-  const checkOut = () => {
-    dispatch(checkoutOrder(user._id, order))
-      .then(() => {
-        const userOrders = user?.orders;
-        sendEmail(userOrders[userOrders?.length - 1]?._id);
-        toast({
-          title: "CheckOut Success",
-          description: "please check your orders ",
-          status: "success",
-          duration: 9000,
-          isClosable: true,
-        });
-        setDisaple(true);
-      })
-      .catch((error: any) => {
-        toast({
-          title: `Opps `,
-          description: `${error}`,
-          status: "error",
-          duration: 9000,
-          isClosable: true,
-        });
-      });
-  };
 
   return (
     <Box px="5" mb="5">

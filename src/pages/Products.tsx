@@ -7,22 +7,15 @@ import { getAllProductsAPI } from "../store/actionCreator/productActionCreator";
 import { StoreType } from "../store/store";
 import { Link } from "react-router-dom";
 import { Spinner } from "@chakra-ui/spinner";
-import { productDetails } from "../router/routePaths";
 
 export default function Products() {
   const dispatch: any = useDispatch();
   const [page, setPage] = useState(1);
-  // const [products, setProducts]= useState(useSelector([])
   const products = useSelector((store: StoreType) => store?.product?.products);
-  // const numOfPages = useSelector(
-  //   (store: StoreType) => store?.product?.numOfPages
-  // );
 
   useEffect(() => {
     dispatch(getAllProductsAPI(page));
   }, [page]);
-
-  console.log(products);
 
   return (
     <>
@@ -45,7 +38,7 @@ export default function Products() {
               {products?.map((product: ProductType) => {
                 return (
                   <>
-                    <Link to={`/products/${product._id}`}>
+                    <Link key={product._id} to={`/products/${product._id}`}>
                       <Card
                         key={product._id}
                         imageUrl={product?.images[0]}

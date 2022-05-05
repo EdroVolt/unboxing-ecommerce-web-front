@@ -61,6 +61,7 @@ export default function Orders() {
             {orders?.map((order: OrderType) => {
               return (
                 <Box
+                  key={order._id}
                   // eslint-disable-next-line react-hooks/rules-of-hooks
                   bg={useColorModeValue("gray.200", "gray.400")}
                   borderWidth="1px"
@@ -110,6 +111,7 @@ export default function Orders() {
                     {order?.products?.map((product: any) => {
                       return (
                         <Stack
+                          key={product._id}
                           borderWidth="1px"
                           borderRadius="lg"
                           w={{ sm: "100%", md: "100%" }}

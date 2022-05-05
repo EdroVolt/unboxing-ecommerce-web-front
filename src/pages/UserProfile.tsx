@@ -403,7 +403,7 @@ const UserProfile = () => {
                   >
                     {governments[2].data?.map((government) => {
                       return (
-                        <option value={government.id}>
+                        <option key={government.id} value={government.id}>
                           {government.governorate_name_en}
                         </option>
                       );
@@ -444,7 +444,7 @@ const UserProfile = () => {
                     >
                       {citiesOfGovernment?.map((newCity) => {
                         return (
-                          <option value={newCity.id}>
+                          <option key={newCity.id} value={newCity.id}>
                             {newCity.city_name_en}
                           </option>
                         );

@@ -55,6 +55,7 @@ import { getAllCategoriesAPI } from "../../store/actionCreator/categoryActionCre
 import {
   editUserAPI,
   getMeAPI,
+  getMyCartAPI,
 } from "../../store/actionCreator/userActionCreator";
 import {
   getAllProductsAPI,
@@ -439,6 +440,18 @@ export default function Navbar({ isAuth }: any) {
                   <Text fontSize={"18"}>Cart</Text>
                   <Text display={["none", "none", "none", "block"]}>
                     <Icon as={FiShoppingCart} ms="0" fontSize={14} />
+                    <Text
+                      display="inline-block"
+                      position="relative"
+                      right="0"
+                      bg="gold"
+                      color="black"
+                      px="1.5"
+                      rounded="full"
+                      top="-3"
+                    >
+                      {user?.cart?.products?.length || 0}
+                    </Text>
                   </Text>
                 </HStack>
               </NavLink>

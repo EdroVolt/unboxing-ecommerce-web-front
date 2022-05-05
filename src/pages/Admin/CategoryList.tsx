@@ -14,12 +14,14 @@ import { getAllCategoriesAPI } from "../../store/actionCreator/categoryActionCre
 import { StoreType } from "../../store/store";
 
 export default function CategoryList() {
-  const categories = useSelector((store:StoreType)=>store?.category.categories)
-  const dispatch:any = useDispatch()
+  const categories = useSelector(
+    (store: StoreType) => store?.category.categories
+  );
+  const dispatch: any = useDispatch();
 
-  useEffect(()=>{
-    dispatch(getAllCategoriesAPI())
-  },[])
+  useEffect(() => {
+    dispatch(getAllCategoriesAPI());
+  }, []);
   return (
     <>
       <TableContainer width="85%" ml="14.5%">
@@ -32,9 +34,12 @@ export default function CategoryList() {
             </Tr>
           </Thead>
           <Tbody>
-            {categories?.map((category:any) => {
+            {categories?.map((category: any) => {
               return (
-                <Tr _hover={{ bg: "gray.100", color: "black" }}>
+                <Tr
+                  key={category._id}
+                  _hover={{ bg: "gray.100", color: "black" }}
+                >
                   <Td>{category.image}</Td>
                   <Td>{category.name}</Td>
                   <Td>
