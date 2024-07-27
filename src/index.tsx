@@ -12,6 +12,7 @@ ReactDOM.render(
     <ColorModeScript />
     <BrowserRouter>
       <App />
+      <Analytics />
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
